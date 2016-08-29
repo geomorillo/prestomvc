@@ -3,5 +3,7 @@
 include "Boot.php";
 //use system\core\Boot;
 
-Boot::run();
+$app = new Boot();
+
+$app::run();
 

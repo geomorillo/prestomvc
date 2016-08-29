@@ -22,14 +22,16 @@ class Boot
 
         define("DS", DIRECTORY_SEPARATOR);
 
-        //define("ROOT", getcwd() . DS);
-        define('ROOT', dirname(__FILE__));
+        define("ROOT", getcwd() . DS);
+        // define('ROOT', dirname(__FILE__));
 
-        define("APP_PATH", ROOT . DS . 'app' . DS);
+        define("APP_PATH", ROOT . 'app' . DS);
 
-        define("SYSTEM_PATH", ROOT . DS . "system" . DS);
+        define("SYSTEM_PATH", ROOT . "system" . DS);
 
         define("PUBLIC_PATH", ROOT . "public" . DS);
+
+        define("NAMESAPCE_CONTROLLERS", "app\controllers\\");
 
 
         define("CONFIG_PATH", APP_PATH . "config" . DS);
@@ -83,14 +85,14 @@ class Boot
     private static function load($className)
     {
 
-        $className = strtolower($className);
+        $className = ucfirst($className);
         $className = end(explode("\\", $className));
         $paths = array(
-            CORE_PATH,
+            // CORE_PATH,
             CONTROLLER_PATH,
-            MODEL_PATH,
-            HELPER_PATH,
-            VIEW_PATH
+            // MODEL_PATH,
+            // HELPER_PATH,
+            // VIEW_PATH
         );
 
         // Buscamos en cada ruta los archivos
@@ -98,12 +100,10 @@ class Boot
             $file = "$path$className.php";
             $exists = file_exists($file);
             if ($exists) {
-                echo require_once $file;
-                 if (!class_exists($className, false)) {
-                    throw new RuntimeException('Class ' . $className . ' has not been loaded yet');
-                }
-                return TRUE;
-               
+                require_once $file;
+                echo "Fichero encontrado: " . $file;
+            } else {
+                echo "Fichero no encontrado: " . $file;
             }
         }
         return FALSE;
@@ -114,7 +114,7 @@ class Boot
     private static function dispatch()
     {
 
-        $controller_name = DEFAULTCONTROLLER . "Controller";
+        $controller_name = NAMESAPCE_CONTROLLERS . DEFAULTCONTROLLER . "Controller";
 
         $action_name = DEFAULTMETHOD . "Action";
 
