@@ -24,6 +24,7 @@ class View
         $this->path = $path;
         $this->data = $data;
     }
+
     public function render()
     {
         ob_start();
@@ -34,6 +35,7 @@ class View
             ob_end_clean();
             throw $e;
         }
+        
         return ob_get_clean();
     }
 
