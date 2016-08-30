@@ -6,7 +6,7 @@
  * Contacto: geomorillo@yahoo.com
  */
 
-use system\Model;
+use system\core\Model;
 
 class UserModel extends Model
 {
@@ -14,11 +14,16 @@ class UserModel extends Model
     public function getUsers()
     {
 
-        $sql = "select * from $this->table";
+        //$sql = "select * from $this->table";
 
-        $users = $this->db->getAll($sql);
+        //$users = $this->db->getAll($sql);
 
-        return $users;
+       // return $users;
+        return "Desde el modelo";
+    }
+    public function content()
+    {
+        
     }
 
 }

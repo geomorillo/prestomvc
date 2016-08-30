@@ -7,12 +7,17 @@
  */
 
 namespace system\core;
-class Loader{
 
-    public function helper($helper){
+/**
+ * Description of Test
+ *
+ * @author geomorillo
+ */
 
-        include HELPER_PATH . "{$helper}.php";
-
+class Test
+{
+    //put your code here
+    public function e(){
+       
     }
-
 }

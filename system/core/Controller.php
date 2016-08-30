@@ -6,15 +6,23 @@
  * Contacto: geomorillo@yahoo.com
  */
 
+/**
+ * Description of Controller
+ *
+ * @author geomorillo
+ */
+
 namespace system\core;
 
-Abstract Class Model
+Abstract Class Controller
 {
 
-    public function __construct()
+    protected $model, $view;
+
+    function __construct()
     {
         
     }
 
-    Abstract function Content();
+    abstract function index();
 }

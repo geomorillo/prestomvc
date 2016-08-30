@@ -6,12 +6,11 @@
  * Contacto: geomorillo@yahoo.com
  */
 
-namespace app\controllers;
-use system\core\BaseController;
+use system\core\Controller;
 
-class UsuariosController extends BaseController{
+class UsuariosController extends Controller{
 
-    public function indexAction()
+    public function index()
     {
         $userModel = new UserModel("user");
 
