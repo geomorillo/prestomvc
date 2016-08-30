@@ -5,18 +5,21 @@
  * 2015
  * Contacto: geomorillo@yahoo.com
  */
+
 namespace app\controllers;
 use system\core\Controller;
-
+use system\core\View;
 class UsuariosController extends Controller{
 
     public function index()
     {
-	    $userModel = new \app\models\UserModel("user");
+        $userModel = new \app\models\UserModel();
 
-	    $users = $userModel->getUsers();
-	    
-	    print_r($users);
+        $users = $userModel->getUsers();
+        
+        $view = new View("usuarios", array("users" => $users));
+        
+        echo $view->render();
     }
 
 }

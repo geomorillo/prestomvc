@@ -15,7 +15,7 @@ namespace system\core;
  */
 use system\database\Database;
 
-class Model
+abstract class Model
 {
 
     protected $db; //database connection object
