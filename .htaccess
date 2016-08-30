@@ -13,5 +13,7 @@
     RewriteRule ^ index.php [L]
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
+    # redirect all other requests to index.php
+    RewriteRule ^.*$ index.php [PT,L]
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>

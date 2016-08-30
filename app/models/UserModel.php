@@ -5,8 +5,9 @@
  * 2015
  * Contacto: geomorillo@yahoo.com
  */
+namespace app\models;
 
-use system\Model;
+use system\core\Model;
 
 class UserModel extends Model
 {

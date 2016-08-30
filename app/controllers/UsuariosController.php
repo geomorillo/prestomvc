@@ -8,15 +8,17 @@
 
 namespace app\controllers;
 use system\core\BaseController;
+use app\models\UserModel;
 
 class UsuariosController extends BaseController{
 
     public function indexAction()
     {
-        $userModel = new UserModel("user");
+        // $userModel = new UserModel("user");
 
-        $users = $userModel->getUsers();
+        // $users = $userModel->getUsers();
         
+        echo "Hola Mundo!";
     }
 
 }

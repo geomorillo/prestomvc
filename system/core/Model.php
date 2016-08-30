@@ -7,7 +7,7 @@
  */
 namespace system\core;
 
-use database\Database;
+use system\database\Database;
 
 class Model
 {
@@ -27,11 +27,11 @@ class Model
     }
 
     /**
-
-     * Get the list of table fields
-
      *
-
+     * Get the list of table fields
+     *
+     *
+     *
      */
     private function getFields()
     {
@@ -61,15 +61,15 @@ class Model
     }
 
     /**
-
+     *
      * Insert records
-
+     *
      * @access public
-
+     *
      * @param $list array associative array
-
+     *
      * @return mixed If succeed return inserted record id, else return false
-
+     *
      */
     public function insert($list)
     {
@@ -114,15 +114,10 @@ class Model
     }
 
     /**
-
      * Update records
-
      * @access public
-
      * @param $list array associative array needs to be updated
-
      * @return mixed If succeed return the count of affected rows, else return false
-
      */
     public function update($list)
     {
@@ -183,15 +178,10 @@ class Model
     }
 
     /**
-
      * Delete records
-
      * @access public
-
      * @param $pk mixed could be an int or an array
-
      * @return mixed If succeed, return the count of deleted records, if fail, return false
-
      */
     public function delete($pk)
     {
@@ -239,13 +229,9 @@ class Model
     }
 
     /**
-
      * Get info based on PK
-
      * @param $pk int Primary Key
-
      * @return array an array of single record
-
      */
     public function selectByPk($pk)
     {
@@ -256,11 +242,8 @@ class Model
     }
 
     /**
-
      * Get the count of all records
-
      *
-
      */
     public function total()
     {
@@ -271,15 +254,10 @@ class Model
     }
 
     /**
-
      * Get info of pagination
-
      * @param $offset int offset value
-
      * @param $limit int number of records of each fetch
-
      * @param $where string where condition,default is empty
-
      */
     public function pageRows($offset, $limit, $where = '')
     {

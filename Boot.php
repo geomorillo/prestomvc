@@ -31,7 +31,7 @@ class Boot
 
         define("PUBLIC_PATH", ROOT . "public" . DS);
 
-        define("NAMESAPCE_CONTROLLERS", "app\controllers\\");
+        define("NAMESPACE_CONTROLLERS", "app\controllers\\");
 
 
         define("CONFIG_PATH", APP_PATH . "config" . DS);
@@ -75,52 +75,74 @@ class Boot
 
     private static function autoload()
     {
-        // require_once("Autoloader.php");
         spl_autoload_register(array(__CLASS__, 'load'));
-        // spl_autoload_register('Autoloader::loader');
     }
 
-// Define a custom load method
-
+    // Custom Load Function
+    
     private static function load($className)
     {
-
-        $className = ucfirst($className);
-        $className = end(explode("\\", $className));
-        $paths = array(
-            // CORE_PATH,
-            CONTROLLER_PATH,
-            // MODEL_PATH,
-            // HELPER_PATH,
-            // VIEW_PATH
-        );
-
-        // Buscamos en cada ruta los archivos
-        foreach ($paths as $path) {
-            $file = "$path$className.php";
-            $exists = file_exists($file);
-            if ($exists) {
-                require_once $file;
-                echo "Fichero encontrado: " . $file;
-            } else {
-                echo "Fichero no encontrado: " . $file;
-            }
+        // Find root of file
+        $file = ROOT . DS . str_replace('\\', '/', $className) . '.php';
+        
+        // If exists the file or the route then include
+        if ( file_exists($file))
+        {
+            include_once $file;
+            // print_r($className);
         }
-        return FALSE;
     }
 
-    // Routing and dispatching
+    // Dispatcher
 
     private static function dispatch()
-    {
+    {        
+       // Get the URL and convert to array
+        if (isset($_SERVER['REQUEST_URI']))
+        {
+            $url = explode("/", trim($_SERVER['REQUEST_URI']));
+            array_shift($url);
+        }
 
-        $controller_name = NAMESAPCE_CONTROLLERS . DEFAULTCONTROLLER . "Controller";
+        // Parsing the data from REQUEST
+        $controller = ($ctrl = array_shift($url)) ? $ctrl : DEFAULTCONTROLLER . "Controller";
 
-        $action_name = DEFAULTMETHOD . "Action";
+        $method = ($mtd = array_shift($url)) ? $mtd : DEFAULTMETHOD . "Action";
 
-        $controller = new $controller_name;
+        $args = (isset($url[0])) ? $url : array();
 
-        $controller->$action_name();
+        // Get the Controller path to instanciate
+        $pathController = APP_PATH . "controllers" . DS . $controller . ".php";
+
+
+        // Is Controller File Exists Then ...
+        if (file_exists($pathController))
+        {
+            // Include the Controller File
+            require_once $pathController;
+
+            // Join the Namespace and the name of controller to get the instance
+            $claseIntanciar = NAMESPACE_CONTROLLERS . $controller;
+
+            // Create the object or Instance of the Controller
+            $object = new $claseIntanciar;
+
+            // If have arguments then ...
+            if (!empty($args))
+            {
+                // Call the data passed with the arguments
+                call_user_func_array(array($object, $method), $args);
+            } else {
+                // If isn't have arguments, then call the controller and method ...
+                call_user_func(array($object, $method));
+            }
+
+        } else {
+            // If isn't find the Class or the file, then catch Error
+            throw new Exception($controller .' -- Controller not found');
+        }
+
+
     }
 
 }
