@@ -6,4 +6,3 @@
  * Contacto: geomorillo@yahoo.com
  */
 
-define("PREFIX", "micro");

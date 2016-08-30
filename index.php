@@ -1,4 +1,4 @@
 <?php
-require_once 'system/core/Boot.php';
-use system\core\Boot;
+require_once 'system/Boot.php';
+use system\Boot;
 Boot::run();

@@ -1,6 +1,6 @@
 <?php
 
-namespace system\core;
+namespace system;
 
 class Boot
 {
@@ -58,6 +58,7 @@ class Boot
 
                 if (file_exists($path . $class . '.php')) {
                     require_once($path . $class . '.php');
+                    break;
                 }
             }
         });
