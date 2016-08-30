@@ -47,9 +47,9 @@ return [
 		'mysql' => [
 				'driver' => 'mysql',
 				'host_name' => 'localhost',
-				'db_name' => 'booking',
-				'db_user' => 'homestead',
-				'db_password' => 'secret'
+				'db_name' => 'test',
+				'db_user' => 'root',
+				'db_password' => ''
 		],
 
 		// PostgreSQL

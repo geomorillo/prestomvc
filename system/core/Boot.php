@@ -1,10 +1,6 @@
 <?php
 
-/* function __autoload($class_name)
-  //{
-  //    require_once $class_name . '.php';
-  //}
- */
+namespace system\core;
 
 class Boot
 {
@@ -21,87 +17,63 @@ class Boot
         // Define path constants
 
         define("DS", DIRECTORY_SEPARATOR);
-
         define("ROOT", getcwd() . DS);
-        // define('ROOT', dirname(__FILE__));
-
         define("APP_PATH", ROOT . 'app' . DS);
-
         define("SYSTEM_PATH", ROOT . "system" . DS);
-
         define("PUBLIC_PATH", ROOT . "public" . DS);
-
-        define("NAMESPACE_CONTROLLERS", "app\controllers\\");
-
-
         define("CONFIG_PATH", APP_PATH . "config" . DS);
-
         define("CONTROLLER_PATH", APP_PATH . "controllers" . DS);
-
         define("MODEL_PATH", APP_PATH . "models" . DS);
-
         define("VIEW_PATH", APP_PATH . "views" . DS);
-
-
         define("CORE_PATH", SYSTEM_PATH . "core" . DS);
-
         define('DB_PATH', SYSTEM_PATH . "database" . DS);
-
         define("LIB_PATH", SYSTEM_PATH . "libraries" . DS);
-
         define("HELPER_PATH", SYSTEM_PATH . "helpers" . DS);
-
         define("UPLOAD_PATH", PUBLIC_PATH . "uploads" . DS);
-
-
-        // Define platform, controller, action, for example:
-        // index.php?p=admin&c=Goods&a=add
-
-        define("PLATFORM", isset($_REQUEST['p']) ? $_REQUEST['p'] : 'home');
-
-        define("DEFAULTCONTROLLER", 'Usuarios');
-
+        define("DEFAULTCONTROLLER", 'UsuariosController');
         define("DEFAULTMETHOD", 'index');
-
-
         define("CURR_CONTROLLER_PATH", CONTROLLER_PATH);
-
-        define("CURR_VIEW_PATH", VIEW_PATH . PLATFORM . DS);
-
+        define("CURR_VIEW_PATH", VIEW_PATH . DS);
+        define("NAMESPACE_CONTROLLERS", "app\controllers\\");
         session_start();
     }
 
     // Autoloading
-    
     private static function autoload()
     {
-        // Register the autoload of classes
+
         spl_autoload_register(function($class) {
-            $class = end(explode("\\", $class));
+            $class = explode("\\", $class);
+            $class = end($class);
             $class = str_replace('\\', '/', $class);
-
-
             $paths = array(
                 CORE_PATH,
                 CONTROLLER_PATH,
                 MODEL_PATH,
+                DB_PATH,
                 HELPER_PATH,
                 VIEW_PATH
             );
-
-
             foreach ($paths as $path) {
 
-                if(file_exists($path . $class . '.php')){
-                 require_once($path . $class . '.php');
+                if (file_exists($path . $class . '.php')) {
+                    require_once($path . $class . '.php');
                 }
             }
-
         });
     }
 
-    // Dispatcher
-
+    // Routing and dispatching
+     /*
+    private static function dispatch()
+    {
+        $controller_name = DEFAULTCONTROLLER;
+        $action_name = DEFAULTMETHOD;
+        $controller = new $controller_name;
+        $controller->$action_name();
+    }
+*/
+    
     private static function dispatch()
     {        
        // Get the URL and convert to array
@@ -112,9 +84,9 @@ class Boot
         }
 
         // Parsing the data from REQUEST
-        $controller = ($ctrl = array_shift($url)) ? $ctrl : DEFAULTCONTROLLER . "Controller";
+        $controller = ($ctrl = array_shift($url)) ? $ctrl : DEFAULTCONTROLLER ;
 
-        $method = ($mtd = array_shift($url)) ? $mtd : DEFAULTMETHOD . "Action";
+        $method = ($mtd = array_shift($url)) ? $mtd : DEFAULTMETHOD;
 
         $args = (isset($url[0])) ? $url : array();
 
@@ -149,7 +121,5 @@ class Boot
             throw new Exception($controller .' -- Controller not found');
         }
 
-
     }
-
 }

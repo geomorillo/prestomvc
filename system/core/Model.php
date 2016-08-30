@@ -5,14 +5,24 @@
  * 2015
  * Contacto: geomorillo@yahoo.com
  */
+
 namespace system\core;
 
+<<<<<<< HEAD
+=======
+/**
+ * Description of Model
+ *
+ * @author geomorillo
+ */
+>>>>>>> upstream/master
 use system\database\Database;
 
 class Model
 {
 
     protected $db; //database connection object
+<<<<<<< HEAD
     protected $table; //table name
     protected $fields = array();  //fields list
 
@@ -72,46 +82,15 @@ class Model
      *
      */
     public function insert($list)
+=======
+
+    public function __construct()
+>>>>>>> upstream/master
     {
-
-        $field_list = '';  //field list string
-
-        $value_list = '';  //value list string
-
-        foreach ($list as $k => $v) {
-
-            if (in_array($k, $this->fields)) {
-
-                $field_list .= "`" . $k . "`" . ',';
-
-                $value_list .= "'" . $v . "'" . ',';
-            }
-        }
-
-        // Trim the comma on the right
-
-        $field_list = rtrim($field_list, ',');
-
-        $value_list = rtrim($value_list, ',');
-
-        // Construct sql statement
-
-        $sql = "INSERT INTO `{$this->table}` ({$field_list}) VALUES ($value_list)";
-
-        if ($this->db->query($sql)) {
-
-            // Insert succeed, return the last record&rsquo;s id
-
-            return $this->db->lastInsertId();
-
-            //return true;
-        } else {
-
-            // Insert fail, return false
-
-            return false;
-        }
+        $this->db = Database::connect();
+   
     }
+<<<<<<< HEAD
 
     /**
      * Update records
@@ -275,4 +254,6 @@ class Model
         return $this->db->getAll($sql);
     }
 
+=======
+>>>>>>> upstream/master
 }
