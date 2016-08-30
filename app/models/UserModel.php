@@ -6,10 +6,7 @@
  * Contacto: geomorillo@yahoo.com
  */
 namespace app\models;
-<<<<<<< HEAD
 
-=======
->>>>>>> upstream/master
 use system\core\Model;
 
 class UserModel extends Model
@@ -17,7 +14,8 @@ class UserModel extends Model
 
     public function getUsers()
     {   
-        $allData = $this->db->table('cj')->select();
+        $allData = $this->db->table('usuarios')->select();
+        
         return $allData;
 
     }

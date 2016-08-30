@@ -6,30 +6,17 @@
  * Contacto: geomorillo@yahoo.com
  */
 namespace app\controllers;
-<<<<<<< HEAD
-use system\core\BaseController;
-use app\models\UserModel;
-=======
 use system\core\Controller;
->>>>>>> upstream/master
 
 class UsuariosController extends Controller{
 
     public function index()
     {
-<<<<<<< HEAD
-        // $userModel = new UserModel("user");
-=======
-        $userModel = new \app\models\UserModel("user");
->>>>>>> upstream/master
+	    $userModel = new \app\models\UserModel("user");
 
-        // $users = $userModel->getUsers();
-        
-<<<<<<< HEAD
-        echo "Hola Mundo!";
-=======
-        print_r($users);
->>>>>>> upstream/master
+	    $users = $userModel->getUsers();
+	    
+	    print_r($users);
     }
 
 }

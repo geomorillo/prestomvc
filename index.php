@@ -1,18 +1,12 @@
 <?php
 
-<<<<<<< HEAD
-include "system/Boot.php";
 
-$app = new Boot();
-$app::run();
-=======
 /*
 session_start();
  
 define( "APP_PATH", dirname( __FILE__ ) ."/app/" );
 
  use system\core\Registro;
->>>>>>> upstream/master
 
 require_once('system/core/Registro.php');
 $registry = Registro::singleton();
