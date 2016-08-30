@@ -8,13 +8,14 @@
 
 namespace system\core;
 
-Abstract Class Model
+/**
+ * Description of Model
+ *
+ * @author geomorillo
+ */
+
+use database\Database;
+class Model
 {
-
-    public function __construct()
-    {
-        
-    }
-
-    Abstract function Content();
+    //put your code here
 }

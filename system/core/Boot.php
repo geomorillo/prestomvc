@@ -42,7 +42,8 @@ class Boot
     {
 
         spl_autoload_register(function($class) {
-            $class = end(explode("\\", $class));
+            $class = explode("\\", $class);
+            $class = end($class);
             $class = str_replace('\\', '/', $class);
             $paths = array(
                 CORE_PATH,

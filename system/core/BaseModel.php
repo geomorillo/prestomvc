@@ -8,16 +8,13 @@
 
 namespace system\core;
 
-/**
- * Description of Test
- *
- * @author geomorillo
- */
-
-class Test
+Abstract Class BaseModel
 {
-    //put your code here
-    public function e(){
-       
+
+    public function __construct()
+    {
+        
     }
+
+    Abstract function content();
 }
