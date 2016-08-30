@@ -16,6 +16,7 @@ class UsuariosController extends Controller{
 
         $users = $userModel->getUsers();
         
+        echo $users;
     }
 
 }
