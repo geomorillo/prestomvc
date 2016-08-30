@@ -72,26 +72,53 @@ class Boot
     }
 
     // Autoloading
-
+    
     private static function autoload()
     {
-        spl_autoload_register(array(__CLASS__, 'load'));
+        // Register the autoload of classes
+        spl_autoload_register(function($class) {
+            $class = end(explode("\\", $class));
+            $class = str_replace('\\', '/', $class);
+
+            
+            $paths = array(
+                CORE_PATH,
+                CONTROLLER_PATH,
+                MODEL_PATH,
+                HELPER_PATH,
+                VIEW_PATH
+            );
+
+
+            foreach ($paths as $path) {
+
+                if(file_exists($path . $class . '.php')){
+                 require_once($path . $class . '.php');
+                }
+            }
+
+        });
     }
 
-    // Custom Load Function
+    // private static function autoload()
+    // {
+    //     spl_autoload_register(array(__CLASS__, 'load'));
+    // }
+
+    // // Custom Load Function
     
-    private static function load($className)
-    {
-        // Find root of file
-        $file = ROOT . DS . str_replace('\\', '/', $className) . '.php';
+    // private static function load($className)
+    // {
+    //     // Find root of file
+    //     $file = ROOT . DS . str_replace('\\', '/', $className) . '.php';
         
-        // If exists the file or the route then include
-        if ( file_exists($file))
-        {
-            include_once $file;
-            // print_r($className);
-        }
-    }
+    //     // If exists the file or the route then include
+    //     if ( file_exists($file))
+    //     {
+    //         include_once $file;
+    //         // print_r($className);
+    //     }
+    // }
 
     // Dispatcher
 
