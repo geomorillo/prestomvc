@@ -6,7 +6,7 @@
  * Contacto: geomorillo@yahoo.com
  */
 namespace app\controllers;
-use \system\core\Controller;
+use system\core\Controller;
 
 class UsuariosController extends Controller{
 
