@@ -34,6 +34,7 @@ class Boot
         define("DEFAULTMETHOD", 'index');
         define("CURR_CONTROLLER_PATH", CONTROLLER_PATH);
         define("CURR_VIEW_PATH", VIEW_PATH . DS);
+        define("NAMESPACE_CONTROLLERS", "app\controllers\\");
         session_start();
     }
 
@@ -62,7 +63,8 @@ class Boot
         });
     }
 
-    // Routing and dispatching 
+    // Routing and dispatching
+     /*
     private static function dispatch()
     {
         $controller_name = DEFAULTCONTROLLER;
@@ -70,5 +72,54 @@ class Boot
         $controller = new $controller_name;
         $controller->$action_name();
     }
+*/
+    
+    private static function dispatch()
+    {        
+       // Get the URL and convert to array
+        if (isset($_SERVER['REQUEST_URI']))
+        {
+            $url = explode("/", trim($_SERVER['REQUEST_URI']));
+            array_shift($url);
+        }
 
+        // Parsing the data from REQUEST
+        $controller = ($ctrl = array_shift($url)) ? $ctrl : DEFAULTCONTROLLER ;
+
+        $method = ($mtd = array_shift($url)) ? $mtd : DEFAULTMETHOD;
+
+        $args = (isset($url[0])) ? $url : array();
+
+        // Get the Controller path to instanciate
+        $pathController = APP_PATH . "controllers" . DS . $controller . ".php";
+
+
+        // Is Controller File Exists Then ...
+        if (file_exists($pathController))
+        {
+            // Include the Controller File
+            require_once $pathController;
+
+            // Join the Namespace and the name of controller to get the instance
+            $claseIntanciar = NAMESPACE_CONTROLLERS . $controller;
+
+            // Create the object or Instance of the Controller
+            $object = new $claseIntanciar;
+
+            // If have arguments then ...
+            if (!empty($args))
+            {
+                // Call the data passed with the arguments
+                call_user_func_array(array($object, $method), $args);
+            } else {
+                // If isn't have arguments, then call the controller and method ...
+                call_user_func(array($object, $method));
+            }
+
+        } else {
+            // If isn't find the Class or the file, then catch Error
+            throw new Exception($controller .' -- Controller not found');
+        }
+
+    }
 }
