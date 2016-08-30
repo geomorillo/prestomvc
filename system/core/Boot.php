@@ -49,6 +49,7 @@ class Boot
                 CORE_PATH,
                 CONTROLLER_PATH,
                 MODEL_PATH,
+                DB_PATH,
                 HELPER_PATH,
                 VIEW_PATH
             );

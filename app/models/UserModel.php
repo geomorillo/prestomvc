@@ -5,25 +5,16 @@
  * 2015
  * Contacto: geomorillo@yahoo.com
  */
-
+namespace app\models;
 use system\core\Model;
 
 class UserModel extends Model
 {
 
     public function getUsers()
-    {
+    {   
+        $allData = $this->db->table('cj')->select();
+        return $allData;
 
-        //$sql = "select * from $this->table";
-
-        //$users = $this->db->getAll($sql);
-
-       // return $users;
-        return "Desde el modelo";
     }
-    public function content()
-    {
-        
-    }
-
 }

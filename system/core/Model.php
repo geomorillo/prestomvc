@@ -13,9 +13,16 @@ namespace system\core;
  *
  * @author geomorillo
  */
+use system\database\Database;
 
-use database\Database;
 class Model
 {
-    //put your code here
+
+    protected $db; //database connection object
+
+    public function __construct()
+    {
+        $this->db = Database::connect();
+   
+    }
 }

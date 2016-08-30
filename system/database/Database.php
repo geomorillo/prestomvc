@@ -1,6 +1,6 @@
 <?php
 
-namespace database;
+namespace system\database;
 
 include __DIR__ . "/config_function.php";
 
