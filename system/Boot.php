@@ -119,7 +119,7 @@ class Boot
 
         } else {
             // If isn't find the Class or the file, then catch Error
-            throw new Exception($controller .' -- Controller not found');
+            throw new \Exception($controller .' -- Controller not found --');
         }
 
     }
