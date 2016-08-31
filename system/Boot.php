@@ -9,7 +9,7 @@ class Boot
     {
         self::init();
         self::autoload();
-        self::dispatch();
+        // self::dispatch();
     }
 
     private static function init()

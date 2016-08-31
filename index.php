@@ -6,7 +6,10 @@ Boot::run();
 // Testing Router
 
 $router = new system\core\Router();
-$router->addRoute("/(UsuariosController)/(index)", array("controller", "method"));
-$router->addRoute("/(.*)", array("catchall"));
-// Printing the catched URL
-print_r($router->parse($_SERVER['REQUEST_URI']));
+$router->addRoute("/test", array("UsuariosController", "test"));
+$router->addRoute("/admin/index/otro", array("UsuariosController", "test"));
+
+
+$controllerFactory = new system\core\ControllerFactory();
+//$controller = $controllerFactory->createRouter($router);
+$controller = $controllerFactory::route($router);

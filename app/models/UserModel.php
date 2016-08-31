@@ -13,7 +13,7 @@ class UserModel extends Model
 
     public function getUsers()
     {   
-        $allData = $this->db->table('cj')->select();
+        $allData = $this->db->table('usuarios')->select();
         return $allData;
 
     }
