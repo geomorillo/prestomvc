@@ -28,18 +28,18 @@ class UsuariosController extends Controller
 
     public function testLog()
     {
-        try {
             Logger::alert("Ok");
             Logger::info("{usuario} tiene {edad}", array("usuario" => "geo", "edad" => "36"));
+    }
 
+    public function testLogExeption()
+    {
+        try {
             throw new LogException;
         } catch (LogException $exc) {
             $exc->logError();
             $exc->errorMessage("Aqui va un error");
         }
-    }
-    public function testLogExeption(){
-        
     }
 
 }
