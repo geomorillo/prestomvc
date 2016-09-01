@@ -24,17 +24,23 @@ class View
         $this->path = $path;
         $this->data = $data;
     }
+
     public function render()
     {
         ob_start();
         extract($this->data);
         try {
-            include "app/views/". $this->path .".php";
+            include "app/views/" . $this->path . ".php";
         } catch (\Exception $e) {
             ob_end_clean();
             throw $e;
         }
         return ob_get_clean();
+    }
+    // echo new View("view");
+    function __toString()
+    {
+        return $this->render();
     }
 
 }
