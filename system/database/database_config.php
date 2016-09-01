@@ -47,9 +47,9 @@ return [
 		'mysql' => [
 				'driver' => 'mysql',
 				'host_name' => 'localhost',
-				'db_name' => 'test',
+				'db_name' => 'micromvc',
 				'db_user' => 'root',
-				'db_password' => ''
+				'db_password' => '29121959'
 		],
 
 		// PostgreSQL

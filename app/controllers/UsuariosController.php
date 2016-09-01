@@ -25,6 +25,11 @@ class UsuariosController extends Controller
         $view = new View("usuarios", array("users" => $users));
         echo $view->render();
     }
+    
+    public function test()
+    {
+        echo "Esto es una prueba";
+    }
 
     public function testLog()
     {
