@@ -86,13 +86,13 @@ class Logger implements LoggerInterface
 
     private static function writeFile($level, $message, $context)
     {
-        if($level){
+        if ($level) {
             $level.= ":";
         }
         if ($context) {
             $message = self::interpolate($message, $context);
         }
-        $log = date("F j, Y, g:i a") . " $level " . " $message ".PHP_EOL;
+        $log = date("F j, Y, g:i a") . " $level " . " $message " . PHP_EOL;
         //Save string to log, use FILE_APPEND to append.
         file_put_contents(self::$file, $log, FILE_APPEND);
     }

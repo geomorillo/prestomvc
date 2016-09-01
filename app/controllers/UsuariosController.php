@@ -11,6 +11,7 @@ namespace app\controllers;
 use system\core\Controller;
 use system\core\View;
 use system\core\Logger;
+use system\core\LogException;
 
 class UsuariosController extends Controller
 {
@@ -27,8 +28,18 @@ class UsuariosController extends Controller
 
     public function testLog()
     {
-        Logger::alert("Ok");
-        Logger::info("{usuario} tiene {edad}", array("usuario" => "geo", "edad" => "36"));
+            Logger::alert("Ok");
+            Logger::info("{usuario} tiene {edad}", array("usuario" => "geo", "edad" => "36"));
+    }
+
+    public function testLogExeption()
+    {
+        try {
+            throw new LogException;
+        } catch (LogException $exc) {
+            $exc->logError();
+            $exc->errorMessage("Aqui va un error");
+        }
     }
 
 }
