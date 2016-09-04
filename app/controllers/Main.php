@@ -14,7 +14,7 @@ namespace app\controllers;
  * @author geomorillo
  */
 use system\core\Controller;
-use system\core\Response;
+use system\http\Response;
 
 class Main extends Controller
 {
@@ -24,7 +24,7 @@ class Main extends Controller
         $response = new Response();
         //$response->set_status(\system\core\StatusCode::HTTP_INTERNAL_SERVER_ERROR);
         //Content-Type: text/html
-        $response->set_status(\system\core\StatusCode::HTTP_NOT_FOUND);
+        $response->set_status(\system\http\StatusCode::HTTP_NOT_FOUND);
         $response->set_header("Content-Type", "text/html");
         $response->send();
         //$response->sendJSON();
@@ -61,14 +61,14 @@ class Main extends Controller
     public function testHeader()
     {
         $response = new Response();
-        $response->set_status(\system\core\StatusCode::HTTP_INTERNAL_SERVER_ERROR);
+        $response->set_status(\system\http\StatusCode::HTTP_INTERNAL_SERVER_ERROR);
         $response->set_header("Content-Type", "text/html");
         $response->send();
     }
     function getHeader()
     {
          $response = new Response();
-        $response->set_status(\system\core\StatusCode::HTTP_INTERNAL_SERVER_ERROR);
+        $response->set_status(\system\http\StatusCode::HTTP_INTERNAL_SERVER_ERROR);
         $response->set_header("Content-Type", "text/html");
         print_r( $response->get_header("Content-Type"));
     }
