@@ -13,7 +13,7 @@ namespace system\http;
  *
  * @author geomorillo
  */
-use system\core\StatusCode;
+use system\http\StatusCode;
 
 class Response
 {
