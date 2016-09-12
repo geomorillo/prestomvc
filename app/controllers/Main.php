@@ -96,7 +96,7 @@ class Main extends Controller
         $_SESSION["favcolor"] = "green";
         $_SESSION["favanimal"] = "xxx";
        
-        debug($_SESSION);
+        
     }
     public function db()
     {
