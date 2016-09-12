@@ -8,8 +8,6 @@
 
 namespace system\core;
 
-include "debug.php";
-
 /**
  * Description of Session
  *
