@@ -120,7 +120,7 @@ class Request {
         
         $requestUri = isset($this->env['PATH_INFO']) ? $this->env['PATH_INFO'] : $this->env['REQUEST_URI'];
         $requestUri = preg_replace('/\?.+/', '', $requestUri);
-        $requestUri = str_replace($mountPoint, '', $requestUri);
+      //  $requestUri = str_replace($mountPoint, '', $requestUri);
         
         $this->url = rtrim($requestUri, '/');
         
