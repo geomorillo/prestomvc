@@ -1,17 +1,29 @@
 <?php
 
+/*
+ * Todos los derechos reservados por Manuel Jhobanny Morillo Ordoñez 
+ * 2015
+ * Contacto: geomorillo@yahoo.com
+ */
+
 namespace system\database;
 
-include __DIR__ . "/config_function.php";
+/**
+ * Description of Database
+ *
+ * @author geomorillo
+ */
+use system\core\LogException;
 
 class Database
 {
+
     /**
      * @var $_instace type object
      * store DB class object to allow one connection with database (deny duplicate)
      * @access private
      */
-    private static $_instace;
+    private static $_instance;
 
     /**
      * @var $_pdo type object PDO object
@@ -21,103 +33,61 @@ class Database
      * @var $_error type bool if cant fetch sql statement = true otherwise = false
      */
     private $_pdo,
-        $_query = '',
-        $_results,
-        $_count,
-        $_error = false,
-        $_schema,
-        $_where = "WHERE",
-        $_sql;
+            $_query = '',
+            $_results,
+            $_count,
+            $_where = "WHERE",
+            $_sql,
+            $_typeQuery = '';
+    protected $table;
+    protected $config;
 
-    protected $_table;
-
-    /**
-     * DB::__construct()
-     * Connect with database
-     * @access private
-     * @return void
-     */
-    protected function __construct()
+    public function __construct()
     {
-        call_user_func_array([$this, \config()], [null]);
+        $this->config = include 'database_config.php';
+
+        call_user_func_array(array(__NAMESPACE__ . '\Database', 'strConn'), [$this->config["default"]]);
     }
 
-    protected function mysql($null)
+    protected function strConn($default)
     {
-        try
-        {
-            $this->_pdo = new \PDO("mysql:host=" . \config('host_name') . ";dbname=" .
-                config('db_name'), \config('db_user'), \config('db_password'));
+        try {
+            $driver = $host_name = $db_name = $db_user = $db_password = $dsn = NULL;
+            switch ($default) {
+                case "sqlite":
+                    $dsn = "sqlite:" . $this->config[$default]["db_path"];
+                    $this->_pdo = new \PDO($dsn);
+                    break;
+                case "oci":
+                    $tns = $this->config[$default]["tns"];
+                    $db_user = $this->config[$default]["db_user"];
+                    $db_password = $this->config[$default]["db_password"];
+                    $this->_pdo = new \PDO("oci:dbname=" . $tns, $db_user, $db_password);
+                    break;
+                case "pgsql":
+                    $driver = $this->config[$default]["driver"];
+                    $host_name = $this->config[$default]["host_name"];
+                    $db_name = $this->config[$default]["db_name"];
+                    $db_user = $this->config[$default]["db_user"];
+                    $db_password = $this->config[$default]["db_password"];
+                    $dsn = "$driver:user=" . $db_user . 'dbname=' . $db_name . ' password=' . $db_password;
+                    $this->_pdo = new \PDO($dsn);
+                    break;
+                default:
+                    //mysql,mssql,sybase
+                    $driver = $this->config[$default]["driver"]; //exepto sqlite y oci
+                    $host_name = $this->config[$default]["host_name"]; //exepto sqlite y oci
+                    $db_name = $this->config[$default]["db_name"]; //exepto oci y sqlite
+                    $dsn = "$driver:host=$host_name;dbname=$db_name";
+                    $db_user = $this->config[$default]["db_user"];
+                    $db_password = $this->config[$default]["db_password"];
+                    $this->_pdo = new \PDO($dsn, $db_user, $db_password);
+                    break;
+            }
             $this->_pdo->exec("set names " . 'utf8');
-            $this->_pdo->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-        } catch(\PDOException $e) {
-            die($e->getMessage());
-        }
-    }
-
-    protected function sqlite($null)
-    {
-        try
-        {
-            $this->_pdo = new \PDO("sqlite:" . \config('db_path'));
-            $this->_pdo->exec("set names " . 'utf8');
-            $this->_pdo->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-        } catch(\PDOException $e) {
-            die($e->getMessage());
-        }
-    }
-
-
-    protected function pgsql($null)
-    {
-        try
-        {
-            $this->_pdo = new \PDO('pgsql:user='. \config('db_user') .'
-          dbname=' . \config('db_name') . ' password='.\config('db_password'));
-            $this->_pdo->exec("set names " . 'utf8');
-            $this->_pdo->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-        } catch(\PDOException $e) {
-            die($e->getMessage());
-        }
-    }
-
-
-    protected function mssql($null)
-    {
-        try
-        {
-            $this->_pdo = new \PDO("mssql:host=" . \config('host_name') . ";dbname=" .
-                \config('db_name'), \config('db_user'), \config('db_password'));
-            $this->_pdo->exec("set names " . 'utf8');
-            $this->_pdo->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-        } catch(\PDOException $e) {
-            die($e->getMessage());
-        }
-    }
-
-    protected function sybase($null)
-    {
-        try
-        {
-            $this->_pdo = new \PDO("sybase:host=" . \config('host_name') . ";dbname=" .
-                \config('db_name'), \config('db_user'), \config('db_password'));
-            $this->_pdo->exec("set names " . 'utf8');
-            $this->_pdo->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-        } catch(\PDOException $e) {
-            die($e->getMessage());
-        }
-    }
-
-
-    protected function oci($null)
-    {
-        try{
-            $conn = new \PDO("oci:dbname=".\config('tns'),
-                \config('db_user'), \config('db_password'));
-            $this->_pdo->exec("set names " . 'utf8');
-            $this->_pdo->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-        }catch(\PDOException $e){
-            die ($e->getMessage());
+            $this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        } catch (LogException $e) {
+            $e->logError();
         }
     }
 
@@ -128,64 +98,50 @@ class Database
      */
     public static function connect()
     {
-        if(!isset(self::$_instace)) {
-            self::$_instace = new Database();
+        if (!isset(self::$_instance)) {
+            self::$_instance = new Database();
         }
 
-        return self::$_instace;
+        return self::$_instance;
     }
 
     /**
      * DB::query()
-     * check if sql statement is prepare
-     * append value for sql statement if $parame is set
-     * featch results
+     * check if sql statement is prepared
+     * append value for sql statement if $paramer is set
+     * fetch results
      * @param string $sql
      * @param array $params
      * @return mixed
      */
     public function query($sql, $params = [])
     {
-        $this->_query = "";
-        $this->_where = "WHERE";
-        // set _erroe. true to that if they can not be false for this function to work properly, this function makes the value of _error false if there is no implementation of the sentence correctly
-        $this->_error = false;
-        // check if sql statement is prepared
-        $query = $this->_pdo->prepare($sql);
-        // if $params isset
-        if(count($params)) {
-            /**
-             * @var $x int
-             * counter
-             */
-            $x = 1;
-            foreach($params as $param) {
-                // append values to sql statement
-                $query->bindValue($x, $param);
+        try {
+            $this->_query = "";
+            $this->_where = "WHERE";
+            $this->_error = false;
+            // check if sql statement is prepared
+            $query = $this->_pdo->prepare($sql);
 
-                $x++;
+            // if $params isset
+            if (count($params)) {
+                foreach ($params as $param => &$value) {
+                    $query->bindParam(":" . $param, $value);
+                }
             }
-        }
-        // check if sql statement executed
-        if($query->execute()) {
-            $this->_sql = $query;
-            // set _results = data comes
-            try
-            {
-                $this->_results = $query->fetchAll(\config('fetch'));
+            $result = $query->execute();
+            $this->typeQuery($sql); //determina si es un select en un raw query
+            if ($this->_typeQuery == "SELECT" && $result) {
+                $this->_results = $query->fetchAll($this->config["fetch"]);
+                $this->_count = $query->rowCount();
             }
-            catch(\PDOException $e){}
-            // set _count = count rows comes
-            $this->_count = $query->rowCount();
-        } else {
-            // set _error = true if sql statement not executed
+        } catch (LogException $e) {
+            $this->_results = NULL;
             $this->_error = true;
+            $e->logError();
         }
-        
-
         return $this;
     }
-
 
     /**
      * DB::insert()
@@ -196,42 +152,24 @@ class Database
      */
     public function insert($values = [])
     {
-        // check if $values set
-        if(count($values)) {
-            /**
-             * @var $fields type array
-             * store fields user want insert value for them
-             */
-            $fields = array_keys($values);
-            /**
-             * @var $value type string
-             * store value for fields user want inserted
-             */
-            $value = '';
-            /**
-             * @var $x type int
-             * counter
-             */
-            $x = 1;
-            foreach($values as $field) {
-                // add new value
-                $value .="?";
+        if (count($values)) {
+            $this->_typeQuery = "INSERT";
+            // check if $values set
 
-                if($x < count($values)) {
-                    // add comma between values
-                    $value .= ", ";
-                }
-                $x++;
+            $fields = array_keys($values);
+            $value = [];
+            foreach ($values as $param => $paramValue) {
+                $value[] = " :$param ";
             }
+            $value = implode(",", $value);
             // generate sql statement
-            $sql = "INSERT INTO {$this->_table} (`" . implode('`,`', $fields) ."`)";
-            $sql .= " VALUES({$value})";
-            // check if query is not have an error
-            if(!$this->query($sql, $values)->error()) {
+            $sql = "INSERT INTO {$this->_table} (`" . implode('`,`', $fields) . "`)";
+            $sql .= " VALUES ({$value})";
+            // check if query has an error
+            if (!$this->query($sql, $values)->error()) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -245,29 +183,22 @@ class Database
      */
     public function update($values = [])
     {
-        /**
-         * @var $set type string
-         * store update value
-         * @example "colomn = value"
-         */
-        $set = ''; // initialize $set
-        $x = 1;
-        // initialize feilds and values
-        foreach($values as $i => $row) {
-            $set .= "{$i} = ?";
-            // add comma between values
-            if($x < count($values)) {
-                $set .= " ,";
-            }
-            $x++;
-        }
-        // generate sql statement
-        $sql = "UPDATE {$this->_table} SET {$set} " . $this->_query;
-        // check if query is not have an error
-        if(!$this->query($sql, $values)->error()) {
-            return true;
-        }
+        if (count($values)) {
 
+            $this->_typeQuery = "UPDATE";
+
+            $set = [];
+            foreach ($values as $param => $paramValue) {
+                $set[] = " $param = :$param ";
+            }
+            $set = implode(",", $set);
+
+            $sql = "UPDATE {$this->_table} SET {$set} " . $this->_query;
+            // check if query is not have an error
+            if (!$this->query($sql, $values)->error()) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -278,8 +209,9 @@ class Database
      */
     public function select($fields = ['*'])
     {
+        $this->_typeQuery = "SELECT";
         $sql = "SELECT " . implode(', ', $fields)
-            . " FROM {$this->_table} {$this->_query}";
+                . " FROM {$this->_table} {$this->_query}";
 
         $this->_query = $sql;
         return $this->query($sql)->results();
@@ -291,11 +223,11 @@ class Database
      */
     public function delete()
     {
+        $this->_typeQuery = "DELETE";
         $sql = "DELETE FROM $this->_table " . $this->_query;
         $delete = $this->query($sql);
-
-        if($delete) return true;
-
+        if ($delete)
+            return true;
         $this->_error = true;
         return false;
     }
@@ -308,7 +240,7 @@ class Database
     public function find($id)
     {
         $find = $this->where("id", $id)
-            ->select();
+                ->select();
 
         $this->_query = '';
         $this->_where = "WHERE";
@@ -324,17 +256,16 @@ class Database
      */
     public function where($field, $operator, $value = false)
     {
-    	/**
-    	 * if $value is not set then set $operator to (=) and
-    	 * $value to $operator
-    	 */
-        if($value === false)
-        {
+        /**
+         * if $value is not set then set $operator to (=) and
+         * $value to $operator
+         */
+        if ($value === false) {
             $value = $operator;
             $operator = "=";
         }
 
-        if(!is_numeric($value))
+        if (!is_numeric($value))
             $value = "'$value'";
 
         $this->_query .= " $this->_where $field $operator $value";
@@ -350,12 +281,11 @@ class Database
      */
     public function whereBetween($field, $values = [])
     {
-    	if(count($values))
-    	{
-    		$this->_query .=
-    			" $this->_where $field BETWEEN '$values[0]' and '$values[1]'";
-       		$this->_where = "AND";
-    	}
+        if (count($values)) {
+            $this->_query .=
+                    " $this->_connector $field BETWEEN '$values[0]' and '$values[1]'";
+            $this->_connector = "AND";
+        }
 
         return $this;
     }
@@ -366,6 +296,7 @@ class Database
      * @param  string $value value
      * @return object 	this class
      */
+
     /**
      * we can do that with where() methode
      * $db->table('test')->where('name', 'LIKE', '%moha%');
@@ -373,11 +304,10 @@ class Database
     public function likeWhere($field, $value)
     {
 
-        $this->_query .= " $this->_where $field LIKE '%$value%'";
-        $this->_where = "AND";
+        $this->_query .= " $this->_connector $field LIKE '%$value%'";
+        $this->_connector = "AND";
         return $this;
     }
-
 
     /**
      * to add OR condition
@@ -389,14 +319,13 @@ class Database
      */
     public function orWhere($field, $operator, $value = false)
     {
-        if($value === false)
-        {
+        if ($value === false) {
             $value = $operator;
             $operator = "=";
         }
 
         $this->_query .= " OR $field $operator '$value'";
-        $this->_where = "AND";
+        $this->_connector = "AND";
         return $this;
     }
 
@@ -408,11 +337,10 @@ class Database
      */
     public function in($field, $values = [])
     {
-    	if(count($values))
-    	{
-    		$this->_query .= " $this->_where $field IN (" . implode(",", $values) . ")";
-            $this->_where = "AND";
-    	}
+        if (count($values)) {
+            $this->_query .= " $this->_connector $field IN (" . implode(",", $values) . ")";
+            $this->_connector = "AND";
+        }
     }
 
     /**
@@ -423,21 +351,20 @@ class Database
      */
     public function notIn($field, $values = [])
     {
-    	if(count($values))
-    	{
-    		$this->_query .= " $this->_where $field NOT IN (" . implode(",", $values) . ")";
-            $this->_where = "AND";
-    	}
+        if (count($values)) {
+            $this->_query .= " $this->_connector $field NOT IN (" . implode(",", $values) . ")";
+            $this->_connector = "AND";
+        }
     }
 
-	/**
-	 * get first row from query results
-	 * @return array
-	 */
+    /**
+     * get first row from query results
+     * @return array
+     */
     public function first()
     {
         $first = $this->select();
-        if(count($first))
+        if (count($first))
             return $first[0];
 
         return [];
@@ -450,9 +377,10 @@ class Database
      */
     public function limit($limit)
     {
-    	$this->_query .= " LIMIT " . (int)$limit;
-    	return $this;
+        $this->_query .= " LIMIT " . (int) $limit;
+        return $this;
     }
+
     /**
      * [offset description]
      * @param  [type] $offset [description]
@@ -460,18 +388,8 @@ class Database
      */
     public function offset($offset)
     {
-    	$this->_query .=" OFFSET " .$offset;
+        $this->_query .=" OFFSET " . $offset;
         return $this;
-    }
-
-    /**
-     * DB::error()
-     * return _error variable
-     * @return bool
-     */
-    public function error()
-    {
-        return $this->_error;
     }
 
     /**
@@ -485,223 +403,40 @@ class Database
         return $this;
     }
 
+    /**
+     * DB::error()
+     * return _error variable
+     * @return bool
+     */
+    public function error()
+    {
+        return $this->_error;
+    }
+
     public function results()
     {
         return $this->_results;
     }
 
-
-    /**
-     * Show last query
-     * @return string
-     */
-    public function showMeQuery()
+    public function lastInsertId()
     {
-    	return $this->_sql;
+        return $this->_pdo->lastInsertId();
     }
 
-
-    // create table
-    // alter table [
-    //      add column
-    //      remove column
-    //      rename column
-    // ]
-    // delete table
-    //
-
-    /*
-            table('table')->schema([
-                'column_name' => 'type',
-                'column_name' => 'type|constraint',
-                'column_name' => 'type|constraint,more_constraint,other_constraint',
-
-            ])->create();
-
-         */
-
-    /*
-        'id' => 'increments'
-        mean -> this field is primary key, auto increment not null,  and unsigned
-     */
-
-
-    /**
-     * set _schema var value
-     * @param  array  $structers the structer od table
-     * @return object   retrun DB object
-     */
-    public function schema($structers = [])
+    public function typeQuery($sql)
     {
-        if(count($structers)) // check if isset $structers
-        {
-            /**
-             * to store columns structers
-             * @var array
-             */
-            $schema = [];
-
-            foreach($structers as $column => $options)
-            {
-                $type = $options; // the type is the prototype of column
-                $constraints = ''; // store all constraints for one column
-
-                // check if we have a onstraints
-                if(!strpos($options, '|') === false)
-                {
-
-                    $constraints = explode('|', $options); // the separator to constraints is --> | <--
-                    $type = $constraints[0]; // the type is first key
-                    unset($constraints[0]); // remove type from onstraints
-                    $constraints = implode(' ', $constraints); // convert constraints to string
-                    $constraints = strtr($constraints, [
-                        'primary' => 'PRIMARY KEY', // change (primary to PRIMARY KEY -> its valid constraint in sql)
-                        'increment' => 'AUTO_INCREMENT', // same primary
-                        'not_null' => 'NOT NULL', // same primary
-                    ]);
-                }
-
-                // checck if type is increments we want to change it to integer and  and add some constraints like primary key ,not null, unsigned and auto increment
-                ($type == 'increments'? $type = "INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL": null);
-
-                // check if type of column is string change it to valid sql type (VARCHAR and set lingth)
-                // ['username' => 'string:255'] convert to username VARCHAR(255)
-                if(strpos($type, 'string') !== false)
-                {
-                    $type = explode(':', $type);
-                    $type = "VARCHAR({$type[1]})";
-                }
-
-                // check if column has a default value
-                // ['username' => 'string:255|default:no-name'] convert to username VARCHAR(255) DEFAULT 'no name'
-                if(strpos($constraints, 'default') !== false)
-                {
-                    preg_match("/(:)[A-Za-z0-9](.*)+/", $constraints, $match);
-
-                    $match[0] = str_replace(':', '', $match[0]);
-                    $temp = str_replace('-', ' ', $match[0]);
-                    $constraints = str_replace(":" . $match[0] , " '{$temp}' ", $constraints);
-                }
-
-                // add key to schema var contains column _type constraints
-                // ex: username VARCHAR(255) DEFUALT 'no name' NOT NULL
-                $schema[] = "$column $type " . $constraints;
-
-            }
-
-            // set _scema the all columns structure
-            $this->_schema = '(' . implode(",", $schema) . ')';
-
-            return $this; // return DB object
-        }
-
-        return null; // return null
-    }
-
-    /**
-     * this methode to run sql statment and create table
-     * @param  string $createStatement its create statement -> i mean you can change it to ->  CREATE :table IF NOT EXIST
-     * @return bool
-     */
-    public function create($createStatement = "CREATE TABLE :table ")
-    {
-        $createStatement = str_replace(':table', $this->_table, $createStatement);
-
-        try
-        {
-            $this->_pdo->exec($createStatement . $this->_schema);
-        }
-        catch(\PDOException $e)
-        {
-            print $e->getMessage();
-            return false;
-        }
-
-        return true;
-    }
-
-    public function drop()
-    {
-        try
-        {
-            $this->_pdo->exec("DROP TABLE {$this->_table}");
-        }
-        catch(\PDOException $e)
-        {
-            die($e->getMessage());
-        }
-
-        return true;
-    }
-
-// "ALTER TABLE ADD COULMN (COLUM_NAME TYPE AND CONTRIANTE)"
-// "ALTER TABLE DROP COULMN COLUM_NAME"
-// "ALTER TABLE RENAME COULMN (COLUM_NAME TYPE AND CONTRIANTE)"
-//
-// table('table')->alterSchema(['add', 'column_name', 'type'])->alter();
-// table('table')->alterSchema(['drop', 'column_name'])->alter();
-// table('table')->alterSchema(['rename', 'column_name','new_name' ,'type'])->alter();
-// table('table')->alterSchema(['modify', 'column_name', 'new_type'])->alter();
-
-    public function alterSchema($schema = [])
-    {
-        if(count($schema))
-        {
-
-            $function = $schema[0]."Column";
-
-            unset($schema[0]);
-
-            call_user_func_array([$this, $function], [$schema]);
-
-            return $this;
-        }
-
-        return null;
-    }
-
-    public function alter()
-    {
-        try
-        {
-            $this->_pdo->exec("ALTER TABLE {$this->_table} {$this->_schema}");
-        }
-        catch(\PDOException $e)
-        {
-            die($e->getMessage());
+        $sql = strtoupper($sql);
+        if (strpos($sql, "SELECT") !== FALSE) {
+            $this->_typeQuery = "SELECT";
+            
+        }  else {
+            $this->_typeQuery = "OTRO";
         }
     }
 
-    public function addColumn($options = [])
+    public function quote($string)
     {
-        if(count($options) === 2)
-            $this->_schema = "ADD COLUMN {$options[1]} {$options[2]}";
+        return $this->_pdo->quote($string);
     }
 
-    public function dropColumn($options = [])
-    {
-        if(count($options) === 1)
-            $this->_schema = "DROP COLUMN {$options[1]}";
-    }
-
-    public function renameColumn($options = [])
-    {
-        if(count($options) === 3)
-            $this->_schema = "CHANGE {$options[1]} {$options[2]} {$options[3]}";
-    }
-
-    public function typeColumn($options = [])
-    {
-        if(count($options) === 2)
-            $this->_schema = "MODIFY {$options[1]} {$options[2]}";
-    }
-
-    public function showMeSchema()
-    {
-        return $this->_schema;
-    }
-    
-    public function lastInsertId(){
-       return $this->_pdo->lastInsertId();
-    }
 }
