@@ -30,7 +30,8 @@ class View
         ob_start();
         extract($this->data);
         try {
-            include APP_PATH."views/" . $this->path . ".php";
+            $viewPath = APP_PATH."views".DS . $this->path . ".php";
+            include $viewPath;
         } catch (\Exception $e) {
             ob_end_clean();
             throw $e;
