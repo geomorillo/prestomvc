@@ -1,6 +1,6 @@
 <?php
 namespace system;
-use system\http\Route;
+use system\core\Router;
 use system\core\SessionManager;
 class Boot
 {
@@ -68,11 +68,9 @@ class Boot
             register_shutdown_function('session_write_close');
             isset($_SESSION) || session_start();
         }
-        $route = new Route();
+        $router = new Router();
         // Include the routes
         include "app/Routes.php";
-        // Dispatcher for routes
-        $route->dispatch();
         
     }
 
