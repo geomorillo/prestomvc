@@ -16,29 +16,31 @@ use system\core\Route;
  * @author Daniel Navarro Ramírez
  */
 class Router {
+    private $route;
+        
+     public function __construct()
+     {
+         $this->route = new Route();
+     }
     
     public function get($route, $action)
     {
-       return $this->addRoute('GET', $route, $action);
+       return $this->route->addRoute('GET', $route, $action);
     }
     
     public function post($route, $action)
     {
-        return $this->addRoute('POST', $route, $action);
+        return $this->route->addRoute('POST', $route, $action);
     }
     
     public function put($route, $action)
     {
-       return $this->addRoute('PUT', $route, $action); 
+       return $this->route->addRoute('PUT', $route, $action); 
     }
     
     public function delete($route, $action)
     {
-        return $this->addRoute('DELETE', $route, $action);
+        return $this->route->addRoute('DELETE', $route, $action);
     }
-    
-    protected function addRoute($method, $url, $action)
-    {
-        return new Route($method, $url, $action);
-    }
+
 }

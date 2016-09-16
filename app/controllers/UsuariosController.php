@@ -41,5 +41,8 @@ class UsuariosController extends Controller
             $exc->errorMessage("Aqui va un error");
         }
     }
+    public function show($id){
+        echo $id;
+    }
 
 }
