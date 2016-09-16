@@ -15,7 +15,7 @@ namespace app;
 //$router->get( "/ajaxcall", "app\controllers\Main@ajaxcall");
 //$router->get("/session", "app\controllers\Main@session");
 //$router->get( "/db", "app\controllers\Main@db");
-//$router->get( "/encrypt", "app\controllers\Main@encrypt");
+$router->get( "/encrypt", "app\controllers\Main@encrypt");
 
 
 //$router->get("/", "app\controllers\UsuariosController@index");

@@ -91,6 +91,8 @@ class Route
 
                 $this->route = $url;
             }
+        } else {
+            $this->route = null;
         }
 
         return $this->route;
@@ -118,26 +120,26 @@ class Route
      */
     public function dispatch()
     {
-        $this->match();
 
-        if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
-            $filename = explode("\\", $this->controller);
-            $filename = end($filename);
+        if ($this->match()) { //if the requesturi doesn't match the route don't execute it
 
-            $action = explode("[", $this->action);
-            $action = array_shift($action);
+            if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
+                $filename = explode("\\", $this->controller);
+                $filename = end($filename);
 
-            if (file_exists(CONTROLLER_PATH . $filename . ".php")) {
-                if (class_exists($this->controller)) {
-                    if (isset($this->params)) {
-                        call_user_func_array(array(new $this->controller, $action), $this->params);
-                    } else {
-                        call_user_func(array(new $this->controller, $action));
+                $action = explode("[", $this->action);
+                $action = array_shift($action);
+
+                if (file_exists(CONTROLLER_PATH . $filename . ".php")) {
+                    if (class_exists($this->controller)) {
+                        if (isset($this->params)) {
+                            call_user_func_array(array(new $this->controller, $action), $this->params);
+                        } else {
+                            call_user_func(array(new $this->controller, $action));
+                        }
                     }
                 }
             }
-        } else {
-            echo "Route Not found";
         }
     }
 
