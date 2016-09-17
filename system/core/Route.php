@@ -12,6 +12,8 @@ use system\http\Request;
 class Route
 {
 
+    public $routes = [];
+
     /**
      *
      * @var array Route
@@ -34,7 +36,6 @@ class Route
      *
      * @var array Matches results 
      */
-    public $data;
     public $controller;
     public $action;
     public $url;
@@ -49,6 +50,7 @@ class Route
         ":all" => "\w+",
     );
     public $request;
+    private $found = FALSE;
 
     public function __construct()
     {
@@ -57,11 +59,14 @@ class Route
 
     public function addRoute($method, $url, $action)
     {
-        $this->method = $method;
-        $this->url = !empty($url) ? $url : '/';
+        $url = !empty($url) ? $url : '/';
+        $this->routes[] = ["method" => $method, "url" => $url, "action" => $action];
 
-        $this->parseAction($action); //???
-        $this->dispatch();
+        /*
+          $this->method = $method;
+          $this->url = !empty($url) ? $url : '/';
+          $this->parseAction($action); //???
+          $this->dispatch(); */
     }
 
     /**
@@ -90,6 +95,7 @@ class Route
                 }
 
                 $this->route = $url;
+                $this->found = TRUE;
             }
         } else {
             $this->route = null;
@@ -120,26 +126,34 @@ class Route
      */
     public function dispatch()
     {
+        foreach ($this->routes as $route) {
+            $this->method = $route["method"];
+            $this->url = $route["url"];
+            $this->parseAction($route["action"]);
+            if ($this->match()) { //if the requesturl doesn't match the route don't execute it
+                if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
+                    $filename = explode("\\", $this->controller);
+                    $filename = end($filename);
 
-        if ($this->match()) { //if the requesturi doesn't match the route don't execute it
+                    $action = explode("[", $this->action);
+                    $action = array_shift($action);
 
-            if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
-                $filename = explode("\\", $this->controller);
-                $filename = end($filename);
-
-                $action = explode("[", $this->action);
-                $action = array_shift($action);
-
-                if (file_exists(CONTROLLER_PATH . $filename . ".php")) {
-                    if (class_exists($this->controller)) {
-                        if (isset($this->params)) {
-                            call_user_func_array(array(new $this->controller, $action), $this->params);
-                        } else {
-                            call_user_func(array(new $this->controller, $action));
+                    if (file_exists(CONTROLLER_PATH . $filename . ".php")) {
+                        if (class_exists($this->controller)) {
+                            if (isset($this->params)) {
+                                call_user_func_array(array(new $this->controller, $action), $this->params);
+                            } else {
+                                call_user_func(array(new $this->controller, $action));
+                            }
                         }
                     }
                 }
+                $this->found = TRUE;
             }
+        }
+
+        if (!$this->found) {
+            echo "404 Route not found";
         }
     }
 

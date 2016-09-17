@@ -76,6 +76,7 @@ class Boot
         $router = new Router();
         // Include the routes
         include "app/Routes.php";
+        $router->dispatch();
     }
 
 }
