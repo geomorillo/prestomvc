@@ -61,12 +61,6 @@ class Route
     {
         $url = !empty($url) ? $url : '/';
         $this->routes[] = ["method" => $method, "url" => $url, "action" => $action];
-
-        /*
-          $this->method = $method;
-          $this->url = !empty($url) ? $url : '/';
-          $this->parseAction($action); //???
-          $this->dispatch(); */
     }
 
     /**
