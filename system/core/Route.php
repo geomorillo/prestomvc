@@ -89,7 +89,6 @@ class Route
                 }
 
                 $this->route = $url;
-                $this->found = TRUE;
             }
         } else {
             $this->route = null;
@@ -141,8 +140,9 @@ class Route
                             }
                         }
                     }
+                     $this->found = TRUE;
                 }
-                $this->found = TRUE;
+               
             }
         }
 
