@@ -7,5 +7,5 @@
  */
 define("DEFAULTCONTROLLER", 'UsuariosController');
 define("DEFAULTMETHOD", 'index');
-define("USE_SESSIONS", TRUE);
+define("USE_SESSIONS", FALSE);
 define('ENCRYPT_KEY', "IeT5aprlRw7pImmU73T89tNyk0cOSrkA");

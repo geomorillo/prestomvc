@@ -1,15 +1,20 @@
 <?php
+
 namespace system;
+
 use system\core\Router;
 use system\core\SessionManager;
+
 class Boot
 {
+
     public static function run()
     {
         self::init();
         self::autoload();
-        self::dispatch();
+        self::dispatcher();
     }
+
     private static function init()
     {
         // Define path constants
@@ -31,8 +36,9 @@ class Boot
         define("CURR_CONTROLLER_PATH", CONTROLLER_PATH);
         define("CURR_VIEW_PATH", VIEW_PATH . DS);
         define("NAMESPACE_CONTROLLERS", "app\controllers\\");
-        include_once APP_PATH.'config/config.php';
+        include_once APP_PATH . 'config/config.php';
     }
+
     // Autoloading
     private static function autoload()
     {
@@ -51,7 +57,6 @@ class Boot
                 LIB_PATH
             );
             foreach ($paths as $path) {
-
                 if (file_exists($path . $class . '.php')) {
                     require_once($path . $class . '.php');
                     break;
@@ -60,7 +65,7 @@ class Boot
         });
     }
 
-    private static function dispatch()
+    private static function dispatcher()
     {
         if (USE_SESSIONS) {
             $ses_handler = new SessionManager();
@@ -71,7 +76,7 @@ class Boot
         $router = new Router();
         // Include the routes
         include "app/Routes.php";
-        
+        $router->dispatch();
     }
 
 }

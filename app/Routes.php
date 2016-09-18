@@ -9,13 +9,15 @@ namespace app;
  * strin @action get namespace and controller split by "@" then method from class controller
  */
 // Add new routes
-//$route->addRoute("GET", "/", "app\controllers\UsuariosController@index");
-//$route->addRoute("GET", "/users/(:num)/show", "app\controllers\UsuariosController@show", array("id"));
-//$route->addRoute("POST", "/ajax", "app\controllers\Main@testAjax");
-//$route->addRoute("POST", "/ajaxcall", "app\controllers\Main@ajaxcall");
-//$route->addRoute("GET", "/session", "app\controllers\Main@session");
-//$route->addRoute("GET", "/db", "app\controllers\Main@db");
-//$route->addRoute("GET", "/encrypt", "app\controllers\Main@encrypt");
 $router->get("/", "app\controllers\UsuariosController@index");
+//$router->get("/users/(:num)/show", "app\controllers\UsuariosController@show", array("id"));
+$router->post("/ajax", "app\controllers\Main@testAjax");
+$router->get( "/ajaxcall", "app\controllers\Main@ajaxcall");
+//$router->get("/session", "app\controllers\Main@session");
+//$router->get( "/db", "app\controllers\Main@db");
+$router->get( "/encrypt", "app\controllers\Main@encrypt");
+
+
+//$router->get("/", "app\controllers\UsuariosController@index");
 $router->get("/nombre/(:num)", "app\controllers\UsuariosController@show[id]");
-$router->get("/usuarios/(:any)/(:num)", "app\controllers\UsuariosController@test[name, id]");
+//$router->get("/usuarios/(:any)/(:num)", "app\controllers\UsuariosController@test[name, id]");

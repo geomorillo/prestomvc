@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  Encrypter for Nova Framework
+ *  Encrypter for Presto Framework
  *
  * @author Manuel Jhobanny Morillo Ordoñez geomorillo@yahoo.com 
  * 
