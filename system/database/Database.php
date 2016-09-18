@@ -44,8 +44,7 @@ class Database
 
     public function __construct()
     {
-        $this->config = include 'database_config.php';
-
+        $this->config = include APP_PATH . 'config\database_config.php';
         call_user_func_array(array(__NAMESPACE__ . '\Database', 'strConn'), [$this->config["default"]]);
     }
 
@@ -101,7 +100,6 @@ class Database
         if (!isset(self::$_instance)) {
             self::$_instance = new Database();
         }
-
         return self::$_instance;
     }
 
@@ -122,7 +120,6 @@ class Database
             $this->_error = false;
             // check if sql statement is prepared
             $query = $this->_pdo->prepare($sql);
-
             // if $params isset
             if (count($params)) {
                 foreach ($params as $param => &$value) {
@@ -210,9 +207,7 @@ class Database
     public function select($fields = ['*'])
     {
         $this->_typeQuery = "SELECT";
-        $sql = "SELECT " . implode(', ', $fields)
-                . " FROM {$this->_table} {$this->_query}";
-
+        $sql = "SELECT " . implode(', ', $fields) . " FROM {$this->_table} {$this->_query}";
         $this->_query = $sql;
         return $this->query($sql)->results();
     }
@@ -241,7 +236,6 @@ class Database
     {
         $find = $this->where("id", $id)
                 ->select();
-
         $this->_query = '';
         $this->_where = "WHERE";
         return isset($find[0]) ? $find[0] : [];
@@ -264,10 +258,8 @@ class Database
             $value = $operator;
             $operator = "=";
         }
-
         if (!is_numeric($value))
             $value = "'$value'";
-
         $this->_query .= " $this->_where $field $operator $value";
         $this->_where = "AND";
         return $this;
@@ -282,11 +274,9 @@ class Database
     public function whereBetween($field, $values = [])
     {
         if (count($values)) {
-            $this->_query .=
-                    " $this->_connector $field BETWEEN '$values[0]' and '$values[1]'";
+            $this->_query .= " $this->_connector $field BETWEEN '$values[0]' and '$values[1]'";
             $this->_connector = "AND";
         }
-
         return $this;
     }
 
@@ -303,7 +293,6 @@ class Database
      */
     public function likeWhere($field, $value)
     {
-
         $this->_query .= " $this->_connector $field LIKE '%$value%'";
         $this->_connector = "AND";
         return $this;
@@ -323,7 +312,6 @@ class Database
             $value = $operator;
             $operator = "=";
         }
-
         $this->_query .= " OR $field $operator '$value'";
         $this->_connector = "AND";
         return $this;
@@ -428,8 +416,7 @@ class Database
         $sql = strtoupper($sql);
         if (strpos($sql, "SELECT") !== FALSE) {
             $this->_typeQuery = "SELECT";
-            
-        }  else {
+        } else {
             $this->_typeQuery = "OTRO";
         }
     }

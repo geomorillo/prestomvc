@@ -13,32 +13,35 @@ namespace system\core;
  *
  * @author geomorillo
  */
+use system\core\LogException;
+
 class View
 {
 
     protected $data = array();
     protected $path;
 
-    function __construct($path, array $data = array())
+    function __construct()
+    {
+        
+    }
+
+    public function render($path, array $data = array())
     {
         $this->path = $path;
         $this->data = $data;
-    }
-
-    public function render()
-    {
         ob_start();
         extract($this->data);
         try {
-            $viewPath = APP_PATH."views".DS . $this->path . ".php";
+            $viewPath = APP_PATH . "views" . DS . $this->path . ".php";
             include $viewPath;
-        } catch (\Exception $e) {
+        } catch (LogException $le) {
             ob_end_clean();
-            throw $e;
+            throw $le->logError();
         }
         return ob_get_clean();
     }
-    // echo new View("view");
+    
     function __toString()
     {
         return $this->render();
