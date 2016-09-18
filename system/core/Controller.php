@@ -14,15 +14,7 @@
 
 namespace system\core;
 
-Abstract Class Controller
+abstract class Controller
 {
-
-    protected $model, $view;
-
-    function __construct()
-    {
-        
-    }
-
     abstract function index();
 }

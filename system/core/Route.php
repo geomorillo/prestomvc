@@ -3,7 +3,7 @@
 namespace system\core;
 
 use system\http\Request;
-
+use system\core\LogException;
 /**
  * Description of Route
  *
@@ -79,36 +79,29 @@ class Route
         if (preg_match("@^" . $route . "$@", $requestUri, $matched)) {
             if ($matched[0] === $requestUri) {
                 $url = array_shift($matched);
-
                 $names = explode(',', $this->paramNames);
-
                 for ($i = 0; $i <= count($names) - 1; $i++) {
                     if ($names[$i] != '') {
                         $this->params[$names[$i]] = $matched[$i];
                     }
                 }
-
                 $this->route = $url;
             }
         } else {
             $this->route = null;
         }
-
         return $this->route;
     }
 
     protected function parseAction($action)
     {
         $parts = explode("@", $action);
-
         $this->controller = array_shift($parts);
         $this->action = array_shift($parts);
         preg_match("/\[[\w+\s\,]+\]/", $action, $matched);
-
         $asd = implode($matched);
         $asd = ltrim($asd, "[");
         $asd = rtrim($asd, "]");
-
         $this->paramNames = $asd;
     }
 
@@ -127,10 +120,8 @@ class Route
                 if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
                     $filename = explode("\\", $this->controller);
                     $filename = end($filename);
-
                     $action = explode("[", $this->action);
                     $action = array_shift($action);
-
                     if (file_exists(CONTROLLER_PATH . $filename . ".php")) {
                         if (class_exists($this->controller)) {
                             if (isset($this->params)) {
@@ -142,13 +133,11 @@ class Route
                     }
                      $this->found = TRUE;
                 }
-               
             }
         }
-
         if (!$this->found) {
-            echo "404 Route not found";
+            
+            echo View::render("404");
         }
     }
-
 }
