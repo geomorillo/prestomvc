@@ -26,14 +26,14 @@ class View
         
     }
 
-    public function render($path, array $data = array())
+    public static function render($path, array $data = array())
     {
-        $this->path = $path;
-        $this->data = $data;
+        self::$path = $path;
+         self::$data = $data;
         ob_start();
-        extract($this->data);
+        extract( self::$data);
         try {
-            $viewPath = APP_PATH . "views" . DS . $this->path . ".php";
+            $viewPath = APP_PATH . "views" . DS .  self::$path . ".php";
             include $viewPath;
         } catch (LogException $le) {
             ob_end_clean();
