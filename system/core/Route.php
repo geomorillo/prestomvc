@@ -4,6 +4,7 @@ namespace system\core;
 
 use system\http\Request;
 use system\core\LogException;
+
 /**
  * Description of Route
  *
@@ -115,29 +116,34 @@ class Route
         foreach ($this->routes as $route) {
             $this->method = $route["method"];
             $this->url = $route["url"];
-            $this->parseAction($route["action"]);
             if ($this->match()) { //if the requesturl doesn't match the route don't execute it
                 if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
-                    $filename = explode("\\", $this->controller);
-                    $filename = end($filename);
-                    $action = explode("[", $this->action);
-                    $action = array_shift($action);
-                    if (file_exists(CONTROLLER_PATH . $filename . ".php")) {
-                        if (class_exists($this->controller)) {
-                            if (isset($this->params)) {
-                                call_user_func_array(array(new $this->controller, $action), $this->params);
-                            } else {
-                                call_user_func(array(new $this->controller, $action));
+                    if ($route["action"] instanceof \Closure) {
+                        $route["action"]();
+                    } else {
+                        $this->parseAction($route["action"]);
+                        $filename = explode("\\", $this->controller);
+                        $filename = end($filename);
+                        $action = explode("[", $this->action);
+                        $action = array_shift($action);
+                        if (file_exists(CONTROLLER_PATH . $filename . ".php")) {
+                            if (class_exists($this->controller)) {
+                                if (isset($this->params)) {
+                                    call_user_func_array(array(new $this->controller, $action), $this->params);
+                                } else {
+                                    call_user_func(array(new $this->controller, $action));
+                                }
                             }
                         }
                     }
-                     $this->found = TRUE;
+                    $this->found = TRUE;
                 }
             }
         }
         if (!$this->found) {
-            
+
             echo View::render("404");
         }
     }
+
 }
