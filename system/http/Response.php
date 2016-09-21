@@ -20,12 +20,6 @@ class Response
 
     protected $headers, $body, $status;
 
-    public function __construct()
-    {
-
-        //$this->headers[] =  [$header,$body,$status];
-    }
-
     /**
      * 
      * @param type $url Url a la cual se redirecciona 
@@ -162,9 +156,6 @@ class Response
 
     public function sendJSON()
     {
-        //header('Cache-Control: no-cache, must-revalidate');
-        //header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        //header('Content-type: application/json');
         $this->nocache();
         $this->set_header("Content-Type", "application/json");
         $this->send();

@@ -10,7 +10,8 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-  $.ajax({url: "ajaxcall", success: function(result){
+    
+  $.ajax({url: "ajaxcall",  data: { name: "Geo", location: "Colombia" }, success: function(result){
         console.log(result);
     }});
 });
