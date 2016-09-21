@@ -19,9 +19,13 @@ use system\http\Response;
 use system\http\Request;
 use system\database\Database;
 use system\libraries\Encrypter;
+use system\helpers\AjaxHandler;
+
 class Main extends Controller
 {
+
     protected $db;
+
     public function index()
     {
         $response = new Response();
@@ -80,33 +84,37 @@ class Main extends Controller
 
     public function testAjax()
     {
-        $view = new View("ajaxtest");
-        echo $view->render();
+        echo View::render("ajaxtest");
     }
+
     function ajaxcall()
     {
-        $request = new Request();
-        if($request->is("post")){
-            echo $request->is("ajax");
+
+        $nombre = AjaxHandler::get("name");
+        if ($nombre) {
+            AjaxHandler::success(["nombre" => $nombre]);
+        } else {
+            AjaxHandler::error("No hay nombre");
         }
-        echo json_encode(array("listo"=>1));
     }
+
     public function session()
     {
         $_SESSION["favcolor"] = "green";
         $_SESSION["favanimal"] = "xxx";
-       
-        
     }
+
     public function db()
     {
         $this->db = Database::connect();
-        $sql= "SELECT * FROM cj WHERE id = :id";
-       // print_r($this->db->query($sql,array("id"=>6))->results());
-       //$this->db->table("cj")->insert(["id"=>7,"nombre"=>"prueba","edad"=>"10"]);
-       $this->db->table("cj")->where('id', 1)->delete();
+        $sql = "SELECT * FROM cj WHERE id = :id";
+        // print_r($this->db->query($sql,array("id"=>6))->results());
+        //$this->db->table("cj")->insert(["id"=>7,"nombre"=>"prueba","edad"=>"10"]);
+        $this->db->table("cj")->where('id', 1)->delete();
     }
-    public function encrypt(){
+
+    public function encrypt()
+    {
         //it is possible to decrypt or encrypt because the ENCRYPT_KEY is defined in config.php 
         $payload = "todook";
         $encrypted = Encrypter::encrypt($payload);

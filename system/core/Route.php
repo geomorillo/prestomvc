@@ -4,7 +4,7 @@ namespace system\core;
 
 use system\http\Request;
 use system\core\LogException;
-
+use system\core\View;
 /**
  * Description of Route
  *
