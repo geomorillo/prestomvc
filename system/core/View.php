@@ -33,8 +33,20 @@ class View
         ob_start();
         extract(self::$data);
         try {
-            $viewPath = APP_PATH . "views" . DS . self::$path . ".php";
+            $header = TEMPLATE_PATH . "default" . DS . "header.php";
+            $footer = TEMPLATE_PATH . "default" . DS . "footer.php";
+            $viewPath = VIEW_PATH . self::$path . ".php";
+            $useTemplate = false;
+            if (file_exists($header) && file_exists($footer)) {
+                $useTemplate = true;
+            }
+            if ($useTemplate) {
+                include $header;
+            }
             include $viewPath;
+            if ($useTemplate) {
+                include $footer;
+            }
         } catch (LogException $le) {
             ob_end_clean();
             throw $le->logError();
