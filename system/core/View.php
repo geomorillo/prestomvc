@@ -18,24 +18,20 @@ use system\core\LogException;
 class View
 {
 
-    protected static $data = array();
-    protected static $path;
-
-    function __construct()
-    {
-        
-    }
+    private static $template;
 
     public static function render($path, array $data = array())
     {
-        self::$path = $path;
-        self::$data = $data;
         ob_start();
-        extract(self::$data);
+        extract($data);
         try {
-            $header = TEMPLATE_PATH . "default" . DS . "header.php";
-            $footer = TEMPLATE_PATH . "default" . DS . "footer.php";
-            $viewPath = VIEW_PATH . self::$path . ".php";
+            $template = "default";
+            if (self::$template) {
+                $template = self::$template;
+            }
+            $header = TEMPLATE_PATH . $template . DS . "header.php";
+            $footer = TEMPLATE_PATH . $template . DS . "footer.php";
+            $viewPath = VIEW_PATH . $path . ".php";
             $useTemplate = false;
             if (file_exists($header) && file_exists($footer)) {
                 $useTemplate = true;
@@ -52,6 +48,12 @@ class View
             throw $le->logError();
         }
         return ob_get_clean();
+    }
+
+    public static function useTemplate($template)
+    {
+        self::$template = $template;
+        return new static;
     }
 
     function __toString()
