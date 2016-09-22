@@ -44,7 +44,7 @@ class Database
 
     public function __construct()
     {
-        $this->config = include APP_PATH . 'config'.DS.'database_config.php';
+        $this->config = include CONFIG_PATH.'database_config.php';
         call_user_func_array(array(__NAMESPACE__ . '\Database', 'strConn'), [$this->config["default"]]);
     }
 

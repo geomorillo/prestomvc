@@ -84,7 +84,8 @@ class Main extends Controller
 
     public function testAjax()
     {
-        echo View::render("Main/ajaxtest");
+       
+        echo View::useTemplate("ok")->render("Main/ajaxtest");
         
         
 //        $header = View::render("header");
