@@ -15,8 +15,8 @@ use system\core\Route;
  *
  * @author Daniel Navarro Ramírez
  */
-class Router {
-    
+class Router extends Route{
+
     public function get($route, $action)
     {
        return $this->addRoute('GET', $route, $action);
@@ -36,9 +36,5 @@ class Router {
     {
         return $this->addRoute('DELETE', $route, $action);
     }
-    
-    protected function addRoute($method, $url, $action)
-    {
-        return new Route($method, $url, $action);
-    }
+
 }

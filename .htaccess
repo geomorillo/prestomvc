@@ -1,3 +1,7 @@
+<IfModule mod_alias.c>
+    RedirectMatch 404 favicon.ico
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews

@@ -21,9 +21,8 @@ class UsuariosController extends Controller
         $userModel = new \app\models\UserModel();
 
         $users = $userModel->getUsers();
-
-        $view = new View("usuarios", array("users" => $users));
-        echo $view->render();
+        
+        echo View::render("usuarios", array("users" => $users));
     }
 
     public function testLog()
@@ -40,6 +39,9 @@ class UsuariosController extends Controller
             $exc->logError();
             $exc->errorMessage("Aqui va un error");
         }
+    }
+    public function show($id){
+        echo $id;
     }
 
 }

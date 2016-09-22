@@ -13,35 +13,52 @@ namespace system\core;
  *
  * @author geomorillo
  */
+use system\core\LogException;
+
 class View
 {
 
-    protected $data = array();
-    protected $path;
+    private static $template;
 
-    function __construct($path, array $data = array())
-    {
-        $this->path = $path;
-        $this->data = $data;
-    }
-
-    public function render()
+    public static function render($path, array $data = array())
     {
         ob_start();
-        extract($this->data);
+        extract($data);
         try {
-            $viewPath = APP_PATH."views".DS . $this->path . ".php";
+            $template = "default";
+            if (self::$template) {
+                $template = self::$template;
+            }
+            $header = TEMPLATE_PATH . $template . DS . "header.php";
+            $footer = TEMPLATE_PATH . $template . DS . "footer.php";
+            $viewPath = VIEW_PATH . $path . ".php";
+            $useTemplate = false;
+            if (file_exists($header) && file_exists($footer)) {
+                $useTemplate = true;
+            }
+            if ($useTemplate) {
+                include $header;
+            }
             include $viewPath;
-        } catch (\Exception $e) {
+            if ($useTemplate) {
+                include $footer;
+            }
+        } catch (LogException $le) {
             ob_end_clean();
-            throw $e;
+            throw $le->logError();
         }
         return ob_get_clean();
     }
-    // echo new View("view");
+
+    public static function useTemplate($template)
+    {
+        self::$template = $template;
+        return new static;
+    }
+
     function __toString()
     {
-        return $this->render();
+        return self::render();
     }
 
 }

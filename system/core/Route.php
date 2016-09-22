@@ -1,42 +1,46 @@
 <?php
+
 namespace system\core;
 
 use system\http\Request;
+use system\core\LogException;
+use system\core\View;
 /**
  * Description of Route
  *
  * @author Daniel Navarro Ramírez
  */
-class Route {
-    
+class Route
+{
+
+    public $routes = [];
+
     /**
      *
      * @var array Route
      */
     public $route;
-    
+
     /**
      *
      * @var string Method to request
      */
     public $method;
-    
+
     /**
      *
      * @var array Name of parameters for values
      */
     private $paramNames;
-    
+
     /**
      *
      * @var array Matches results 
      */
-    public $data;
-    
     public $controller;
     public $action;
     public $url;
-    
+
     /**
      *
      * @var array Patterns Regexp 
@@ -46,92 +50,100 @@ class Route {
         ":num" => "\d+",
         ":all" => "\w+",
     );
-    
     public $request;
-    
-    public function __construct($method, $url, $action)
+    private $found = FALSE;
+
+    public function __construct()
     {
         $this->request = new Request();
-        
-        $this->method = $method;
-        $this->url[] = !empty($url) ? $url : '/';
-        
-        $action = $this->parseAction($action);
-        $this->dispatch($this->request);
     }
-    
+
+    public function addRoute($method, $url, $action)
+    {
+        $url = !empty($url) ? $url : '/';
+        $this->routes[] = ["method" => $method, "url" => $url, "action" => $action];
+    }
+
     /**
      * Match the route, and return all data parse
      * 
      * @param Request $request
      * @return \system\routing\Route
      */
-    public function match(Request $request)
+    public function match()
     {
-        $requestUri = $request->getUrl();
-        foreach($this->url as $route) {
-            if (strpos($route, ':') !== false) {
-                $route = str_replace(array_keys($this->patterns), array_values($this->patterns), $route);
-            }
-
-            if (preg_match("@^" . $route . "$@", $requestUri, $matched)) {
-                if($matched[0] === $requestUri) {
-                    $url = array_shift($matched);
-                    
-                    $names = explode(',', $this->paramNames);
-                    for ($i = 0; $i <= count($names)-1; $i++)
-                    {
+        $requestUri = $this->request->getUrl();
+        $route = $this->url;
+        if (strpos($route, ':') !== false) {
+            $route = str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
+        }
+        if (preg_match("@^" . $route . "$@", $requestUri, $matched)) {
+            if ($matched[0] === $requestUri) {
+                $url = array_shift($matched);
+                $names = explode(',', $this->paramNames);
+                for ($i = 0; $i <= count($names) - 1; $i++) {
+                    if ($names[$i] != '') {
                         $this->params[$names[$i]] = $matched[$i];
-                        $this->route = $url;
                     }
                 }
+                $this->route = $url;
             }
+        } else {
+            $this->route = null;
         }
         return $this->route;
     }
-    
+
     protected function parseAction($action)
     {
         $parts = explode("@", $action);
-        
         $this->controller = array_shift($parts);
         $this->action = array_shift($parts);
         preg_match("/\[[\w+\s\,]+\]/", $action, $matched);
-        
-        $asd = implode($matched);        
+        $asd = implode($matched);
         $asd = ltrim($asd, "[");
         $asd = rtrim($asd, "]");
-        
         $this->paramNames = $asd;
     }
-    
+
     /**
      * Dispatch the controller, method and params
      * 
      * @param Request $request
      */
-    public function dispatch(Request $request)
+    public function dispatch()
     {
-        $this->match($request);
-        
-        if($request->getMethod() === $this->method && $request->getUrl() === $this->route)
-        {
-            $filename = explode("\\", $this->controller);
-            $filename = end($filename);
-            
-            $action = explode("[", $this->action);
-            $action = array_shift($action);
-                
-            if(file_exists(CONTROLLER_PATH . $filename . ".php")) {
-                 if(class_exists($this->controller)) {
-                     if(isset($this->params)) {
-                         call_user_func_array(array(new $this->controller, $action), $this->params);
-                     } else {
-                         call_user_func(array(new $this->controller, $action));
-                     }
-                 }
-             } 
+        foreach ($this->routes as $route) {
+            $this->method = $route["method"];
+            $this->url = $route["url"];
+            if ($this->match()) { //if the requesturl doesn't match the route don't execute it
+                if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
+                    if ($route["action"] instanceof \Closure) {
+                        $route["action"]();
+                    } else {
+                        $this->parseAction($route["action"]);
+                        $filename = explode("\\", $this->controller);
+                        $filename = end($filename);
+                        $action = explode("[", $this->action);
+                        $action = array_shift($action);
+                        if (file_exists(CONTROLLER_PATH . $filename . ".php")) {
+                            if (class_exists($this->controller)) {
+                                if (isset($this->params)) {
+                                    call_user_func_array(array(new $this->controller, $action), $this->params);
+                                } else {
+                                    call_user_func(array(new $this->controller, $action));
+                                }
+                            }
+                        }
+                    }
+                    $this->found = TRUE;
+                }
+            }
+        }
+        if (!$this->found) {
+
+            echo View::render("404");
         }
     }
-    
+
 }
