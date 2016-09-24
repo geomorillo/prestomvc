@@ -5,7 +5,7 @@
  * 2015
  * Contacto: geomorillo@yahoo.com
  */
-define("DEFAULTCONTROLLER", 'UsuariosController');
+define("DEFAULTCONTROLLER", 'Main');
 define("DEFAULTMETHOD", 'index');
 define("USE_SESSIONS", FALSE);
 define('ENCRYPT_KEY', "IeT5aprlRw7pImmU73T89tNyk0cOSrkA");
