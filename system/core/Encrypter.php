@@ -7,7 +7,7 @@
  * 
  */
 
-namespace system\libraries;
+namespace system\core;
 
 class Encrypter {
 

@@ -142,7 +142,7 @@ class Route
         }
         if (!$this->found) {
 
-            echo View::render("404");
+            echo View::useTemplate("error")->render("/error/404");
         }
     }
 

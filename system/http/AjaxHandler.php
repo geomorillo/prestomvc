@@ -6,7 +6,7 @@
  * @version 1.3.1
  */
 
-namespace system\helpers;
+namespace system\http;
 use system\http\Request;
 use system\http\Response;
 class AjaxHandler {

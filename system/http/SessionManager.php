@@ -6,7 +6,7 @@
  * Contacto: geomorillo@yahoo.com
  */
 
-namespace system\core;
+namespace system\http;
 
 /**
  * Description of Session

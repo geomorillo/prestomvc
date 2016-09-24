@@ -3,7 +3,7 @@
 namespace system;
 
 use system\core\Router;
-use system\core\SessionManager;
+use system\http\SessionManager;
 
 class Boot
 {
@@ -28,7 +28,7 @@ class Boot
         define("MODEL_PATH", APP_PATH . "models" . DS);
         define("VIEW_PATH", APP_PATH . "views" . DS);
         define("TEMPLATE_PATH", APP_PATH . "templates" . DS);
-        define("ASSET_PATH", APP_PATH . "templates" . DS);
+        define("ASSET_PATH", APP_PATH . "assets" . DS);
         define("CORE_PATH", SYSTEM_PATH . "core" . DS);
         define("HTTP_PATH", SYSTEM_PATH . "http" . DS);
         define('DB_PATH', SYSTEM_PATH . "database" . DS);
@@ -51,8 +51,7 @@ class Boot
                 MODEL_PATH,
                 DB_PATH,
                 HTTP_PATH,
-                HELPER_PATH,
-                LIB_PATH
+                HELPER_PATH
             );
             foreach ($paths as $path) {
                 if (file_exists($path . $class . '.php')) {
@@ -73,7 +72,7 @@ class Boot
         }
         $router = new Router();
         // Include the routes
-        include "app/Routes.php";
+        include "app/routes.php";
         $router->dispatch();
     }
 
