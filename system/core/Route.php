@@ -3,12 +3,12 @@
 namespace system\core;
 
 use system\http\Request;
-use system\core\LogException;
 use system\core\View;
 /**
  * Description of Route
  *
  * @author Daniel Navarro Ramírez
+ * @author Manuel Jhobanny Morillo
  */
 class Route
 {
@@ -142,7 +142,7 @@ class Route
         }
         if (!$this->found) {
 
-            echo View::render("404");
+            echo View::useTemplate("error")->render("/error/404");
         }
     }
 
