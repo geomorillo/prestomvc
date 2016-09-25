@@ -28,6 +28,7 @@ class Boot
         define("MODEL_PATH", APP_PATH . "models" . DS);
         define("VIEW_PATH", APP_PATH . "views" . DS);
         define("TEMPLATE_PATH", APP_PATH . "templates" . DS);
+        define("LANGUAGE_PATH", APP_PATH . "languages" . DS);
         define("ASSET_PATH", APP_PATH . "assets" . DS);
         define("CORE_PATH", SYSTEM_PATH . "core" . DS);
         define("HTTP_PATH", SYSTEM_PATH . "http" . DS);

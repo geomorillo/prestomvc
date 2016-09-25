@@ -15,14 +15,13 @@ namespace app\controllers;
  */
 use system\core\View;
 use system\core\Controller;
-
+use system\core\Language as L;
 class Main extends Controller
 {
 
     public function index()
     {
-        echo "Funciona!<br>";
-        echo "Bienvenido a PrestoMvc";
+       echo L::translate("bienvenido",["title"=>"PrestoMvc","version"=>"1.0"]);
     }
 
 }
