@@ -6,7 +6,7 @@
  * @author Jhobanny Morillo <geomorillo@yahoo.com>
  */
 
-namespace Helpers\Auth;
+namespace system\helpers\Auth;
 
 class Setup {
 
@@ -14,7 +14,7 @@ class Setup {
         define("SITE_NAME", "some name"); // Name of website to appear in emails
         define("EMAIL_FROM", "someemail@email.com"); // Email FROM address for Auth emails (Activation, password reset...)
         define("MAX_ATTEMPTS", 5); // INT : Max number of attempts for login before user is locked out
-        define("BASE_URL", "http://website/"); // URL to Auth Class installation root WITH trailing slash
+        define("BASE_URL", "http://prestomvc.geo/"); // URL to Auth Class installation root WITH trailing slash
         define("ACTIVATION_ROUTE", 'activate'); // This route should be put on Config.php, is for activating an account should be implemented by you on any controller you can name it whatever you want
         define("RESET_PASSWORD_ROUTE", 'resetpassword'); // This route should be put on Config.php, is for resetting a password and should be implemented  by you on any controller you can name it whatever you want
         define("SESSION_DURATION", "+1 month"); // Amount of time session lasts for. Only modify if you know what you are doing ! Default = +1 month

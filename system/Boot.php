@@ -44,22 +44,24 @@ class Boot
     {
         spl_autoload_register(function($class) {
             $class = explode("\\", $class);
-            $class = end($class);
-            $class = str_replace('\\', '/', $class);
-            $paths = array(
-                CORE_PATH,
-                CONTROLLER_PATH,
-                MODEL_PATH,
-                DB_PATH,
-                HTTP_PATH,
-                HELPER_PATH
-            );
-            foreach ($paths as $path) {
-                if (file_exists($path . $class . '.php')) {
-                    require_once($path . $class . '.php');
-                    break;
-                }
+
+            $className = array_pop($class);
+            //$className = str_replace('\\', '/', $className);
+            $path = implode(DS, $class);
+//            $paths = array(
+//                CORE_PATH,
+//                CONTROLLER_PATH,
+//                MODEL_PATH,
+//                DB_PATH,
+//                HTTP_PATH,
+//                HELPER_PATH
+//            );
+            //foreach ($paths as $path) {
+            if (file_exists($path . DS . $className . '.php')) {
+                require_once($path . DS . $className . '.php');
+                //break;
             }
+            //}
         });
     }
 

@@ -10,3 +10,4 @@ define("DEFAULTMETHOD", 'index');
 define("USE_SESSIONS", FALSE);
 define('ENCRYPT_KEY', "IeT5aprlRw7pImmU73T89tNyk0cOSrkA");
 define("DEFAULT_LANG", "es");
+define("DB_PREFIX",""); //prefix for tables in database
