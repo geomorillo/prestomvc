@@ -21,8 +21,7 @@ class Main extends Controller
 
     public function index()
     {
-        echo "Funciona!<br>";
-        echo "Bienvenido a PrestoMvc";
+        echo View::render('Main/index');
     }
 
 }
