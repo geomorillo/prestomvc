@@ -28,6 +28,7 @@ class Boot
         define("MODEL_PATH", APP_PATH . "models" . DS);
         define("VIEW_PATH", APP_PATH . "views" . DS);
         define("TEMPLATE_PATH", APP_PATH . "templates" . DS);
+        define("LANGUAGE_PATH", APP_PATH . "languages" . DS);
         define("ASSET_PATH", APP_PATH . "assets" . DS);
         define("CORE_PATH", SYSTEM_PATH . "core" . DS);
         define("HTTP_PATH", SYSTEM_PATH . "http" . DS);
@@ -43,22 +44,24 @@ class Boot
     {
         spl_autoload_register(function($class) {
             $class = explode("\\", $class);
-            $class = end($class);
-            $class = str_replace('\\', '/', $class);
-            $paths = array(
-                CORE_PATH,
-                CONTROLLER_PATH,
-                MODEL_PATH,
-                DB_PATH,
-                HTTP_PATH,
-                HELPER_PATH
-            );
-            foreach ($paths as $path) {
-                if (file_exists($path . $class . '.php')) {
-                    require_once($path . $class . '.php');
-                    break;
-                }
+
+            $className = array_pop($class);
+            //$className = str_replace('\\', '/', $className);
+            $path = implode(DS, $class);
+//            $paths = array(
+//                CORE_PATH,
+//                CONTROLLER_PATH,
+//                MODEL_PATH,
+//                DB_PATH,
+//                HTTP_PATH,
+//                HELPER_PATH
+//            );
+            //foreach ($paths as $path) {
+            if (file_exists($path . DS . $className . '.php')) {
+                require_once($path . DS . $className . '.php');
+                //break;
             }
+            //}
         });
     }
 
