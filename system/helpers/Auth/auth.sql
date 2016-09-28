@@ -43,10 +43,10 @@ CREATE TABLE IF NOT EXISTS `attempts` (
 -- --------------------------------------------------------
 
 --
--- `sessions` table
+-- `auth_sessions` table
 --
 
-CREATE TABLE IF NOT EXISTS `sessions` (
+CREATE TABLE IF NOT EXISTS `auth_sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL,
   `username` varchar(30) NOT NULL,

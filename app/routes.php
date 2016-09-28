@@ -11,4 +11,3 @@ use system\core\View;
  */
 
 $router->get("/","app\controllers\Main@index");
-$router->get("/login","app\controllers\Main@login");
