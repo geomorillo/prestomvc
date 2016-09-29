@@ -64,7 +64,7 @@ class Language
      * Stores the included translation file
      * @param type $lang
      */
-    private function setTranslation($lang)
+    private static function setTranslation($lang)
     {
         self::$translation = include LANGUAGE_PATH . "$lang.php";
     }
@@ -75,7 +75,7 @@ class Language
      * @param type $params
      * @return type
      */
-    private function findAndReplace($text, $params)
+    private static function findAndReplace($text, $params)
     {
         preg_match_all("/{(.*?)}/", $text, $matches);
         foreach ($matches[1] as $match) {
