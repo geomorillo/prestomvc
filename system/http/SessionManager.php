@@ -88,7 +88,7 @@ class SessionManager implements SessionHandlerInterface
 
     public function destroy($session_id)
     {
-        $result = $this->db->table('sessions')
+        $result = $this->db->table('session')
                 ->where('id', $session_id)
                 ->delete();
         if ($result) {

@@ -42,8 +42,8 @@ return [
     'mysql' => [
         'driver' => 'mysql',
         'host_name' => 'localhost',
-        'db_name' => 'test',
-        'db_user' => 'root',
+        'db_name' => 'presto',
+        'db_user' => '',
         'db_password' => ''
     ],
     // PostgreSQL
