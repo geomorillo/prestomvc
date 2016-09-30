@@ -21,7 +21,6 @@ class Main extends Controller
 {
     public function index()
     {
-        echo L::translate("bienvenido",["title"=>"PrestoMvc","version"=>"1.0"]);
-     
+        echo View::render('main/index');
     }
 }
