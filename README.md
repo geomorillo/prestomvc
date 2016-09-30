@@ -1,4 +1,4 @@
-# PrestoMVC (alpha)
+# PrestoMVC
 
 Is a new lightweight framework, made for people who is starting on the world of MVC patterns and wants to create new applications.
 
