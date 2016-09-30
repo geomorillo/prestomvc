@@ -1,0 +1,51 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24/09/2016, 12:31:38 AM
+    Author     : Daniel Navarro Ramírez
+*/
+
+h1 {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+.imagen {
+    padding: 5px 15px;
+}
+
+p {
+    line-height: 1.6;
+}
+
+a.navbar-brand {
+    line-height: 0;
+    padding: 0;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.page-header {
+    margin: 15px 0 15px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 20px 0 10px;
+    width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+    .jumbotron {
+        padding: 30px 0;
+        margin-bottom: 20px
+    }
+}
