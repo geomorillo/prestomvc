@@ -41,7 +41,7 @@
                 <ul>
                     <li>Lightweight Framework</li>
                     <li>Easy to install</li>
-                    <li>ORM Database (SOON)</li>
+                    <li>NOTORM Database (SOON)</li>
                     <li>Templates for each view</li>
                     <li>Many and useful helpers</li>
                     <li>Easy to manage</li>
