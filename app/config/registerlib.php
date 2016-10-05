@@ -12,7 +12,7 @@ return [
         }
     ],
     "notorm" => [
-        "path" => LIB_PATH . "NotORM" . DS . "NotORM.php",
+        "path" => LIB_PATH . "notorm" . DS . "NotORM.php",
         "callback" => function() {
             
         }
