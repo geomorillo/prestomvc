@@ -4,7 +4,7 @@ namespace system;
 
 use system\core\Router;
 use system\http\SessionManager;
-
+use system\core\Register;
 class Boot
 {
 
@@ -36,6 +36,8 @@ class Boot
         define("LIB_PATH", SYSTEM_PATH . "libraries" . DS);
         define("HELPER_PATH", SYSTEM_PATH . "helpers" . DS);
         define("UPLOAD_PATH", PUBLIC_PATH . "uploads" . DS);
+        define("LOG_PATH", ROOT."log");
+        
         include_once APP_PATH . 'config/config.php';
     }
 
@@ -54,6 +56,7 @@ class Boot
 
     private static function dispatcher()
     {
+        Register::lib();//register an included lib
         if (USE_SESSIONS) {
             $ses_handler = new SessionManager();
             session_set_save_handler($ses_handler, TRUE);
