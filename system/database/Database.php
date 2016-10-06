@@ -37,7 +37,6 @@ class Database
             $_results,
             $_count,
             $_where = "WHERE",
-            $_sql,
             $_typeQuery = '';
     protected $table;
     protected $config;
@@ -424,6 +423,10 @@ class Database
     public function quote($string)
     {
         return $this->_pdo->quote($string);
+    }
+    
+    public function count(){
+        return $this->_count;
     }
 
 }
