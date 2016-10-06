@@ -75,7 +75,7 @@ class Language
      * @param type $params
      * @return type
      */
-    private static function findAndReplace($text, $params)
+    public static function findAndReplace($text, $params)
     {
         preg_match_all("/{(.*?)}/", $text, $matches);
         foreach ($matches[1] as $match) {

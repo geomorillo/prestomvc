@@ -26,7 +26,7 @@
         <h1>Welcome to <?php system\core\Assets::img('images/logo.png', "PRESTO MVC", "", "200", "70"); ?></h1>
         
         <p>
-            Is a new lightweight framework, made it for people who is starting on the world of MVC patterns and wants to create new applications.
+            Is a new lightweight framework, made for people who is starting on the world of MVC patterns and wants to create new applications.
         </p>
     </div>
 </section>
@@ -41,17 +41,16 @@
                 <ul>
                     <li>Lightweight Framework</li>
                     <li>Easy to install</li>
-                    <li>ORM Database</li>
+                    <li>NOTORM Database (SOON)</li>
                     <li>Templates for each view</li>
                     <li>Many and useful helpers</li>
-                    <li>Modular</li>
                     <li>Easy to manage</li>
                     <li>Secure and fast</li>
                 </ul>
             </div>
             <div class="col-md-6">
                 <div class="page-header">
-                    <h2>Getting Start</h2>
+                    <h2>Getting Started</h2>
                 </div>
                 <p>Well, you did install the framework but, you need to set some parameters for the correct working.</p>
                 <ol>
