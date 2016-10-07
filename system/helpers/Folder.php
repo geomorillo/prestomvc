@@ -1,5 +1,5 @@
 <?php
-namespace Helpers;
+namespace system\helpers;
 
 use DirectoryIterator;
 use Exception;
