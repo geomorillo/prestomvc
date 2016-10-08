@@ -7,7 +7,7 @@ return [
             if (ENABLE_DEBUG) {
                 \Tracy\Debugger::enable(\Tracy\Debugger::DEVELOPMENT);
             } else {
-                \Tracy\Debugger::enable(\Tracy\Debugger::PRODUCTION,LOG_PATH);
+                \Tracy\Debugger::enable(\Tracy\Debugger::PRODUCTION, LOG_PATH);
             }
         }
     ],
