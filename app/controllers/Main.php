@@ -13,14 +13,14 @@ namespace app\controllers;
  *
  * @author geomorillo
  */
-use system\core\View;
 use system\core\Controller;
-use system\core\Language as L;
 
 class Main extends Controller
 {
+
     public function index()
     {
-        echo View::render('main/index');
+        echo $this->view->render('main/index');
     }
+
 }

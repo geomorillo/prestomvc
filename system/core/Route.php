@@ -40,7 +40,7 @@ class Route
     public $controller;
     public $action;
     public $url;
-
+    private $view;
     /**
      *
      * @var array Patterns Regexp 
@@ -56,6 +56,7 @@ class Route
     public function __construct()
     {
         $this->request = new Request();
+        $this->view = new View();
     }
 
     public function addRoute($method, $url, $action)
@@ -126,7 +127,7 @@ class Route
                         $filename = end($filename);
                         $action = explode("[", $this->action);
                         $action = array_shift($action);
-                        if (file_exists(CONTROLLER_PATH . $filename . ".php")) {
+                       // if (file_exists(CONTROLLER_PATH . $filename . ".php") || file_exists(MODULES_PATH . $filename . ".php") ) {
                             if (class_exists($this->controller)) {
                                 if (isset($this->params)) {
                                     call_user_func_array(array(new $this->controller, $action), $this->params);
@@ -134,7 +135,7 @@ class Route
                                     call_user_func(array(new $this->controller, $action));
                                 }
                             }
-                        }
+                        //}
                     }
                     $this->found = TRUE;
                 }
@@ -142,7 +143,7 @@ class Route
         }
         if (!$this->found) {
 
-            echo View::useTemplate("error")->render("/error/404");
+            echo $this->view->useTemplate("error")->render("/error/404");
         }
     }
 
