@@ -40,7 +40,6 @@ class View
             $header = TEMPLATE_PATH . $template . DS . "header.php";
             $footer = TEMPLATE_PATH . $template . DS . "footer.php";
             $viewPath = ROOT.$this->namespace. DS . "views" . DS . $path . ".php";
-            dump($viewPath);
             $useTemplate = false;
             if (file_exists($header) && file_exists($footer)) {
                 $useTemplate = true;
