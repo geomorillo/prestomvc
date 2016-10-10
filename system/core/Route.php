@@ -4,6 +4,7 @@ namespace system\core;
 
 use system\http\Request;
 use system\core\View;
+
 /**
  * Description of Route
  *
@@ -41,6 +42,7 @@ class Route
     public $action;
     public $url;
     private $view;
+
     /**
      *
      * @var array Patterns Regexp 
@@ -127,15 +129,13 @@ class Route
                         $filename = end($filename);
                         $action = explode("[", $this->action);
                         $action = array_shift($action);
-                       // if (file_exists(CONTROLLER_PATH . $filename . ".php") || file_exists(MODULES_PATH . $filename . ".php") ) {
-                            if (class_exists($this->controller)) {
-                                if (isset($this->params)) {
-                                    call_user_func_array(array(new $this->controller, $action), $this->params);
-                                } else {
-                                    call_user_func(array(new $this->controller, $action));
-                                }
+                        if (class_exists($this->controller)) {
+                            if (isset($this->params)) {
+                                call_user_func_array(array(new $this->controller, $action), $this->params);
+                            } else {
+                                call_user_func(array(new $this->controller, $action));
                             }
-                        //}
+                        }
                     }
                     $this->found = TRUE;
                 }
@@ -143,7 +143,7 @@ class Route
         }
         if (!$this->found) {
 
-            echo $this->view->useTemplate("error")->render("/error/404");
+            echo $this->view->useTemplate("error")->render("error/404");
         }
     }
 
