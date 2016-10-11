@@ -27,7 +27,11 @@ abstract class Controller
 
     private function get_namespace($instance)
     {
-        return  get_class($instance);;
+        $namespace = get_class($instance);
+        $namespace = explode("\\controllers", $namespace);
+        $namespace = explode("\\", $namespace[0]);
+        $namespace = implode(DS, $namespace);
+        return  $namespace;
     }
 
     abstract function index();

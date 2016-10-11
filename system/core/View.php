@@ -23,10 +23,13 @@ class View
 
     public function render($path, array $data = array())
     {
-
-        $namespace = explode("\\controllers", $this->namespace);
-        $vpathstr = explode("\\", $namespace[0]);
-        $vpath = implode(DS, $vpathstr);
+        $path = explode('/', $path);
+        $path = implode(DS, $path);
+        $path = explode('\\', $path);
+        $path = implode(DS, $path);
+        if(!$this->namespace){
+            $this->namespace = "app";
+        }
         ob_start();
         extract($data);
         try {
@@ -36,8 +39,7 @@ class View
             }
             $header = TEMPLATE_PATH . $template . DS . "header.php";
             $footer = TEMPLATE_PATH . $template . DS . "footer.php";
-            //$viewPath = VIEW_PATH . $path . ".php";
-            $viewPath = ROOT.$vpath . DS . "views" . DS . $path . ".php";
+            $viewPath = ROOT.$this->namespace. DS . "views" . DS . $path . ".php";
             $useTemplate = false;
             if (file_exists($header) && file_exists($footer)) {
                 $useTemplate = true;
