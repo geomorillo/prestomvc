@@ -45,10 +45,11 @@ class Cookie {
         return $_COOKIE;
     }
 
-    public static function destroy($key, $value = '', $path = "/", $domain = "") {
+    public static function destroy($key, $value = '', $path = "/",$domain=".test.geo") {
         if (isset($_COOKIE[$key])) {
+            $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
             unset($_COOKIE[$key]);
-            setcookie($key, $value, time() - 3600, $path, $domain);
+            setcookie($key, $value, time() - 3600, $path,$domain);
         }
     }
 

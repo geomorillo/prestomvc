@@ -151,7 +151,7 @@ class Auth
         if ($count == 0) {
             // Hash doesn't exist
             $this->errormsg[] = $this->lang['sessioninfo_invalid'];
-            Cookie::destroy('auth_session', $hash); //check if destroys deletes only a specific hash
+            Cookie::destroy('auth_session'); //check if destroys deletes only a specific hash
             return false;
         } else {
             // Hash exists
@@ -175,7 +175,7 @@ class Auth
         $count = count($session);
         if ($count == 0) {
             //hash did not exists deleting cookie
-            Cookie::destroy("auth_session", $hash);
+            Cookie::destroy("auth_session");
             $this->logActivity('UNKNOWN', "AUTH_CHECKSESSION", "User session cookie deleted - Hash ({$hash}) didn't exist");
             return false;
         } else {
@@ -185,7 +185,7 @@ class Auth
             if ($_SERVER['REMOTE_ADDR'] != $db_ip) {
                 //hash exists but ip is changed, delete session and hash
                 $this->db->table(DB_PREFIX . "auth_sessions")->where("username", $username)->delete();
-                Cookie::destroy("auth_session", $hash);
+                Cookie::destroy("auth_session");
                 $this->logActivity($username, "AUTH_CHECKSESSION", "User session cookie deleted - IP Different ( DB : {$db_ip} / Current : " . $_SERVER['REMOTE_ADDR'] . " )");
                 return false;
             } else {
@@ -194,7 +194,7 @@ class Auth
                 if ($currentdate > $expiredate) {
                     //session has expired delete session and cookies
                     $this->db->table(DB_PREFIX . "auth_sessions")->where("username", $username)->delete();
-                    Cookie::destroy("auth_session", $hash);
+                    Cookie::destroy("auth_session");
                     $this->logActivity($username, "AUTH_CHECKSESSION", "User session cookie deleted - Session expired ( Expire date : {$db_expiredate} )");
                 } else {
                     //all ok
@@ -213,6 +213,9 @@ class Auth
     {
         $attempt_count = $this->db->table(DB_PREFIX . "attempts")
                         ->where("ip", $ip)->select(["count"]);
+        if(!count($attempt_count)){
+            return 0;
+        }
         return (int) $attempt_count[0]->count;
     }
 
@@ -303,7 +306,7 @@ class Auth
                     ->where("username", $username)
                     ->delete();
             $this->logActivity($username, "AUTH_LOGOUT", "User session cookie deleted - Database session deleted - Hash ({$hash})");
-            Cookie::destroy("auth_session", $hash);
+            Cookie::destroy("auth_session");
         }
     }
 
