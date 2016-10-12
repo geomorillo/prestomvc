@@ -60,7 +60,7 @@ class View
 
     public function useTemplate($template)
     {
-        $this->$template = $template;
+        $this->template = $template;
         return $this;
     }
 

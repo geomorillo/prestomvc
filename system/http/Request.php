@@ -114,14 +114,13 @@ class Request
         if (isset($this->env['HTTP_X_REQUESTED_WITH']) && $this->env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
             $this->ajax = $this->env['HTTP_X_REQUESTED_WITH'];
         }
-
+        $this->method = $this->env['REQUEST_METHOD'];
         if ($this->is("post")) {
             foreach ($_POST as $key => $value) {
-                $this->query[$key] = $value;
+                $this->setQuery($key, $value);
             }
         }
-        // Request Method
-        $this->method = $this->env['REQUEST_METHOD'];
+
         $requestUri = isset($this->env['PATH_INFO']) ? $this->env['PATH_INFO'] : $this->env['REQUEST_URI'];
         if ($this->is("get")) {
             $this->parseQuery($requestUri);
