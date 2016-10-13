@@ -43,6 +43,7 @@ class Route
     public $action;
     public $url;
     private $view;
+    private $onion; //middleware
 
     /**
      *
@@ -60,12 +61,13 @@ class Route
     {
         $this->request = new Request();
         $this->view = new View();
+        $this->onion = new Onion();
     }
 
-    public function addRoute($method, $url, $action)
+    public function addRoute($method, $url, $action, $before, $after)
     {
         $url = !empty($url) ? $url : '/';
-        $this->routes[] = ["method" => $method, "url" => $url, "action" => $action];
+        $this->routes[] = ["method" => $method, "url" => $url, "action" => $action, "before" => $before, "after" => $after];
     }
 
     /**
@@ -86,8 +88,8 @@ class Route
                 $url = array_shift($matched);
                 $names = explode(',', $this->paramNames);
                 for ($i = 0; $i <= count($names) - 1; $i++) {
-                    if ($names[$i] != '') {   
-                        $param_str = explode('/',$url);
+                    if ($names[$i] != '') {
+                        $param_str = explode('/', $url);
                         $param = end($param_str);
                         $this->params[$names[$i]] = $param;
                     }
@@ -133,12 +135,29 @@ class Route
                         $filename = end($filename);
                         $action = explode("[", $this->action);
                         $action = array_shift($action);
+                        $this->action = $action;
                         if (class_exists($this->controller)) {
-                            if (isset($this->params)) {
-                                call_user_func_array(array(new $this->controller, $action), $this->params);
-                            } else {
-                                call_user_func(array(new $this->controller, $action));
+                            $object = new \stdClass;
+                            $object->runs = [];
+                            $layers = [];
+                            /* MIDDLEWARE */
+                            if (method_exists($this->controller, $route["before"])) {
+                                $layers[] = new BeforeLayer($this->controller, $route["before"]);
                             }
+                            if (method_exists($this->controller, $route["after"])) {
+                                $layers[] = new AfterLayer($this->controller, $route["after"]);
+                            }
+
+                            $this->onion->layer($layers)
+                                    ->peel($object, function($object) {
+                                        if (isset($this->params)) {
+                                            call_user_func_array(array(new $this->controller, $this->action), $this->params);
+                                        } else {
+                                            call_user_func(array(new $this->controller, $this->action));
+                                        }
+                                        $object->runs[] = 'core';
+                                        return $object;
+                                    });
                         }
                     }
                     $this->found = TRUE;
