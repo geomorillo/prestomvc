@@ -33,6 +33,7 @@ class Route
      * @var array Name of parameters for values
      */
     private $paramNames;
+    private $params;
 
     /**
      *
@@ -48,9 +49,9 @@ class Route
      * @var array Patterns Regexp 
      */
     private $patterns = array(
-        ":any" => ".*",
-        ":num" => "\d+",
-        ":all" => "\w+",
+        "[:any]" => ".",
+        "[:num]" => "\d+",
+        "[:all]" => "\w+",
     );
     public $request;
     private $found = FALSE;
@@ -85,8 +86,10 @@ class Route
                 $url = array_shift($matched);
                 $names = explode(',', $this->paramNames);
                 for ($i = 0; $i <= count($names) - 1; $i++) {
-                    if ($names[$i] != '') {
-                        $this->params[$names[$i]] = $matched[$i];
+                    if ($names[$i] != '') {   
+                        $param_str = explode('/',$url);
+                        $param = end($param_str);
+                        $this->params[$names[$i]] = $param;
                     }
                 }
                 $this->route = $url;
@@ -119,12 +122,13 @@ class Route
         foreach ($this->routes as $route) {
             $this->method = $route["method"];
             $this->url = $route["url"];
+            $this->parseAction($route["action"]);
             if ($this->match()) { //if the requesturl doesn't match the route don't execute it
                 if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
                     if ($route["action"] instanceof \Closure) {
                         $route["action"]();
                     } else {
-                        $this->parseAction($route["action"]);
+
                         $filename = explode("\\", $this->controller);
                         $filename = end($filename);
                         $action = explode("[", $this->action);
