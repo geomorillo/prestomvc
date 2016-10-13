@@ -33,6 +33,7 @@ class Route
      * @var array Name of parameters for values
      */
     private $paramNames;
+    private $params;
 
     /**
      *
@@ -42,15 +43,16 @@ class Route
     public $action;
     public $url;
     private $view;
+    private $onion; //middleware
 
     /**
      *
      * @var array Patterns Regexp 
      */
     private $patterns = array(
-        ":any" => ".*",
-        ":num" => "\d+",
-        ":all" => "\w+",
+        "[:any]" => ".",
+        "[:num]" => "\d+",
+        "[:all]" => "\w+",
     );
     public $request;
     private $found = FALSE;
@@ -59,12 +61,13 @@ class Route
     {
         $this->request = new Request();
         $this->view = new View();
+        $this->onion = new Onion();
     }
 
-    public function addRoute($method, $url, $action)
+    public function addRoute($method, $url, $action, $before, $after)
     {
         $url = !empty($url) ? $url : '/';
-        $this->routes[] = ["method" => $method, "url" => $url, "action" => $action];
+        $this->routes[] = ["method" => $method, "url" => $url, "action" => $action, "before" => $before, "after" => $after];
     }
 
     /**
@@ -86,7 +89,9 @@ class Route
                 $names = explode(',', $this->paramNames);
                 for ($i = 0; $i <= count($names) - 1; $i++) {
                     if ($names[$i] != '') {
-                        $this->params[$names[$i]] = $matched[$i];
+                        $param_str = explode('/', $url);
+                        $param = end($param_str);
+                        $this->params[$names[$i]] = $param;
                     }
                 }
                 $this->route = $url;
@@ -119,22 +124,40 @@ class Route
         foreach ($this->routes as $route) {
             $this->method = $route["method"];
             $this->url = $route["url"];
+            $this->parseAction($route["action"]);
             if ($this->match()) { //if the requesturl doesn't match the route don't execute it
                 if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
                     if ($route["action"] instanceof \Closure) {
                         $route["action"]();
                     } else {
-                        $this->parseAction($route["action"]);
+
                         $filename = explode("\\", $this->controller);
                         $filename = end($filename);
                         $action = explode("[", $this->action);
                         $action = array_shift($action);
+                        $this->action = $action;
                         if (class_exists($this->controller)) {
-                            if (isset($this->params)) {
-                                call_user_func_array(array(new $this->controller, $action), $this->params);
-                            } else {
-                                call_user_func(array(new $this->controller, $action));
+                            $object = new \stdClass;
+                            $object->runs = [];
+                            $layers = [];
+                            /* MIDDLEWARE */
+                            if (method_exists($this->controller, $route["before"])) {
+                                $layers[] = new BeforeLayer($this->controller, $route["before"]);
                             }
+                            if (method_exists($this->controller, $route["after"])) {
+                                $layers[] = new AfterLayer($this->controller, $route["after"]);
+                            }
+
+                            $this->onion->layer($layers)
+                                    ->peel($object, function($object) {
+                                        if (isset($this->params)) {
+                                            call_user_func_array(array(new $this->controller, $this->action), $this->params);
+                                        } else {
+                                            call_user_func(array(new $this->controller, $this->action));
+                                        }
+                                        $object->runs[] = 'core';
+                                        return $object;
+                                    });
                         }
                     }
                     $this->found = TRUE;
