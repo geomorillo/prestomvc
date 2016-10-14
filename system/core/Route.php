@@ -50,8 +50,8 @@ class Route
      * @var array Patterns Regexp 
      */
     private $patterns = array(
-        "[:any]" => ".",
-        "[:num]" => "\d+",
+        "[:any]" => '(.*?)',
+        "[:num]" => "(\d+)",
         "[:all]" => "\w+",
     );
     public $request;
@@ -61,7 +61,7 @@ class Route
     {
         $this->request = new Request();
         $this->view = new View();
-        $this->onion = new Onion();
+        $this->onion = new Onion(); //for middleware
     }
 
     public function addRoute($method, $url, $action, $before, $after)
@@ -81,17 +81,23 @@ class Route
         $requestUri = $this->request->getUrl();
         $route = $this->url;
         if (strpos($route, ':') !== false) {
-            $route = str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
+            $route = "/" . str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
+        } else {
+            $route = "/" . $route;
         }
-        if (preg_match("@^" . $route . "$@", $requestUri, $matched)) {
+        $pattern = "@^" . $route . "$@"; //"@^" . $route . "$@";
+        if (preg_match($pattern, $requestUri, $matched)) {
             if ($matched[0] === $requestUri) {
                 $url = array_shift($matched);
-                $names = explode(',', $this->paramNames);
-                for ($i = 0; $i <= count($names) - 1; $i++) {
-                    if ($names[$i] != '') {
-                        $param_str = explode('/', $url);
-                        $param = end($param_str);
-                        $this->params[$names[$i]] = $param;
+                preg_match('/\w+\//', $url, $replace);
+                if (count($replace)) {
+                    $value_str = str_replace("/" . $replace[0], "", $url);
+                    $values = explode("/", $value_str);
+
+                    for ($i = 0; $i <= count($values) - 1; $i++) {
+                        if ($values != '') {
+                            $this->params[] = $values[$i];
+                        }
                     }
                 }
                 $this->route = $url;
