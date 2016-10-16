@@ -82,7 +82,9 @@ class Route
         $route = $this->url;
         if (strpos($route, ':') !== false) {
             $route = "/" . str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
-        } else {
+        } elseif($route==="/") {
+            //do nothing (temporal fix) ugly fix later
+        }else{
             $route = "/" . $route;
         }
         $pattern = "@^" . $route . "$@"; //"@^" . $route . "$@";
