@@ -1,3 +1,7 @@
+#Prevent the httpoxy vulnerability see: https://httpoxy.org/
+<IfModule mod_headers.c>
+    RequestHeader unset Proxy
+</IfModule>
 <IfModule mod_alias.c>
     RedirectMatch 404 favicon.ico
 </IfModule>
