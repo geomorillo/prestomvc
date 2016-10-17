@@ -34,14 +34,14 @@ class Assets {
     {
         if(is_array($files)) {
             foreach($files as $js) {
-                echo '<script src="/assets/' . $js . '" type="text/javscript"></script>' . "\n";
+                echo '<script src="/assets/' . $js . '" type="text/javascript"></script>' . "\n";
             }
             
             return;
         }
         
         if (!empty($files)) {
-            echo '<script src="/assets/' . $files . '" type="text/javscript"></script>';
+            echo '<script src="/assets/' . $files . '" type="text/javascript"></script>';
         }
     }
     
