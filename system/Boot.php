@@ -64,6 +64,7 @@ class Boot
             register_shutdown_function('session_write_close');
             isset($_SESSION) || session_start();
         }
+        include CONFIG_PATH ."assets.php";
         $router = new Router();
         // Include the routes
         include "app/routes.php";

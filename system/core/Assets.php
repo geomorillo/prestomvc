@@ -13,42 +13,66 @@ namespace system\core;
  *
  * @author Daniel Navarro Ramírez
  */
-class Assets {
-    
-    public static function css($files = array())
+use system\helpers\File;
+
+class Assets
+{
+
+    private static $assets;
+
+    public static function add($assets)
     {
-        if(is_array($files)) {
-            foreach($files as $css) {
-                echo '<link href="/assets/' . $css . '" rel="stylesheet" type"text/css">' . "\n";
+        if (count($assets)) {
+            foreach ($assets as $name => $path) {
+                static::$assets[$name] = static::resolve($path);
             }
-            
-            return;
-        }
-        
-        if (!empty($files)) {
-            echo '<link href="/assets/' . $files . '" rel="stylesheet" type"text/css">';
         }
     }
-    
-    public static function js($files = array())
+
+    public static function group($assets)
     {
-        if(is_array($files)) {
-            foreach($files as $js) {
-                echo '<script src="/assets/' . $js . '" type="text/javscript"></script>' . "\n";
-            }
+        if (count($assets)) {
             
-            return;
-        }
-        
-        if (!empty($files)) {
-            echo '<script src="/assets/' . $files . '" type="text/javscript"></script>';
-        }
-    }
-    
-    public static function img($files, $title, $class = null, $width = null, $height = null, $alt = null)
-    {        
-        if (!empty($files)) {
-            echo '<img src="/assets/' . $files . '" class="'.$class.'" title="'.$title.'" alt="'.$alt.'" width="'.$width.'" height="'.$height.'">';
+            foreach ($assets as $name => $paths) {
+                $value = '';
+                foreach ($paths as $path) {
+                    $value.= static::resolve($path);
+                }
+                static::$assets[$name] = $value;
+            }
         }
     }
+
+    public static function get($name)
+    {
+        if (isset(static::$assets[$name])) {
+            return static::$assets[$name];
+        }
+    }
+
+    public static function getAll()
+    {
+        return static::$assets;
+    }
+
+    private static function resolve($path)
+    {
+        $ext = '';
+        if(!is_array($path)){
+            $ext = substr($path, strrpos($path, '.') + 1);
+        }
+        switch ($ext) {
+            case 'js':
+                $value = '<script src="/assets/' . $path . '" type="text/javascript"></script>' . PHP_EOL;
+                break;
+            case 'css':
+                $value = '<link href="/assets/' . $path . '" rel="stylesheet" type"text/css">' . PHP_EOL;
+                break;
+            default:
+                $value = '<img src="/assets/' . $path[0] . '" ' . $path[1] . ">" . PHP_EOL;
+                break;
+        }
+        return $value;
+    }
+
 }

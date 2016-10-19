@@ -1,3 +1,4 @@
+<?php use system\core\Assets; ?>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -8,7 +9,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-        <a class="navbar-brand" href="/"><?php system\core\Assets::img('images/logo.png', "PRESTO MVC", "img-responsive imagen", "130", "25"); ?></a>
+        <a class="navbar-brand" href="/"><?= $logo1 ?></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -23,7 +24,7 @@
 
 <section id="welcome" class="container">
     <div class="jumbotron">
-        <h1>Welcome to <?php system\core\Assets::img('images/logo.png', "PRESTO MVC", "", "200", "70"); ?></h1>
+        <h1>Welcome to <?= $logo2 ?></h1>
         
         <p>
             Is a new lightweight framework, made for people who is starting on the world of MVC patterns and wants to create new applications.
