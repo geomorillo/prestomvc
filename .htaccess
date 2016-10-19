@@ -2,9 +2,6 @@
 <IfModule mod_headers.c>
     RequestHeader unset Proxy
 </IfModule>
-<IfModule mod_alias.c>
-    RedirectMatch 404 favicon.ico
-</IfModule>
 
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
@@ -17,6 +14,7 @@
     RewriteRule ^(.*)/$ /$1 [L,R=301]
     # Handle Assets Folder
     RewriteRule ^assets/(.+)$ app/assets/$1 [NC,L]
+    RewriteRule ^favicon.ico app/assets/images/favicon.ico [NC,L]
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -24,4 +22,14 @@
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    
 </IfModule>
+<IFModule mod_deflate.c>
+<filesmatch "\.(js|css|html|jpg|png|php|ico)$">
+SetOutputFilter DEFLATE
+</filesmatch>
+</IFModule>
+#Enable this for cache control 1 year Month for most static assets
+#<filesMatch ".(css|jpg|jpeg|png|gif|js|ico)$">
+#Header set Cache-Control "max-age=31536000, public"
+#</filesMatch>
