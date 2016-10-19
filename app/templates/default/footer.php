@@ -1,3 +1,3 @@
-<?= $bootstrapcss.$styles ?>
+<?= $js ?>
 </body>
 </html>
