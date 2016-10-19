@@ -14,7 +14,7 @@ namespace system\core;
  * @author geomorillo
  */
 use system\core\LogException;
-
+use system\core\Assets;
 class View
 {
 
@@ -23,6 +23,7 @@ class View
 
     public function render($path, array $data = array())
     {
+        
         $path = explode('/', $path);
         $path = implode(DS, $path);
         $path = explode('\\', $path);
@@ -32,6 +33,7 @@ class View
         }
         ob_start();
         extract($data);
+        extract(Assets::getAll());
         try {
             $template = "default";
             if ($this->template) {

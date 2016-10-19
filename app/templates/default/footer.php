@@ -1,6 +1,3 @@
-    <?php \system\core\Assets::js([
-        "scripts/bootstrap.min.js",
-        "scripts/main.js"
-    ]); ?>
+<?= $bootstrapcss.$styles ?>
 </body>
 </html>
