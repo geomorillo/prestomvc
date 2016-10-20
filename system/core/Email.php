@@ -214,19 +214,37 @@ class Email
         return $this;
     }
 
+    /**
+     * Reply to 
+     * @param string $email The email to send to
+     * @param string $name The name from the email
+     */
     public function replyTo($email, $name)
     {
         $this->addMailHeader('Reply-To', $email, $name);
+        return $this;
     }
 
+    /**
+     * Carbon copy
+     * @param string $email The email to send to
+     * @param string $name The name from the email
+     */
     public function cc($email, $name)
     {
         $this->addMailHeader('Cc', $email, $name);
+        return $this;
     }
 
+    /**
+     * Blind Carbon Copy
+      * @param string $email The email to send to
+     * @param string $name The name from the email
+     */
     public function bcc($email, $name)
     {
         $this->addMailHeader('Bcc', $email, $name);
+        return $this;
     }
 
     /**
