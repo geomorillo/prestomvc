@@ -67,7 +67,7 @@ class View
     }
     
     public function partial($path){
-        $path = APP_PATH.$path;
+        $path = APP_PATH.$path.".php";
         return file_get_contents($path);
     }
 
