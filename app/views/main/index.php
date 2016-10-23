@@ -1,4 +1,3 @@
-<?php use system\core\Assets; ?>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -42,7 +41,7 @@
                 <ul>
                     <li>Lightweight Framework</li>
                     <li>Easy to install</li>
-                    <li>NOTORM Database (SOON)</li>
+                    <li>NOTORM Database</li>
                     <li>Templates for each view</li>
                     <li>Many and useful helpers</li>
                     <li>Easy to manage</li>
