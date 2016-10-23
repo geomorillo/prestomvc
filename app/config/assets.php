@@ -10,5 +10,5 @@ $assets = [
 ];
 Assets::add($assets);
 // group by name only extension js, and css.
-$js = ["js" => [ "scripts/jquery.min.js", "scripts/bootstrap.min.js"]];
+$js = ["js" => [ "js/jquery.min.js", "js/bootstrap.min.js"]];
 Assets::group($js);

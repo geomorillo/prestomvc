@@ -66,7 +66,7 @@ class Assets
                 $value = '<script src="/assets/' . $path . '" type="text/javascript"></script>' . PHP_EOL;
                 break;
             case 'css':
-                $value = '<link href="/assets/' . $path . '" rel="stylesheet" type"text/css">' . PHP_EOL;
+                $value = '<link href="/assets/' . $path . '" rel="stylesheet" type="text/css">' . PHP_EOL;
                 break;
             default:
                 $value = '<img src="/assets/' . $path[0] . '" ' . $path[1] . ">" . PHP_EOL;

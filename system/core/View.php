@@ -65,6 +65,11 @@ class View
         $this->template = $template;
         return $this;
     }
+    
+    public function partial($path){
+        $path = APP_PATH.$path.".php";
+        return file_get_contents($path);
+    }
 
     public function setCaller($namespace)
     {
