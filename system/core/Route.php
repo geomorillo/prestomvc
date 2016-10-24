@@ -115,11 +115,6 @@ class Route
         $parts = explode("@", $action);
         $this->controller = array_shift($parts);
         $this->action = array_shift($parts);
-        preg_match("/\[[\w+\s\,]+\]/", $action, $matched);
-        $asd = implode($matched);
-        $asd = ltrim($asd, "[");
-        $asd = rtrim($asd, "]");
-        $this->paramNames = $asd;
     }
 
     /**
@@ -132,7 +127,10 @@ class Route
         foreach ($this->routes as $route) {
             $this->method = $route["method"];
             $this->url = $route["url"];
-            $this->parseAction($route["action"]);
+            if(!($route["action"] instanceof \Closure)){
+                $this->parseAction($route["action"]);
+            }
+            
             if ($this->match()) { //if the requesturl doesn't match the route don't execute it
                 if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
                     if ($route["action"] instanceof \Closure) {
