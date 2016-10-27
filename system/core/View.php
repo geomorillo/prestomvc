@@ -15,20 +15,21 @@ namespace system\core;
  */
 use system\core\LogException;
 use system\core\Assets;
+
 class View
 {
 
     private $template;
     private $namespace;
+    private $partial;
 
     public function render($path, array $data = array())
     {
-        
         $path = explode('/', $path);
         $path = implode(DS, $path);
         $path = explode('\\', $path);
         $path = implode(DS, $path);
-        if(!$this->namespace){
+        if (!$this->namespace) {
             $this->namespace = "app";
         }
         ob_start();
@@ -41,18 +42,23 @@ class View
             }
             $header = TEMPLATE_PATH . $template . DS . "header.php";
             $footer = TEMPLATE_PATH . $template . DS . "footer.php";
-            $viewPath = ROOT.$this->namespace. DS . "views" . DS . $path . ".php";
+            if (!$this->partial) {
+                $viewPath = ROOT . $this->namespace . DS . "views" . DS . $path . ".php";
+            } else {
+                $viewPath = ROOT . $this->namespace . DS . $path . ".php";
+            }
             $useTemplate = false;
             if (file_exists($header) && file_exists($footer)) {
                 $useTemplate = true;
             }
-            if ($useTemplate) {
+            if ($useTemplate && !$this->partial) {
                 include $header;
             }
             include $viewPath;
-            if ($useTemplate) {
+            if ($useTemplate && !$this->partial) {
                 include $footer;
             }
+            $this->partial = FALSE;
         } catch (LogException $le) {
             ob_end_clean();
             throw $le->logError();
@@ -65,10 +71,11 @@ class View
         $this->template = $template;
         return $this;
     }
-    
-    public function partial($path){
-        $path = APP_PATH.$path.".php";
-        return file_get_contents($path);
+
+    public function partial($path, $data = [])
+    {
+        $this->partial = TRUE;
+        return $this->render($path, $data);
     }
 
     public function setCaller($namespace)
