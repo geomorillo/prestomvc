@@ -32,4 +32,9 @@ class Router extends Route
         return $this->addRoute('DELETE', $route, $action, $before, $after);
     }
 
+    public function any($route, $action, $before = NULL, $after = NULL)
+    {
+        return $this->addRoute('ANY', $route, $action, $before, $after);
+    }
+
 }

@@ -82,9 +82,9 @@ class Route
         $route = $this->url;
         if (strpos($route, ':') !== false) {
             $route = "/" . str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
-        } elseif($route==="/") {
+        } elseif ($route === "/") {
             //do nothing (temporal fix) ugly fix later
-        }else{
+        } else {
             $route = "/" . $route;
         }
         $pattern = "@^" . $route . "$@"; //"@^" . $route . "$@";
@@ -124,15 +124,21 @@ class Route
      */
     public function dispatch()
     {
+        $currentMethod = $this->request->getMethod();
+        $currentUrl = $this->request->getUrl();
         foreach ($this->routes as $route) {
-            $this->method = $route["method"];
+            if ($route["method"] === 'ANY') {
+                $this->method = $currentMethod;
+            } else {
+                $this->method = $route["method"];
+            }
             $this->url = $route["url"];
-            if(!($route["action"] instanceof \Closure)){
+            if (!($route["action"] instanceof \Closure)) {
                 $this->parseAction($route["action"]);
             }
-            
+
             if ($this->match()) { //if the requesturl doesn't match the route don't execute it
-                if ($this->request->getMethod() === $this->method && $this->request->getUrl() === $this->route) {
+                if ($currentMethod === $this->method && $currentUrl === $this->route) {
                     if ($route["action"] instanceof \Closure) {
                         $route["action"]();
                     } else {
