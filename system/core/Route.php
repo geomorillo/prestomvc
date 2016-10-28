@@ -91,14 +91,13 @@ class Route
         if (preg_match($pattern, $requestUri, $matched)) {
             if ($matched[0] === $requestUri) {
                 $url = array_shift($matched);
+                $params_arr = $matched;
                 preg_match('/\w+\//', $url, $replace);
-                if (count($replace)) {
-                    $value_str = str_replace("/" . $replace[0], "", $url);
-                    $values = explode("/", $value_str);
-
-                    for ($i = 0; $i <= count($values) - 1; $i++) {
-                        if ($values != '') {
-                            $this->params[] = $values[$i];
+                $countparams =count($params_arr); 
+                if ($countparams) {
+                    for ($i = 0; $i <= $countparams - 1; $i++) {
+                        if ($params_arr != '') {
+                            $this->params[] = $params_arr[$i];
                         }
                     }
                 }
