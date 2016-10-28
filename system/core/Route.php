@@ -80,26 +80,18 @@ class Route
     {
         $requestUri = $this->request->getUrl();
         $route = $this->url;
-        if (strpos($route, ':') !== false) {
+        if (strpos($route, ':')) {
             $route = "/" . str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
-        } elseif ($route === "/") {
-            //do nothing (temporal fix) ugly fix later
-        } else {
+        }  elseif($route !== "/") {
             $route = "/" . $route;
         }
         $pattern = "@^" . $route . "$@"; //"@^" . $route . "$@";
         if (preg_match($pattern, $requestUri, $matched)) {
             if ($matched[0] === $requestUri) {
                 $url = array_shift($matched);
-                $params_arr = $matched;
                 preg_match('/\w+\//', $url, $replace);
-                $countparams =count($params_arr); 
-                if ($countparams) {
-                    for ($i = 0; $i <= $countparams - 1; $i++) {
-                        if ($params_arr != '') {
-                            $this->params[] = $params_arr[$i];
-                        }
-                    }
+                if (count($matched)) {
+                    $this->params = $matched;
                 }
                 $this->route = $url;
             }
