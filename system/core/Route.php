@@ -28,11 +28,7 @@ class Route
      */
     public $method;
 
-    /**
-     *
-     * @var array Name of parameters for values
-     */
-    private $paramNames;
+
     private $params;
 
     /**
@@ -82,7 +78,7 @@ class Route
         $route = $this->url;
         if (strpos($route, ':')) {
             $route = "/" . str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
-        }  elseif($route !== "/") {
+        } elseif ($route !== "/") {
             $route = "/" . $route;
         }
         $pattern = "@^" . $route . "$@"; //"@^" . $route . "$@";
@@ -131,6 +127,7 @@ class Route
             if ($this->match()) { //if the requesturl doesn't match the route don't execute it
                 if ($currentMethod === $this->method && $currentUrl === $this->route) {
                     if ($route["action"] instanceof \Closure) {
+                        $this->found = TRUE;
                         $route["action"]();
                     } else {
 
@@ -161,14 +158,15 @@ class Route
                                         $object->runs[] = 'core';
                                         return $object;
                                     });
+                            $this->found = TRUE;
+                        } else {
+                            $this->found = FALSE;
                         }
                     }
-                    $this->found = TRUE;
                 }
             }
         }
         if (!$this->found) {
-
             echo $this->view->useTemplate("error")->render("error/404");
         }
     }
