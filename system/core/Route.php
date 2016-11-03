@@ -174,8 +174,8 @@ class Route
     public function removeSpecialChars($action)
     {
 
-        $some_special_chars = array("\t", "\n", "\f", "\c");
-        $replacement_chars = array("\\t", "\\n", "\\f", "\\c");
+        $some_special_chars = array("\t", "\n", "\f", "\r","\e","\v");
+        $replacement_chars = array("\\t", "\\n", "\\f", "\\r","\\e","\\v");
         $rep = str_replace($some_special_chars, $replacement_chars, $action);
         return $rep;
     }
