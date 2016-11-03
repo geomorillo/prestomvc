@@ -130,9 +130,6 @@ class Route
                         $this->found = TRUE;
                         $route["action"]();
                     } else {
-                        // $action = explode("[", $this->action);
-                        // $action = array_shift($action);
-                        // $this->action = $action; 
                         $this->controller = $this->removeSpecialChars($this->controller);
                         if (class_exists($this->controller)) {//handle double quote string
                             $object = new \stdClass;
