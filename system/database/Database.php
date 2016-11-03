@@ -43,7 +43,7 @@ class Database
 
     public function __construct()
     {
-        $this->config = include CONFIG_PATH.'database_config.php';
+        $this->config = include CONFIG_PATH . 'database_config.php';
         call_user_func_array(array(__NAMESPACE__ . '\Database', 'strConn'), [$this->config["default"]]);
     }
 
@@ -273,8 +273,8 @@ class Database
     public function whereBetween($field, $values = [])
     {
         if (count($values)) {
-            $this->_query .= " $this->_connector $field BETWEEN '$values[0]' and '$values[1]'";
-            $this->_connector = "AND";
+            $this->_query .= " $this->_where $field BETWEEN '$values[0]' and '$values[1]'";
+            $this->_where = "AND";
         }
         return $this;
     }
@@ -292,8 +292,8 @@ class Database
      */
     public function likeWhere($field, $value)
     {
-        $this->_query .= " $this->_connector $field LIKE '%$value%'";
-        $this->_connector = "AND";
+        $this->_query .= " $this->_where $field LIKE '%$value%'";
+        $this->_where = "AND";
         return $this;
     }
 
@@ -312,7 +312,7 @@ class Database
             $operator = "=";
         }
         $this->_query .= " OR $field $operator '$value'";
-        $this->_connector = "AND";
+        $this->_where = "AND";
         return $this;
     }
 
@@ -325,8 +325,8 @@ class Database
     public function in($field, $values = [])
     {
         if (count($values)) {
-            $this->_query .= " $this->_connector $field IN (" . implode(",", $values) . ")";
-            $this->_connector = "AND";
+            $this->_query .= " $this->_where $field IN (" . implode(",", $values) . ")";
+            $this->_where = "AND";
         }
     }
 
@@ -339,8 +339,8 @@ class Database
     public function notIn($field, $values = [])
     {
         if (count($values)) {
-            $this->_query .= " $this->_connector $field NOT IN (" . implode(",", $values) . ")";
-            $this->_connector = "AND";
+            $this->_query .= " $this->_where $field NOT IN (" . implode(",", $values) . ")";
+            $this->_where = "AND";
         }
     }
 
@@ -348,9 +348,12 @@ class Database
      * get first row from query results
      * @return array
      */
-    public function first()
+    public function first($selectNew = true)
     {
-        $first = $this->select();
+        if ($selectNew === true)
+            $first = $this->select();
+        else
+            $first = $this->results();
         if (count($first))
             return $first[0];
 
@@ -391,7 +394,88 @@ class Database
     }
 
     /**
-     * DB::error()
+     * make join between tables
+     * @param string $table
+     * @param array $condition
+     * @param string $join
+     * @return $this
+     */
+
+    /**
+     * How to use :
+     * 
+     * $db->table("blog")->join("comments", ["comments.id", "=", blog.id], "left");
+     *
+     * sql = SELECT * FROM blog LEFT JOIN comments ON comments.id = blog.id
+     */
+    public function join($table, $condition = [], $join = '')
+    {
+        // make sure the $condition has 3 indexes (`table_one.field`, operator, `table_tow.field`)
+        if (count($condition) == 3)
+            $this->_query .= strtoupper($join) . // convert $join to upper case (left -> LEFT)
+                    " JOIN {$table} ON {$condition[0]} {$condition[1]} {$condition[2]}";
+
+        // that's it now return object from this class
+        return $this;
+    }
+
+    /**
+     * view query results in table
+     * we need to create a simple table to view results of query
+     * @return string (html)
+     */
+
+    /**
+     * How to Use:
+     * $db->table("blog")->where("vote", ">", 2)->select();
+     * echo $db->dataView();
+     */
+    public function dataView()
+    {
+        // get columns count to create the table
+        $colsCount = count($this->first(false));
+        // if no data received so return no data found!
+        if ($colsCount <= 0) {
+            return config("pagination.no_data_found_message");
+        }
+        // get Columns name's
+        $colsName = array_keys((array) $this->first(false));
+
+        // init html <table> tag
+        $html = "<table border=1><thead><tr>";
+
+        /**
+         * create table header
+         * its contain table columns names
+         */
+        foreach ($colsName as $colName) {
+            $html .= "<th>";
+            $html .= $colName;
+            $html .= "</th>";
+        }
+
+        // end table header tag and open table body tag
+        $html .= "</tr></thead><tbody>";
+        // loop all results to create the table (tr's and td's)
+        foreach ((array) $this->results() as $row) {
+            $row = (array) $row; // make sure the $row is array and not an object
+            $html .= "<tr>"; // open tr tag
+            // loop all columns in row to create <td>'s tags
+            for ($i = 0; $i <= $colsCount + 1; $i++) {
+                $html .= "<td>";
+                $html .= $row[$colsName[$i]]; // get current data from the row
+                $html .= "</td>";
+            }
+            $html .= "</tr>";
+        }
+
+        $html .= "</tbody></table>";
+
+        return $html; // return created table
+    }
+
+    /**
+     * This will return if any error happened
      * return _error variable
      * @return bool
      */
@@ -424,8 +508,9 @@ class Database
     {
         return $this->_pdo->quote($string);
     }
-    
-    public function count(){
+
+    public function count()
+    {
         return $this->_count;
     }
 
