@@ -22,7 +22,9 @@ class Auth
 
     public function __construct()
     {
-        new Setup(); // loads Setup
+        if (!class_exists(new Setup())) {
+            new Setup(); // loads Setup
+        }
         $this->lang = include 'Lang.php'; //language file messages
         $this->db = Database::connect();
         $this->expireAttempt(); //expire attempts
