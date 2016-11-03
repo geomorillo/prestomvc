@@ -27,8 +27,6 @@ class Route
      * @var string Method to request
      */
     public $method;
-
-
     private $params;
 
     /**
@@ -63,7 +61,9 @@ class Route
     public function addRoute($method, $url, $action, $before, $after)
     {
         $url = !empty($url) ? $url : '/';
-        $this->routes[] = ["method" => $method, "url" => $url, "action" => $action, "before" => $before, "after" => $after];
+        if ($this->checkActionFormat($action)) {
+            $this->routes[] = ["method" => $method, "url" => $url, "action" => $action, "before" => $before, "after" => $after];
+        }
     }
 
     /**
@@ -77,9 +77,9 @@ class Route
         $requestUri = $this->request->getUrl();
         $route = $this->url;
         if (strpos($route, ':')) {
-            $route = "/" . str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
-        } elseif ($route !== "/") {
-            $route = "/" . $route;
+            $route = '/' . str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
+        } elseif ($route !== '/') {
+            $route = '/' . $route;
         }
         $pattern = "@^" . $route . "$@"; //"@^" . $route . "$@";
         if (preg_match($pattern, $requestUri, $matched)) {
@@ -130,13 +130,11 @@ class Route
                         $this->found = TRUE;
                         $route["action"]();
                     } else {
-
-                        $filename = explode("\\", $this->controller);
-                        $filename = end($filename);
-                        $action = explode("[", $this->action);
-                        $action = array_shift($action);
-                        $this->action = $action;
-                        if (class_exists($this->controller)) {
+                        // $action = explode("[", $this->action);
+                        // $action = array_shift($action);
+                        // $this->action = $action; 
+                        $this->controller = $this->removeSpecialChars($this->controller);
+                        if (class_exists($this->controller)) {//handle double quote string
                             $object = new \stdClass;
                             $object->runs = [];
                             $layers = [];
@@ -168,6 +166,39 @@ class Route
         }
         if (!$this->found) {
             echo $this->view->useTemplate("error")->render("error/404");
+        }
+    }
+
+    /**
+     * Handle double quoted escaped characters \n \t \f \c in route action
+     * @param type $action
+     * @return type
+     */
+    public function removeSpecialChars($action)
+    {
+
+        $some_special_chars = array("\t", "\n", "\f", "\c");
+        $replacement_chars = array("\\t", "\\n", "\\f", "\\c");
+        $rep = str_replace($some_special_chars, $replacement_chars, $action);
+        return $rep;
+    }
+
+    /**
+     * Checks if action has correct formar Controller@function
+     * @param mixed $action
+     * @return boolean
+     */
+    public function checkActionFormat($action)
+    {
+        if ($action instanceof \Closure) { //closures are ok
+            return TRUE;
+        } elseif (is_string($action)) {
+            $parts = explode("@", $action); //check if action has correct format do not add them
+            if (count($parts) > 1) {
+                return TRUE;
+            }
+        } else {
+            return FALSE;
         }
     }
 
