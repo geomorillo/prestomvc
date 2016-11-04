@@ -22,8 +22,8 @@ class Auth
 
     public function __construct()
     {
-        new Setup(); // loads Setup
-        $this->lang = include 'Lang.php'; //language file messages
+        include_once 'Setup.php'; // loads Setup
+        $this->lang = include_once 'Lang.php'; //language file messages
         $this->db = Database::connect();
         $this->expireAttempt(); //expire attempts
     }
@@ -213,7 +213,7 @@ class Auth
     {
         $attempt_count = $this->db->table(DB_PREFIX . "attempts")
                         ->where("ip", $ip)->select(["count"]);
-        if(!count($attempt_count)){
+        if (!count($attempt_count)) {
             return 0;
         }
         return (int) $attempt_count[0]->count;
