@@ -33,17 +33,23 @@ class Database
      * @var $_error type bool if cant fetch sql statement = true otherwise = false
      */
     private $_pdo,
-            $_query = '',
             $_results,
             $_count,
-            $_where = "WHERE",
-            $_typeQuery = '';
+            $_typeQuery = '',
+            $_isJoin = FALSE;
+    private $queries = [];
     protected $table;
     protected $config;
 
     public function __construct()
     {
         $this->config = include CONFIG_PATH . 'database_config.php';
+        $this->queries['where'] = [];
+        $this->queries['orwhere'] = [];
+        $this->queries['orderby'] = [];
+        $this->queries['join'] = [];
+        $this->queries['limit'] = '';
+        $this->queries['offset'] = '';
         call_user_func_array(array(__NAMESPACE__ . '\Database', 'strConn'), [$this->config["default"]]);
     }
 
@@ -90,7 +96,7 @@ class Database
     }
 
     /**
-     * DB::connect()
+     * Singleton Database
      * return instace
      * @return object
      */
@@ -114,8 +120,6 @@ class Database
     public function query($sql, $params = [])
     {
         try {
-            $this->_query = "";
-            $this->_where = "WHERE";
             $this->_error = false;
             // check if sql statement is prepared
             $query = $this->_pdo->prepare($sql);
@@ -128,8 +132,15 @@ class Database
             $result = $query->execute();
             $this->typeQuery($sql); //determina si es un select en un raw query
             if ($this->_typeQuery == "SELECT" && $result) {
-                $this->_results = $query->fetchAll($this->config["fetch"]);
+                if ($this->_isJoin) {
+                    $this->_results = json_decode(json_encode($query->fetchAll(\PDO::FETCH_NAMED))); //avoid column name colision
+                    $this->_isJoin = FALSE;
+                } else {
+                    $this->_results = $query->fetchAll($this->config["fetch"]);
+                }
                 $this->_count = $query->rowCount();
+            } else {
+                $this->clean();
             }
         } catch (LogException $e) {
             $this->_results = NULL;
@@ -140,7 +151,6 @@ class Database
     }
 
     /**
-     * DB::insert()
      * insert into database tables
      * @param string $table
      * @param array $values
@@ -189,8 +199,8 @@ class Database
             }
             $set = implode(",", $set);
 
-            $sql = "UPDATE {$this->_table} SET {$set} " . $this->_query;
-            // check if query is not have an error
+            $sql = "UPDATE {$this->_table} SET {$set} " . $this->contructQuery();
+            // check if query is not having an error
             if (!$this->query($sql, $values)->error()) {
                 return true;
             }
@@ -206,8 +216,8 @@ class Database
     public function select($fields = ['*'])
     {
         $this->_typeQuery = "SELECT";
-        $sql = "SELECT " . implode(', ', $fields) . " FROM {$this->_table} {$this->_query}";
-        $this->_query = $sql;
+        $sql = "SELECT " . implode(', ', $fields) . " FROM {$this->_table} {$this->contructQuery()}";
+        $this->queries = NULL;
         return $this->query($sql)->results();
     }
 
@@ -218,10 +228,11 @@ class Database
     public function delete()
     {
         $this->_typeQuery = "DELETE";
-        $sql = "DELETE FROM $this->_table " . $this->_query;
+        $sql = "DELETE FROM $this->_table " . $this->contructQuery();
         $delete = $this->query($sql);
-        if ($delete)
+        if ($delete) {
             return true;
+        }
         $this->_error = true;
         return false;
     }
@@ -235,8 +246,6 @@ class Database
     {
         $find = $this->where("id", $id)
                 ->select();
-        $this->_query = '';
-        $this->_where = "WHERE";
         return isset($find[0]) ? $find[0] : [];
     }
 
@@ -257,10 +266,12 @@ class Database
             $value = $operator;
             $operator = "=";
         }
-        if (!is_numeric($value))
+        if (!is_numeric($value)) {
             $value = "'$value'";
-        $this->_query .= " $this->_where $field $operator $value";
-        $this->_where = "AND";
+        }
+        $this->queries['where'][] = "($field $operator $value)";
+
+
         return $this;
     }
 
@@ -273,8 +284,7 @@ class Database
     public function whereBetween($field, $values = [])
     {
         if (count($values)) {
-            $this->_query .= " $this->_where $field BETWEEN '$values[0]' and '$values[1]'";
-            $this->_where = "AND";
+            $this->queries['where'][] = "($field BETWEEN '$values[0]' AND '$values[1]')";
         }
         return $this;
     }
@@ -292,8 +302,7 @@ class Database
      */
     public function likeWhere($field, $value)
     {
-        $this->_query .= " $this->_where $field LIKE '%$value%'";
-        $this->_where = "AND";
+        $this->queries['where'][] = "($field LIKE '%$value%')";
         return $this;
     }
 
@@ -311,8 +320,7 @@ class Database
             $value = $operator;
             $operator = "=";
         }
-        $this->_query .= " OR $field $operator '$value'";
-        $this->_where = "AND";
+        $this->queries['orwhere'][] = "($field $operator '$value')";
         return $this;
     }
 
@@ -325,9 +333,9 @@ class Database
     public function in($field, $values = [])
     {
         if (count($values)) {
-            $this->_query .= " $this->_where $field IN (" . implode(",", $values) . ")";
-            $this->_where = "AND";
+            $this->queries['where'][] = "($field IN (" . implode(",", $values) . "))";
         }
+        return $this;
     }
 
     /**
@@ -339,23 +347,23 @@ class Database
     public function notIn($field, $values = [])
     {
         if (count($values)) {
-            $this->_query .= " $this->_where $field NOT IN (" . implode(",", $values) . ")";
-            $this->_where = "AND";
+            $this->queries['where'][] = "($field NOT IN (" . implode(",", $values) . "))";
         }
+        return $this;
     }
 
     /**
      * get first row from query results
      * @return array
      */
-    public function first($selectNew = true)
+    public function first()
     {
-        if ($selectNew === true)
-            $first = $this->select();
-        else
-            $first = $this->results();
-        if (count($first))
+
+        $first = $this->select();
+
+        if (count($first)) {
             return $first[0];
+        }
 
         return [];
     }
@@ -367,7 +375,9 @@ class Database
      */
     public function limit($limit)
     {
-        $this->_query .= " LIMIT " . (int) $limit;
+        if (!$this->queries['limit']) { //only one allowed
+            $this->queries['limit'] = " LIMIT " . (int) $limit;
+        }
         return $this;
     }
 
@@ -378,7 +388,9 @@ class Database
      */
     public function offset($offset)
     {
-        $this->_query .=" OFFSET " . $offset;
+        if (!$this->queries['offset']) { //only one allowed
+            $this->queries['offset'] = " OFFSET " . $offset;
+        }
         return $this;
     }
 
@@ -389,6 +401,7 @@ class Database
      */
     public function table($table)
     {
+        $this->clean();
         $this->_table = $table;
         return $this;
     }
@@ -412,66 +425,18 @@ class Database
     {
         // make sure the $condition has 3 indexes (`table_one.field`, operator, `table_tow.field`)
         if (count($condition) == 3)
-            $this->_query .= strtoupper($join) . // convert $join to upper case (left -> LEFT)
+            $this->queries['join'][] = strtoupper($join) . // convert $join to upper case (left -> LEFT)
                     " JOIN {$table} ON {$condition[0]} {$condition[1]} {$condition[2]}";
+        $this->_isJoin = TRUE; //is join then change to PDO::FETCH_NUM to avoid column colission
 
-        // that's it now return object from this class
         return $this;
     }
 
-    /**
-     * view query results in table
-     * we need to create a simple table to view results of query
-     * @return string (html)
-     */
-
-    /**
-     * How to Use:
-     * $db->table("blog")->where("vote", ">", 2)->select();
-     * echo $db->dataView();
-     */
-    public function dataView()
+    public function orderBy($field, $position = 'ASC')
     {
-        // get columns count to create the table
-        $colsCount = count($this->first(false));
-        // if no data received so return no data found!
-        if ($colsCount <= 0) {
-            return config("pagination.no_data_found_message");
-        }
-        // get Columns name's
-        $colsName = array_keys((array) $this->first(false));
-
-        // init html <table> tag
-        $html = "<table border=1><thead><tr>";
-
-        /**
-         * create table header
-         * its contain table columns names
-         */
-        foreach ($colsName as $colName) {
-            $html .= "<th>";
-            $html .= $colName;
-            $html .= "</th>";
-        }
-
-        // end table header tag and open table body tag
-        $html .= "</tr></thead><tbody>";
-        // loop all results to create the table (tr's and td's)
-        foreach ((array) $this->results() as $row) {
-            $row = (array) $row; // make sure the $row is array and not an object
-            $html .= "<tr>"; // open tr tag
-            // loop all columns in row to create <td>'s tags
-            for ($i = 0; $i <= $colsCount + 1; $i++) {
-                $html .= "<td>";
-                $html .= $row[$colsName[$i]]; // get current data from the row
-                $html .= "</td>";
-            }
-            $html .= "</tr>";
-        }
-
-        $html .= "</tbody></table>";
-
-        return $html; // return created table
+        $position = strtoupper($position);
+        $this->queries['orderby'][] = "$field $position";
+        return $this;
     }
 
     /**
@@ -512,6 +477,61 @@ class Database
     public function count()
     {
         return $this->_count;
+    }
+
+    /**
+     * Constructs the query
+     */
+    public function contructQuery()
+    {
+        $query = '';
+        if (count($this->queries['join'])) {
+            $query .= implode(" ", $this->queries['join']);
+        }
+        if (count($this->queries['where'])) {
+            $query .= ' WHERE ' . implode(" AND ", $this->queries['where']);
+        }
+        if (count($this->queries['orwhere'])) {
+            $query .= ' OR ' . implode(" OR ", $this->queries['orwhere']);
+        }
+        if (count($this->queries['orderby'])) {
+            $query.= ' ORDER BY ' . implode(', ', $this->queries['orderby']);
+        }
+
+        if (count($this->queries['limit'])) {
+            $query.= $this->queries['limit'];
+        }
+        if (count($this->queries['offset']) && $this->_typeQuery == 'SELECT') {
+            $query.= $this->queries['offset'];
+        }
+
+        return $query;
+    }
+    /**
+     * Clean some variables
+     */
+    public function clean()
+    {
+        $this->_results = NULL;
+        $this->queries['where'] = [];
+        $this->queries['orwhere'] = [];
+        $this->queries['orderby'] = [];
+        $this->queries['join'] = [];
+        $this->queries['limit'] = '';
+        $this->queries['offset'] = '';
+        $this->table = '';
+    }
+    
+    /**
+     * Show columns from a table
+     * @param type $tableName
+     * @return 
+     */
+    public function desc($tableName)
+    {
+        $sql = "select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS 
+                where TABLE_NAME = '$tableName'";
+        return $this->_pdo->exec($sql);
     }
 
 }
