@@ -65,9 +65,10 @@ class Boot
             isset($_SESSION) || session_start();
         }
         include CONFIG_PATH ."assets.php";
+        include CONFIG_PATH .'events.php';
         $router = new Router();
         // Include the routes
-        include "app/routes.php";
+        include "app".DS."routes.php";
         Register::modules($router);
         $router->dispatch();
     }
