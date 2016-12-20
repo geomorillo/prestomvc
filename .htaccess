@@ -4,6 +4,7 @@
 </IfModule>
 
 <IfModule mod_rewrite.c>
+    Options -Indexes 
     <IfModule mod_negotiation.c>
         Options -MultiViews
     </IfModule>
