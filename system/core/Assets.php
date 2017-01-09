@@ -42,6 +42,15 @@ class Assets
             }
         }
     }
+    
+    public static function addToGroup($group, $path){
+        //get current group
+        $current = static::$assets[$group];
+        //append to current group
+        $current.= static::resolve($path);
+        //modify current group
+        static::$assets[$group] = $current;        
+    }
 
     public static function get($name)
     {
@@ -61,15 +70,16 @@ class Assets
         if(!is_array($path)){
             $ext = substr($path, strrpos($path, '.') + 1);
         }
+        
         switch ($ext) {
             case 'js':
-                $value = '<script src="/assets/' . $path . '" type="text/javascript"></script>' . PHP_EOL;
+                $value = '<script src="'.  baseUrl('/assets/' . $path) . '" type="text/javascript"></script>' . PHP_EOL;
                 break;
             case 'css':
-                $value = '<link href="/assets/' . $path . '" rel="stylesheet" type="text/css">' . PHP_EOL;
+                $value = '<link href="'.baseUrl('/assets/' . $path) . '" rel="stylesheet" type="text/css">' . PHP_EOL;
                 break;
             default:
-                $value = '<img src="/assets/' . $path[0] . '" ' . $path[1] . ">" . PHP_EOL;
+                $value = '<img src="'.baseUrl('/assets/' . $path[0]) . '" ' .$path[1] . ">" . PHP_EOL;
                 break;
         }
         return $value;
