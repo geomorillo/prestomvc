@@ -26,6 +26,7 @@ Databases supports many drivers (mysql, sqlite, PostgreSQL, mssql, sybase, Oracl
                 </div>
                 <p>Well, you did install the framework but, you need to set some parameters for the correct working.</p>
                 <ol>
+                <li>Create a virtualhost</li>
                     <li>Go to <code>/app/config/config.php</code> and set up your configurations</li>
                     <li>Go to <code>/app/config/database_config.php</code> and set up your connection to your database and his respective table.</li>
                     <li>Finally set up tou routes on the file <code>/app/Routes.php</code></li>
