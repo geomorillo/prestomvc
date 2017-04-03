@@ -9,9 +9,10 @@
 namespace system\helpers;
 
 /**
- * Description of Paginator
+ * Paginates a set of data using the pdo methods from Database class
  *
  * @author Daniel Navarro Ramírez
+ * @author Manuel Jhobanny Morillo
  */
 use system\http\Request;
 use system\database\Database;
@@ -48,6 +49,7 @@ class Paginator
      * @var type string Table rows(records)
      */
     private static $rows;
+    private static $db;
 
     /**
      * Start the essential variables
@@ -60,28 +62,24 @@ class Paginator
         self::$page = !empty($pages) ? $pages : "1";
         self::$perPage = !empty($perPage) ? $perPage : 10;
         self::$uri = $request->getUrl();
+        self::$db = Database::connect();
     }
 
     /**
-     * 
-     * @param type $data array Store perPage and TableName
-     * PerPage is the first parameter and store the quantity of record to show per page
-     * TableName is the second parameter and need to receive an string with the name of the table on your database
-     * 
+     * Paginates using the Database class
+     * @param int $perPage Number of pages to show in the pagination
+     * @param PDO $data pass a pdo object
      * @return array queries and pagination
-     * 
-     * Array queries store the data from Database Model
-     * Array pagination store the HTML to paginate the Database Model records
      */
-    public static function paginate($data)
+    public static function paginate($perPage,$data)
     {
         // Initialize variables
         self::init();
         // Store the record from the database select
-        $retorno["queries"] = self::queries($data);
+        $retorno["queries"] = self::queries($perPage,$data);
 
         $pagination = "";
-        $p = isset($data[0]) ? $data[0] : self::$perPage;
+        $p = isset($perPage) ? $perPage : self::$perPage;
 
         $pagination .= '<nav aria-label="Page navigation">';
         $pagination .= '<ul class="pagination">';
@@ -124,23 +122,22 @@ class Paginator
      * This methods establish the relation with database, besides return records and rows
      * 
      * 
-     * @param type $data array (perPage, TableName)
-     * perPage gets the number of records to show on your table
-     * TableName, Name of your table
-     * 
+     * @param $perPage gets the number of records to show on your table
+     * @param $data pdo object
      * 
      * @return type object Database records
      */
-    private static function queries($data)
+    private static function queries($perPage,$data)
     {
-        $model = new Database();
-        $selectAll = $model->table($data[1])->select();
-        self::$rows = $model->count();
-        $perPage = !empty($data[0]) ? $data[0] : self::$perPage;
+        $all = clone $data;  //clone the original data so we can work later with it
+        $selectAll = $all->select();
+        self::$rows = $all->count();
+        $all = NULL;//destroy clone
+        $perPage = !empty($perPage) ? $perPage : self::$perPage;
 
         self::$paginas = ceil(self::$rows / $perPage);
-
-        return $model->table($data[1])->limit($data[0])->offset(((self::$page - 1) * $data[0]))->select();
+        
+        return $data->limit($perPage)->offset(((self::$page - 1) * $perPage))->select();
     }
 
 }
