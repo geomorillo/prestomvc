@@ -77,13 +77,4 @@ class Boot
         Register::modules($router);
         $router->dispatch();
     }
-/*
-    private static function  getWebroot()
-    {
-        $webroot = dirname($_SERVER['PHP_SELF']);
-        $webroot = str_replace('\\', '/', $webroot);
-       
-        return $webroot;
-    }
-*/
 }

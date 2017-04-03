@@ -22,7 +22,7 @@ class AfterLayer implements LayerInterface
     private $method;
     public function __construct($controller,$method)
     {
-        $this->controller = $controller;
+        $this->controller =  $controller;
         $this->method = $method;
     }
 
@@ -30,7 +30,7 @@ class AfterLayer implements LayerInterface
     {
         $response = $next($object);
         $object->runs[] = 'after';
-        call_user_func(array(new $this->controller, $this->method));
+        call_user_func([new $this->controller, $this->method]);//@TODO  checquear si es necesario
         return $response;
     }
 

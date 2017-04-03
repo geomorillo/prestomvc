@@ -27,7 +27,7 @@ class BeforeLayer implements LayerInterface
     public function peel($object, Closure $next)
     {
         $object->runs[] = 'before';
-        call_user_func(array(new $this->controller, $this->method));
+        call_user_func([new $this->controller, $this->method]);
         return $next($object);
     }
 

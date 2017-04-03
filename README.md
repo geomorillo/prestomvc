@@ -13,7 +13,7 @@ Databases supports many drivers (mysql, sqlite, PostgreSQL, mssql, sybase, Oracl
                 <ul>
                     <li>Lightweight Framework</li>
                     <li>Easy to install</li>
-                    <li>NOTORM Database (SOON)</li>
+                    <li>NOTORM Database</li>
                     <li>Templates for each view</li>
                     <li>Many and useful helpers</li>
                     <li>Easy to manage</li>

@@ -22,7 +22,7 @@ abstract class Controller
     public function __construct()
     {
         $this->view = new View();
-        $this->view->setCaller($this->get_namespace($this));
+        $this->view->setCaller($this->get_namespace($this));//Allows to save the namespace
     }
 
     private function get_namespace($instance)
