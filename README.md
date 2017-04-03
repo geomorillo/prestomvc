@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # PrestoMVC
 
 Is a new lightweight framework, made for people who is starting on the world of MVC patterns and wants to create new applications.
@@ -80,12 +79,3 @@ Databases supports many drivers (mysql, sqlite, PostgreSQL, mssql, sybase, Oracl
                 </ol>
             </div>
 Sorry no composer, batteries included.
-
-
-
-
-
-
-
-
->>>>>>> origin/master
