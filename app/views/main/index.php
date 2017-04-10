@@ -33,7 +33,7 @@
                 <ol>
                     <li>Go to <code>/app/config/config.php</code> and set up your configurations</li>
                     <li>Go to <code>/app/config/database_config.php</code> and set up your connection to your database and his respective table.</li>
-                    <li>Finally set up tou routes on the file <code>/app/Routes.php</code></li>
+                    <li>Finally set up your routes on the file: <code>/app/Routes.php</code></li>
                     <li>Ready to go</li>
                 </ol>
             </div>
