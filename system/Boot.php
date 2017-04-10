@@ -40,6 +40,7 @@ class Boot
         define("UPLOAD_PATH", PUBLIC_PATH . "uploads" . DS);
         define("LOG_PATH", ROOT . "log");
         define("MODULES_PATH", ROOT . "modules" . DS);
+        define("CONTROLLERS_NAMESPACE","app\\controllers\\");//Controllers directory do not change
          //load some general functions
         include_once CORE_PATH.'functions.php';
         define("WEBROOT", getWebroot());

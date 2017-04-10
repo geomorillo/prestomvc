@@ -6,8 +6,11 @@ use system\core\View;
  * 
  * $router->get($route, $action)
  * 
- * string @route get the uri
- * strin @action get namespace and controller split by "@" then method from class controller
+ * string @route The url or route
+ * string @action Controller@Method  
+ * Examples: 
+ * $router->get("/",'app\controllers\Main@index') or shorter version $router->get("/","Main@index")
+ * $router->get("login",'app\controllers\Main@login') or shorter version $router->get("/","Main@login")
  */
-
-$router->get("/","app\controllers\Main@index");
+$router->get("/","Main@index");
+$router->get("login","Main@login");

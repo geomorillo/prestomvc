@@ -6,7 +6,7 @@ use system\http\Request;
 use system\core\View;
 
 /**
- * Description of Route
+ * Allows to add, match, and dispatch routes
  *
  * @author Daniel Navarro Ramírez
  * @author Manuel Jhobanny Morillo
@@ -93,14 +93,6 @@ class Route
             }
         }
 
-        /*
-          if (strpos($route, ':')) {
-          $route = WEBROOT. '/' . str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
-          } elseif ($route !== '/' && WEBROOT!='/') {
-          $route = WEBROOT. "/".$route;
-          }elseif($route =='/'){
-          $route = WEBROOT;
-          } */
         $pattern = "@^" . $route . "$@"; //"@^" . $route . "$@";
         if (preg_match($pattern, $requestUri, $matched)) {
             if ($matched[0] === $requestUri) {
@@ -152,6 +144,10 @@ class Route
                         break;
                     } else {
                         $this->controller = $this->removeSpecialChars($this->controller);
+                        $found_namespace = strpos($this->controller,CONTROLLERS_NAMESPACE);//add namespace see Boot.php
+                        if($found_namespace===FALSE){                
+                           $this->controller = CONTROLLERS_NAMESPACE.$this->controller;
+                        }
                         if (class_exists($this->controller)) {//handle double quote string
                             $object = new \stdClass;
                             $object->runs = [];
@@ -211,7 +207,7 @@ class Route
         if ($action instanceof \Closure) { //closures are ok
             return TRUE;
         } elseif (is_string($action)) {
-            $parts = explode("@", $action); //check if action has correct format do not add them
+            $parts = explode("@", $action); //check if action has correct format do not add them          
             if (count($parts) > 1) {
                 return TRUE;
             }
