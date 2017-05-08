@@ -58,7 +58,7 @@ class Logger implements LoggerInterface
 
     public static function warning($message, array $context = array())
     {
-        self::ºwriteFile(LogLevel::WARNING, $message, $context);
+        self::writeFile(LogLevel::WARNING, $message, $context);
     }
 
     public static function alert($message, array $context = array())
