@@ -7,6 +7,7 @@
  */
 
 /**
+ * Simple Dashboard Module
  *
  * @author geomorillo
  */
