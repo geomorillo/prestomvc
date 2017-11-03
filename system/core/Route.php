@@ -85,7 +85,7 @@ class Route
                 $route = baseUrl('');
             }
         } else {
-          
+
             if (strpos($route, ':')) {
                 $route = '/' . str_replace(array_keys($this->patterns), array_values($this->patterns), $this->url);
             } elseif ($route !== '/') {
@@ -144,9 +144,9 @@ class Route
                         break;
                     } else {
                         $this->controller = $this->removeSpecialChars($this->controller);
-                        $found_namespace = strpos($this->controller,CONTROLLERS_NAMESPACE);//add namespace see Boot.php
-                        if($found_namespace===FALSE){                
-                           $this->controller = CONTROLLERS_NAMESPACE.$this->controller;
+                        $found_namespace = $this->checkNamespace($this->controller); // fix for modules
+                        if ($found_namespace === FALSE) {
+                            $this->controller = CONTROLLERS_NAMESPACE . $this->controller; //short routes support
                         }
                         if (class_exists($this->controller)) {//handle double quote string
                             $object = new \stdClass;
@@ -214,6 +214,19 @@ class Route
         } else {
             return FALSE;
         }
+    }
+
+    private function checkNamespace($controller)
+    {
+        $retorno = FALSE;
+        ////add namespace see Boot.php
+        $partsNmsp = explode("\\", $controller);
+        if (count($partsNmsp) > 1) {
+            $retorno = TRUE;
+        } else {
+            $retorno = strpos($controller, CONTROLLERS_NAMESPACE);
+        }
+        return $retorno;
     }
 
     private function executeDispatch($controller, $action, $params)
