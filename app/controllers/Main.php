@@ -18,7 +18,7 @@ use system\core\Assets;
 use system\helpers\Auth\Auth;
 use system\http\Response;
 use system\http\Request;
-use system\helpers\Encrypter;
+use system\core\Encrypter;
 use system\helpers\Key;
 
 class Main extends Controller
