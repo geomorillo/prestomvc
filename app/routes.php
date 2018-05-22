@@ -14,3 +14,8 @@ use system\core\View;
  */
 $router->get("/","Main@index");
 $router->get("login","Main@login");
+$router->post("authenticate","Main@authenticate");
+$router->get("register","Main@register");
+$router->get("logout","Main@logout");
+$router->get("enc","Main@enc");
+$router->get("key","Main@key");
