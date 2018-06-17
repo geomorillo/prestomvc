@@ -485,28 +485,29 @@ class Database
     public function contructQuery()
     {
         $query = '';
-        if (count($this->queries['join'])) {
+        if ($this->queries['join'] && count($this->queries['join'])) {
             $query .= implode(" ", $this->queries['join']);
         }
-        if (count($this->queries['where'])) {
+        if ($this->queries['where'] && count($this->queries['where'])) {
             $query .= ' WHERE ' . implode(" AND ", $this->queries['where']);
         }
-        if (count($this->queries['orwhere'])) {
+        if ($this->queries['orwhere'] && count($this->queries['orwhere'])) {
             $query .= ' OR ' . implode(" OR ", $this->queries['orwhere']);
         }
-        if (count($this->queries['orderby'])) {
-            $query.= ' ORDER BY ' . implode(', ', $this->queries['orderby']);
+        if ($this->queries['orderby'] && count($this->queries['orderby'])) {
+            $query .= ' ORDER BY ' . implode(', ', $this->queries['orderby']);
         }
 
-        if (count($this->queries['limit'])) {
-            $query.= $this->queries['limit'];
+        if ($this->queries['limit'] && count($this->queries['limit'])) {
+            $query .= $this->queries['limit'];
         }
-        if (count($this->queries['offset']) && $this->_typeQuery == 'SELECT') {
-            $query.= $this->queries['offset'];
+        if ($this->queries['offset'] && count($this->queries['offset']) && $this->_typeQuery == 'SELECT') {
+            $query .= $this->queries['offset'];
         }
 
         return $query;
     }
+
     /**
      * Clean some variables
      */
@@ -521,7 +522,7 @@ class Database
         $this->queries['offset'] = '';
         $this->table = '';
     }
-    
+
     /**
      * Show columns from a table
      * @param type $tableName
