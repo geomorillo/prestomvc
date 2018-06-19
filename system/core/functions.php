@@ -16,7 +16,7 @@ function getWebroot()
 
 function baseUrl($url)
 {
-    return (WEBROOT == '/') ? $url : WEBROOT . $url;
+    return (WEBROOT == '/') ? $url : strtolower(WEBROOT) . $url;
 }
 
 /* Return a json content for ajax not only text */

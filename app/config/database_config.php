@@ -38,7 +38,7 @@ return [
         'driver' => 'mysql',
         'host_name' => 'localhost',
         'db_name' => 'presto',
-        'db_user' => '',
+        'db_user' => 'root',
         'db_password' => ''
     ],
     // PostgreSQL
