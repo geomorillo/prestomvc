@@ -167,7 +167,13 @@ class Route
                                             return $object;
                                         });
                             } else {
-                                $this->executeDispatch($this->controller, $this->action, $this->params);
+                                //if route found however check if exist the function on controller
+                                if (method_exists($this->controller, $this->action)) {
+                                    $this->executeDispatch($this->controller, $this->action, $this->params);
+                                } else {
+                                    $this->found = FALSE;
+                                    break;
+                                }
                             }
                             $this->found = TRUE;
                             break;
