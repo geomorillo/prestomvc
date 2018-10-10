@@ -10,7 +10,7 @@ function getWebroot()
 {
     $webroot = dirname($_SERVER['PHP_SELF']);
     $webroot = str_replace('\\', '/', $webroot);
-
+    $webroot = strtolower($webroot);
     return $webroot;
 }
 

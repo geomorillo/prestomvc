@@ -349,7 +349,7 @@ class Auth
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $this->errormsg[] = $this->lang['register_email_invalid'];
             }
-            if (count($this->errormsg) == 0) {
+            if ($this->errormsg && count($this->errormsg) == 0) {
                 // Input is valid 
                 $query = $this->db->table(DB_PREFIX . "users")
                         ->where("username", $username)
@@ -432,7 +432,7 @@ class Auth
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $this->errormsg[] = $this->lang['register_email_invalid'];
             }
-            if (count($this->errormsg) == 0) {
+            if ($this->errormsg && count($this->errormsg) == 0) {
                 // Input is valid
                 $query = $this->db->table(DB_PREFIX . "users")
                         ->where("username", $username)
@@ -585,7 +585,7 @@ class Auth
             $this->errormsg[] = $this->lang['logactivity_addinfo_long'];
             return false;
         }
-        if (count($this->errormsg) == 0) {
+        if ($this->errormsg && count($this->errormsg) == 0) {
             $ip = $_SERVER['REMOTE_ADDR'];
             $date = date("Y-m-d H:i:s");
             $this->db->table(DB_PREFIX . "activitylog")->insert(["date" => $date, "username" => $username, "action" => $action, "additionalinfo" => $additionalinfo, "ip" => $ip]);
@@ -659,7 +659,7 @@ class Auth
         } elseif ($newpass !== $verifynewpass) {
             $this->errormsg[] = $this->lang['changepass_password_nomatch'];
         }
-        if (count($this->errormsg) == 0) {
+        if ($this->errormsg && count($this->errormsg) == 0) {
             $newpass = $this->hashPass($newpass);
             $query = $this->db->table(DB_PREFIX . "users")
                     ->where("username", $username)
@@ -715,7 +715,7 @@ class Auth
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->errormsg[] = $this->lang['changeemail_email_invalid'];
         }
-        if (count($this->errormsg) == 0) {
+        if ($this->errormsg && count($this->errormsg) == 0) {
             $query = $this->db->table(DB_PREFIX . "users")
                     ->where("username", $username)
                     ->select(["email"]);
@@ -946,7 +946,7 @@ class Auth
         } elseif (strlen($password) < MIN_PASSWORD_LENGTH) {
             $this->errormsg[] = $this->lang['deleteaccount_password_short'];
         }
-        if (count($this->errormsg) == 0) {
+        if ($this->errormsg && count($this->errormsg) == 0) {
             $query = $this->db->table(DB_PREFIX . "users")
                     ->where("username", $username)
                     ->select(["password"]);
