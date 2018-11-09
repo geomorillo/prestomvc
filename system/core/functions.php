@@ -43,7 +43,7 @@ function json_post()
 function setcors()
 {
     // Handle on passed down request
-    $response = new Response();
+    $response = new \system\http\Response();
 
     $response->set_header('Access-Control-Allow-Origin', '*', true);
     $response->set_header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD', true);
