@@ -8,6 +8,7 @@
 
 namespace system\helpers\Auth;
 
+use system\core\Encrypter;
 use system\database\Database,
     system\http\Cookie,
     system\core\Email;
@@ -603,7 +604,7 @@ class Auth
         // this options should be on Setup.php
         $options = [
             'cost' => COST,
-            'salt' => mcrypt_create_iv(HASH_LENGTH, MCRYPT_DEV_URANDOM)
+            'salt' => Encrypter::get_random_bytes(HASH_LENGTH)
         ];
 
         return password_hash($password, PASSWORD_BCRYPT, $options);

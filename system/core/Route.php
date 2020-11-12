@@ -93,7 +93,7 @@ class Route
             }
         }
 
-        $pattern = "@^" . $route . "$@"; //"@^" . $route . "$@";
+        $pattern = "@^" . $route . "$@"; 
         if (preg_match($pattern, $requestUri, $matched)) {
             if ($matched[0] === $requestUri) {
                 $url = array_shift($matched);

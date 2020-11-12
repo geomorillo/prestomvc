@@ -15,7 +15,7 @@ namespace system\http;
  */
 use system\database\Database;
 use SessionHandlerInterface;
-
+use system\core\LogException;
 class SessionManager implements SessionHandlerInterface
 {
 
@@ -26,7 +26,7 @@ class SessionManager implements SessionHandlerInterface
         try {
             $this->db = Database::connect();
             if (!$this->db) {//PROBAR ERROR DE CONEXION
-                throw new LogException;
+                throw new LogException();
             } else {
                 return TRUE;
             }

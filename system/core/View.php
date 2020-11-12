@@ -83,9 +83,6 @@ class View
         $this->namespace = $namespace;
     }
 
-    function __toString()
-    {
-        return $this->render();
-    }
+
 
 }

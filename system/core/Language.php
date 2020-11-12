@@ -59,7 +59,15 @@ class Language
         }
         return $translated;
     }
-
+    /**
+     * Gets all the translated strings into an array
+     */
+    public static function translateAll(){
+        if (!self::$translation) {
+            self::setTranslation(self::$language); //set default translation
+        }
+        return self::$translation;
+    }
     /**
      * Stores the included translation file
      * @param type $lang

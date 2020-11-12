@@ -34,5 +34,5 @@ abstract class Controller
         return  $namespace;
     }
 
-    abstract function index();
+    abstract function index(...$args);
 }

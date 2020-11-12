@@ -18,11 +18,14 @@ use system\core\LogException;
 
 class Csrf
 {
+    static $log;
+
 
     public static function generate()
     {
+       $log =  new LogException();
         if (!USE_SESSIONS) {
-            LogException::errorMessage("Sessions not enabled");
+           $log->errorMessage("Sessions not enabled");
             return FALSE;
         }
         //generate csrf
@@ -36,8 +39,9 @@ class Csrf
 
     public static function validate($token)
     {
+        $log =  new LogException();
         if (!USE_SESSIONS) {
-            LogException::errorMessage("Sessions not enabled");
+            $log->errorMessage("Sessions not enabled");
             return FALSE;
         }
         //validate csrf

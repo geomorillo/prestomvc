@@ -14,13 +14,13 @@ namespace app\controllers;
  * @author geomorillo
  */
 use system\core\Controller;
-//use system\core\Assets;
-//use system\helpers\Auth\Auth;
-//use system\http\Response;
-//use system\http\Request;
-//use system\core\Encrypter;
-//use system\helpers\Key;
-
+use system\core\Assets;
+use system\helpers\Auth\Auth;
+use system\http\Response;
+use system\http\Request;
+use system\core\Encrypter;
+use system\helpers\Key;
+use system\core\Language;
 class Main extends Controller
 {
 //    private $auth;
@@ -30,9 +30,9 @@ class Main extends Controller
     public function __construct()
     {
         parent::__construct();
-     //   $this->auth = new Auth(); 
-     //   $this->response = new Response();
-     //   $this->request = new Request();
+      //  $this->auth = new Auth(); 
+        $this->response = new Response();
+       $this->request = new Request();
     }
 /*
     public function before()
@@ -42,12 +42,16 @@ class Main extends Controller
         }
     }
 */
-    public function index(){
-        
-         echo $this->view->render('main/index');
+    public function index(...$args){
+        if(count($args)>0){
+           Language::setLang($args[0]);
+        }
+        $data = Language::translateAll();
+     
+        echo $this->view->render('main/index',$data);
         
     }
-/* TEST FUNCTIONS 
+/* TEST FUNCTIONS*/ 
     public function dashboard()
     {
         echo $this->view->useTemplate("admin")->render("main/dashboard");
@@ -108,6 +112,5 @@ class Main extends Controller
     public function key() {
         echo Key::generate();
     }
-*/
 
 }
