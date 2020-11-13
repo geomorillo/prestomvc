@@ -13,7 +13,7 @@ return
     "caracteristicas" => "Features",
     "_0" => "Lightweight Framework",
     "_1" => "Easy to install",
-    "_2" => "NOTORM Database",
+    "_2" => "NOTORM Database Library",
     "_3" => "Templates for each view",
     "_4" => "Many and useful helpers",
     "_5" => "Easy to manage",

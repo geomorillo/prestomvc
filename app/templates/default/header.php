@@ -26,8 +26,7 @@
         <li><a href=<?=baseUrl("/idioma/es") ?> class="flag-icon flag-icon-co" title="ES" ></a></li>
         <li>&nbsp;</li>
         <li><a href=<?=baseUrl("/idioma/en")?> class="flag-icon flag-icon-us"  title="EN"></a></li>
-        <li><a href="/#">Login</a></li>
-        <li><a href="/#">Register</a></li>
+
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
