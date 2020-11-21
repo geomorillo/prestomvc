@@ -15,7 +15,7 @@ namespace system\helpers;
  * @author Manuel Jhobanny Morillo
  */
 use system\http\Request;
-use system\database\Database;
+
 
 class Paginator
 {
@@ -49,8 +49,8 @@ class Paginator
      * @var type string Table rows(records)
      */
     private static $rows;
-    private static $db;
 
+    
     /**
      * Start the essential variables
      */
@@ -62,21 +62,24 @@ class Paginator
         self::$page = !empty($pages) ? $pages : "1";
         self::$perPage = !empty($perPage) ? $perPage : 10;
         self::$uri = $request->getUrl();
-        self::$db = Database::connect();
+ 
     }
 
     /**
      * Paginates using the Database class
-     * @param int $perPage Number of pages to show in the pagination
+     * @param int $perPage Number of records to show in the pagination
      * @param PDO $data pass a pdo object
+     * @param array select filter for the pdo object ["p.id as pid", "p.title", "p.byuser", "p.postedon", "p.readmore", "p.text", "r.url as url"]
      * @return array queries and pagination
      */
-    public static function paginate($perPage,$data)
+    public static function paginate($perPage,$data,$select=[])
     {
         // Initialize variables
         self::init();
+
+       
         // Store the record from the database select
-        $retorno["queries"] = self::queries($perPage,$data);
+        $retorno["queries"] = self::queries($perPage,$data,$select);
 
         $pagination = "";
         $p = isset($perPage) ? $perPage : self::$perPage;
@@ -124,20 +127,20 @@ class Paginator
      * 
      * @param $perPage gets the number of records to show on your table
      * @param $data pdo object
-     * 
+     * @param $select filter for the query type array
      * @return type object Database records
      */
-    private static function queries($perPage,$data)
+    private static function queries($perPage,$data,$select)
     {
         $all = clone $data;  //clone the original data so we can work later with it
-        $selectAll = $all->select();
-        self::$rows = $all->count();
+       
+        self::$rows = $all->rowCount();
         $all = NULL;//destroy clone
         $perPage = !empty($perPage) ? $perPage : self::$perPage;
 
         self::$paginas = ceil(self::$rows / $perPage);
         
-        return $data->limit($perPage)->offset(((self::$page - 1) * $perPage))->select();
+        return $data->limit($perPage)->offset((self::$page - 1) * $perPage)->select($select);
     }
 
 }

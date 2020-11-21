@@ -12,6 +12,7 @@ use system\core\Encrypter;
 use system\database\Database,
     system\http\Cookie,
     system\core\Email;
+use system\helpers\Key;
 
 class Auth
 {
@@ -27,6 +28,7 @@ class Auth
         $this->lang = include_once 'Lang.php'; //language file messages
         $this->db = Database::connect();
         $this->expireAttempt(); //expire attempts
+        $this->errormsg = [];
     }
 
     /**
@@ -68,9 +70,13 @@ class Auth
                     // Input is valid
                     $query = $this->db->table(DB_PREFIX . "users")->where("username", $username)->select(["isactive", "password"]);
                     $count = count($query);
-                    $hashed_db_password = $query[0]->password;
+                    $hashed_db_password = "";
+                    if($count >0){
+                        $hashed_db_password = $query[0]->password;
+                    }
+                  
                     $verify_password = password_verify($password, $hashed_db_password);
-                    if ($count == 0 || $verify_password == 0) {
+                    if ($count == 0 || !$verify_password) {
                         // Username or password are wrong
                         $this->errormsg[] = $this->lang['login_incorrect'];
                         $this->addAttempt($_SERVER['REMOTE_ADDR']);
@@ -350,7 +356,7 @@ class Auth
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $this->errormsg[] = $this->lang['register_email_invalid'];
             }
-            if ($this->errormsg && count($this->errormsg) == 0) {
+            if ( count($this->errormsg) == 0) {
                 // Input is valid 
                 $query = $this->db->table(DB_PREFIX . "users")
                         ->where("username", $username)
@@ -374,7 +380,7 @@ class Auth
                     } else {
                         //todo bien continua con registro
                         $password = $this->hashPass($password);
-                        $activekey = $this->randomKey(RANDOM_KEY_LENGTH); //genera una randomkey para activacion enviar por email
+                        $activekey = Key::generate(RANDOM_KEY_LENGTH); //genera una randomkey para activacion enviar por email
                         $this->db->table(DB_PREFIX . "users")
                                 ->insert(["username" => $username, "password" => $password, "email" => $email, "activekey" => $activekey]);
                         $this->logActivity($username, "AUTH_REGISTER_SUCCESS", "Account created");
@@ -457,7 +463,7 @@ class Auth
                     } else {
                         // Email address isn't already used
                         $password = $this->hashPass($password);
-                        $activekey = $this->randomKey(RANDOM_KEY_LENGTH);
+                        $activekey = Key::generate(RANDOM_KEY_LENGTH);
                         $this->db->table(DB_PREFIX . "users")
                                 ->insert(["username" => $username, "password" => $password, "email" => $email, "activekey" => $activekey]);
                         //EMAIL MESSAGE
@@ -603,26 +609,10 @@ class Auth
     {
         // this options should be on Setup.php
         $options = [
-            'cost' => COST,
-            'salt' => Encrypter::get_random_bytes(HASH_LENGTH)
+            'cost' => COST
         ];
 
         return password_hash($password, PASSWORD_BCRYPT, $options);
-    }
-
-    /**
-     * Returns a random string, length can be modified 
-     * @param int $length
-     * @return string $key
-     */
-    private function randomKey($length = 10)
-    {
-        $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-        $key = "";
-        for ($i = 0; $i < $length; $i++) {
-            $key .= $chars{rand(0, strlen($chars) - 1)};
-        }
-        return $key;
     }
 
     /**
@@ -786,7 +776,7 @@ class Auth
                     $this->addAttempt($_SERVER['REMOTE_ADDR']);
                     return false;
                 } else {
-                    $resetkey = $this->randomKey(RANDOM_KEY_LENGTH);
+                    $resetkey = Key::generate(RANDOM_KEY_LENGTH);
                     $username = $query[0]->username;
                     $this->db->table(DB_PREFIX . "users")
                             ->where("username", $username)
