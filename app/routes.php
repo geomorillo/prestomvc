@@ -22,3 +22,4 @@ $router->get("register","Main@register");
 $router->get("logout","Main@logout");
 $router->get("enc","Main@enc");
 $router->get("key","Main@key");
+$router->get("logger","Main@logger");

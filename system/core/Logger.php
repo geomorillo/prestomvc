@@ -18,7 +18,7 @@ use system\core\LogLevel;
 class Logger implements LoggerInterface
 {
 
-    private static $file = "./debug.log";
+    private static $file = LOG_PATH.LOG_FILENAME;
 
     public static function emergency($message, array $context = array())
     {

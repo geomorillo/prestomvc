@@ -13,3 +13,5 @@ define('ENCRYPT_KEY', "e224cda70cfb2e70586d8d1d28424b31");//CHANGE THIS WITH YOU
 define('TEMPDATAENCRYPT',FALSE);//Encrypt TempData TRUE/FALSE(for speed)
 define("DEFAULT_LANG", "en");//Defaul language spanish : es/en
 define("DB_PREFIX",""); //prefix for tables in database
+//define the path where to save the logs don't forget the / at the end
+define("LOG_FILENAME","debug.log");//define the log's name

@@ -21,6 +21,7 @@ use system\http\Request;
 use system\core\Encrypter;
 use system\helpers\Key;
 use system\core\Language;
+use system\core\Logger;
 class Main extends Controller
 {
 //    private $auth;
@@ -111,6 +112,11 @@ class Main extends Controller
     }
     public function key() {
         echo Key::generate();
+    }
+
+    public function logger(){
+
+        Logger::debug("testing log");
     }
 
 }
