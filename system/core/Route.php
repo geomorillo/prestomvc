@@ -191,7 +191,7 @@ class Route
 
     /**
      * Handle double quoted escaped characters \n \t \f \c in route action
-     * @param type $action
+     * @param string $action
      * @return type
      */
     public function removeSpecialChars($action)

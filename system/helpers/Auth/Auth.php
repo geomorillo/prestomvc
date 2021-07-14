@@ -8,7 +8,6 @@
 
 namespace system\helpers\Auth;
 
-use system\core\Encrypter;
 use system\database\Database,
     system\http\Cookie,
     system\core\Email;

@@ -22,7 +22,7 @@ class Paginator
 
     /**
      *
-     * @var type string $page store the number of page
+     * @var string string $page store the number of page
      */
     private static $page;
 

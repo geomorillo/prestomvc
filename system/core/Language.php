@@ -79,7 +79,7 @@ class Language
 
     /**
      * Finds the {tags} and replaces them in the text with the value in params 
-     * @param type $text
+     * @param string $text
      * @param type $params
      * @return type
      */
