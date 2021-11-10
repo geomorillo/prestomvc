@@ -22,6 +22,7 @@ use system\core\Encrypter;
 use system\helpers\Key;
 use system\core\Language;
 use system\core\Logger;
+use system\core\Email;
 class Main extends Controller
 {
 //    private $auth;
@@ -118,5 +119,16 @@ class Main extends Controller
 
         Logger::debug("testing log");
     }
+
+    public function testMail(){
+
+        $mail = new Email();
+        $mail->from("geomorillo@gmail.com","Geovanny Morillo");
+        $mail->to("geomorillo@gmail.com","Geovanny");
+        $mail->subject("Esto es una prueba");
+        $mail->message("Este es un mensaje de prueba");
+        $mail->send();
+    }
+
 
 }
