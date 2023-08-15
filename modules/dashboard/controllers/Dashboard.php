@@ -19,7 +19,7 @@ use system\core\Controller;
 class Dashboard extends Controller
 {
 
-    public function index()
+    public function index(...$args)
     {
         echo $this->view->render("y");
     }

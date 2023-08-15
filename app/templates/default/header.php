@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>PrestoMVC</title>
-<?= $bootstrapcss.$styles;?>
+<?= $bootstrapcss.$styles.$banderas;?>
 </head>
 
 <body>
@@ -22,8 +22,11 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Register</a></li>
+        
+        <li><a href=<?=baseUrl("/idioma/es") ?> class="flag-icon flag-icon-co" title="ES" ></a></li>
+        <li>&nbsp;</li>
+        <li><a href=<?=baseUrl("/idioma/en")?> class="flag-icon flag-icon-us"  title="EN"></a></li>
+
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

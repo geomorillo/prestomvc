@@ -14,14 +14,13 @@ class Key {
      */
     public static function generate($length = 32)
     {
-       $chars = "!@#$%^&*()_+-=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-       $key = "";
+        if (function_exists('random_bytes')) {
+            $bytes = random_bytes($length / 2);
+        } else {
+            $bytes = openssl_random_pseudo_bytes($length / 2);
+        }
+        return bin2hex($bytes);
 
-       for ($i = 0; $i < $length; $i++) {
-           $key .= $chars{rand(0, strlen($chars) - 1)};
-       }
-
-       return $key;
     }
     
 }

@@ -474,9 +474,9 @@ class Database
         return $this->_pdo->quote($string);
     }
 
-    public function count()
+    public function rowCount()
     {
-        return $this->_count;
+        return count($this->select());
     }
 
     /**
@@ -498,10 +498,10 @@ class Database
             $query .= ' ORDER BY ' . implode(', ', $this->queries['orderby']);
         }
 
-        if ($this->queries['limit'] && count($this->queries['limit'])) {
+        if ($this->queries['limit']) {
             $query .= $this->queries['limit'];
         }
-        if ($this->queries['offset'] && count($this->queries['offset']) && $this->_typeQuery == 'SELECT') {
+        if ($this->queries['offset']  && $this->_typeQuery == 'SELECT') {
             $query .= $this->queries['offset'];
         }
 

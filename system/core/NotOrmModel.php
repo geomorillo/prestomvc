@@ -29,9 +29,7 @@ abstract class NotOrmModel
         $this->conectionInfo = $dbconfig->config;
         $this->strConn($dbconfig->getDefaultConnectionName());
         $this->db = new \NotORM($this->npdo);
-        if (ENABLE_DEBUG) {
-            \NotOrmTracyPanel::simpleInit($this->db, $this->npdo);
-        }
+      
     }
     protected function strConn($default)
     {

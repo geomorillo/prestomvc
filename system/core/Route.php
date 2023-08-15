@@ -93,7 +93,7 @@ class Route
             }
         }
 
-        $pattern = "@^" . $route . "$@"; //"@^" . $route . "$@";
+        $pattern = "@^" . $route . "$@"; 
         if (preg_match($pattern, $requestUri, $matched)) {
             if ($matched[0] === $requestUri) {
                 $url = array_shift($matched);
@@ -191,7 +191,7 @@ class Route
 
     /**
      * Handle double quoted escaped characters \n \t \f \c in route action
-     * @param type $action
+     * @param string $action
      * @return type
      */
     public function removeSpecialChars($action)

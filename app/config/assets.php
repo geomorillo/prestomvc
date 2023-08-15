@@ -4,6 +4,7 @@ use system\core\Assets;
 
 $assets = [
     "bootstrapcss" => "css/bootstrap.min.css",
+    "banderas" => "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css",
     "styles" => "css/styles.css",
     "logo1" => ["images/logo.png", "title= PRESTO MVC class= img-responsive imagen width=130 height=25"],
     "logo2" => ["images/logo.png", "title= PRESTO MVC  width=130 height=25"]

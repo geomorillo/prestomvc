@@ -68,7 +68,14 @@ class Assets
     {
         $ext = '';
         if(!is_array($path)){
-            $ext = substr($path, strrpos($path, '.') + 1);
+            if(filter_var($path, FILTER_VALIDATE_URL))
+            {
+                $ext = "url";
+            }else{
+                $ext = substr($path, strrpos($path, '.') + 1);
+            }
+
+            
         }
         
         switch ($ext) {
@@ -77,6 +84,9 @@ class Assets
                 break;
             case 'css':
                 $value = '<link href="'.baseUrl('/assets/' . $path) . '" rel="stylesheet" type="text/css">' . PHP_EOL;
+                break;
+            case 'url':
+                $value = '<link href="'. $path . '" rel="stylesheet" type="text/css">' . PHP_EOL;
                 break;
             default:
                 $value = '<img src="'.baseUrl('/assets/' . $path[0]) . '" ' .$path[1] . ">" . PHP_EOL;

@@ -38,7 +38,7 @@ class Boot
         define("LIB_PATH", SYSTEM_PATH . "libraries" . DS);
         define("HELPER_PATH", SYSTEM_PATH . "helpers" . DS);
         define("UPLOAD_PATH", PUBLIC_PATH . "uploads" . DS);
-        define("LOG_PATH", ROOT . "log");
+        define("LOG_PATH", ROOT . "log".DS);
         define("MODULES_PATH", ROOT . "modules" . DS);
         define("CONTROLLERS_NAMESPACE","app\\controllers\\");//Controllers directory do not change
          //load some general functions

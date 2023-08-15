@@ -8,6 +8,7 @@
 
 namespace system\core;
 
+use Exception;
 use system\core\Logger;
 
 class LogException extends \Exception

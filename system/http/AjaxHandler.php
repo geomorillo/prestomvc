@@ -103,10 +103,10 @@ class AjaxHandler {
 
     /**
      * Catches any error and responses with success:false
-     * @param object $errno
-     * @param object $message
-     * @param object $filename
-     * @param object $line
+     * @param string $errno
+     * @param string $message
+     * @param string $filename
+     * @param string $line
      */
     private static function errorHandler($errno, $message, $filename, $line) {
         if (error_reporting() == 0) {
@@ -158,7 +158,7 @@ class AjaxHandler {
     /**
      * Handles the response for both success and error methods
      * @param array $addHash
-     * @param type $status Status
+     * @param string $status Status
      */
     private static function response($addHash, $status) {
         $addHash["duration"] = self::timerEnd("Request");

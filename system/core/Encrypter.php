@@ -69,7 +69,9 @@ class Encrypter {
         if (self::$algo === FALSE) {
             throw new \Exception('Not supported algorithm found.');
         }
-        $iv = mcrypt_create_iv(self::$ivSize, MCRYPT_DEV_URANDOM);
+
+        $iv = self::get_random_bytes(self::$ivSize);
+        
         $value = openssl_encrypt(serialize($value), self::$algo, self::$key, 0, $iv);
 
         if ($value === false) {
