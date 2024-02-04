@@ -1,6 +1,18 @@
 #Prevent the httpoxy vulnerability see: https://httpoxy.org/
 <IfModule mod_headers.c>
     RequestHeader unset Proxy
+    #The following are optional you can increase security with them not tested yet
+    # Content Security Policy (CSP)
+     # Header set Content-Security-Policy "directives"
+
+     # Strict-Transport-Security (HSTS)
+     # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+ 
+     # X-XSS-Protection
+     # Header set X-XSS-Protection "1; mode=block"
+ 
+     # X-Content-Type-Options
+     # Header set X-Content-Type-Options "nosniff"
 </IfModule>
 
 <IfModule mod_rewrite.c>

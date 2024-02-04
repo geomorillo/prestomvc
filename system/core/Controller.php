@@ -25,7 +25,7 @@ abstract class Controller
         $this->view->setCaller($this->get_namespace($this));//Allows to save the namespace
     }
 
-    private function get_namespace($instance)
+    private function get_namespace($instance): string
     {
         $namespace = get_class($instance);
         $namespace = explode("\\controllers", $namespace);
