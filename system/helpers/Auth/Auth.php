@@ -7,7 +7,7 @@
  */
 
 namespace system\helpers\Auth;
-
+use system\core\Encrypter;
 use system\database\Database,
     system\http\Cookie,
     system\core\Email;
@@ -608,7 +608,8 @@ class Auth
     {
         // this options should be on Setup.php
         $options = [
-            'cost' => COST
+            'cost' => COST,
+            'salt' => Encrypter::get_random_bytes(HASH_LENGTH)
         ];
 
         return password_hash($password, PASSWORD_BCRYPT, $options);
