@@ -8,12 +8,4 @@ scripts: En este directorio, se pueden almacenar scripts relacionados con la adm
 
 system: El directorio "system" contiene los archivos y carpetas que forman parte del núcleo o framework de Prestomvc. Aquí es donde se encuentran los archivos principales del framework y su funcionalidad central.
 
-.gitignore: Este archivo es utilizado por el sistema de control de versiones Git para determinar qué archivos y carpetas deben ser ignorados y no deben ser incluidos en el repositorio.
-
-.htaccess: El archivo .htaccess es utilizado por los servidores web Apache para configurar opciones y directivas específicas para el directorio en el que se encuentra. Puede ser utilizado para configurar redireccionamientos, reglas de reescritura, medidas de seguridad y otras configuraciones relacionadas con el servidor.
-
-License.txt: Este archivo generalmente contiene la licencia bajo la cual se distribuye el framework o la aplicación. Proporciona información sobre los derechos de uso, distribución y modificación del software.
-
-README.md: Este archivo suele ser utilizado para proporcionar información y documentación sobre el proyecto. Es común incluir instrucciones de instalación, ejemplos de uso, requisitos del sistema y otros detalles relevantes.
-
 index.php: Este es el archivo de punto de entrada de la aplicación. Es el archivo que se ejecuta cuando se accede a la raíz de la aplicación y generalmente se encarga de inicializar el framework y enrutamiento de las solicitudes entrantes.
