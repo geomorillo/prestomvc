@@ -1,6 +1,6 @@
 <?php
-
-return [
+/*EXAMPLE */
+/*return [
  
     "notorm" => [
         "path" => LIB_PATH . "notorm" . DS . "NotORM.php",
@@ -8,4 +8,6 @@ return [
             
         }
     ]
+];*/
+return [
 ];

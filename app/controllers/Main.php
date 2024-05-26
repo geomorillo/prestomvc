@@ -25,9 +25,9 @@ use system\core\Logger;
 use system\core\Email;
 class Main extends Controller
 {
-//    private $auth;
-//    private $response;
-//    private $request;
+   private $auth;
+   private $response;
+   private $request;
 
     public function __construct()
     {
