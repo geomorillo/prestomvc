@@ -13,7 +13,7 @@ return
     "caracteristicas" => "Características",
     "_0" => "Es un Framework liviano",
     "_1" => "Fácil de instalar",
-    "_2" => "Librería NOTORM para trabajar con bases de datos",
+    "_2" => "Fácil de usar",
     "_3" => "Plantillas para cada vista",
     "_4" => "Varios \"helpers\"",
     "_5" => "Fácil de administrar",
