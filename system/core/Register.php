@@ -36,7 +36,7 @@ class Register
         //include the modules_config
         $config = include_once MODULES_PATH . "modules_config.php";
         //include the routes for modules foreach module
-        if (count($config)) {
+        if (is_array($config) && count($config)) {
             foreach ($config as $moduleName => $info) {
                 include_once MODULES_PATH . "$info[path]".DS."routes.php";
             }
