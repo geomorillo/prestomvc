@@ -1,122 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="52" assertions="99" errors="0" warnings="0" failures="0" skipped="8" time="2.054670">
-    <testsuite name="unit" tests="46" assertions="83" errors="0" warnings="0" failures="0" skipped="8" time="2.052339">
-      <testsuite name="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" tests="6" assertions="12" errors="0" warnings="0" failures="0" skipped="0" time="2.018742">
-        <testcase name="testSetAndGet" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="15" assertions="1" time="0.003496"/>
-        <testcase name="testExpiration" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="24" assertions="2" time="2.005902"/>
-        <testcase name="testDelete" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="33" assertions="2" time="0.002791"/>
-        <testcase name="testClear" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="42" assertions="2" time="0.002900"/>
-        <testcase name="testHas" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="53" assertions="2" time="0.001598"/>
-        <testcase name="testComplexData" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="61" assertions="3" time="0.002056"/>
+  <testsuite name="" tests="56" assertions="122" errors="0" warnings="0" failures="0" skipped="0" time="2.066595">
+    <testsuite name="unit" tests="50" assertions="106" errors="0" warnings="0" failures="0" skipped="0" time="2.064121">
+      <testsuite name="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" tests="6" assertions="12" errors="0" warnings="0" failures="0" skipped="0" time="2.022446">
+        <testcase name="testSetAndGet" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="15" assertions="1" time="0.003668"/>
+        <testcase name="testExpiration" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="24" assertions="2" time="2.008121"/>
+        <testcase name="testDelete" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="33" assertions="2" time="0.002570"/>
+        <testcase name="testClear" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="42" assertions="2" time="0.003455"/>
+        <testcase name="testHas" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="53" assertions="2" time="0.002124"/>
+        <testcase name="testComplexData" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="61" assertions="3" time="0.002508"/>
       </testsuite>
-      <testsuite name="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" tests="6" assertions="6" errors="0" warnings="0" failures="0" skipped="3" time="0.001320">
-        <testcase name="testControllerHasViewProperty" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="44" assertions="2" time="0.000634"/>
-        <testcase name="testControllerMethodsReturnExpectedResults" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="50" assertions="2" time="0.000197"/>
-        <testcase name="testControllerMiddlewareMethodsWork" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="59" assertions="2" time="0.000132"/>
-        <testcase name="testCsrfTokenGeneration" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="65" assertions="0" time="0.000153">
-          <skipped/>
-        </testcase>
-        <testcase name="testWithCsrfToken" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="76" assertions="0" time="0.000111">
-          <skipped/>
-        </testcase>
-        <testcase name="testWithCsrfTokenEmptyArray" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="95" assertions="0" time="0.000093">
-          <skipped/>
-        </testcase>
+      <testsuite name="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" tests="6" assertions="15" errors="0" warnings="0" failures="0" skipped="0" time="0.003117">
+        <testcase name="testControllerHasViewProperty" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="44" assertions="2" time="0.000648"/>
+        <testcase name="testControllerMethodsReturnExpectedResults" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="50" assertions="2" time="0.000126"/>
+        <testcase name="testControllerMiddlewareMethodsWork" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="59" assertions="2" time="0.000100"/>
+        <testcase name="testCsrfTokenGeneration" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="65" assertions="2" time="0.001963"/>
+        <testcase name="testWithCsrfToken" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="76" assertions="5" time="0.000156"/>
+        <testcase name="testWithCsrfTokenEmptyArray" class="ControllerTest" classname="ControllerTest" file="C:\geovanny\dev\prestomvc\tests\unit\ControllerTest.php" line="95" assertions="2" time="0.000124"/>
       </testsuite>
-      <testsuite name="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" tests="5" assertions="0" errors="0" warnings="0" failures="0" skipped="5" time="0.000427">
-        <testcase name="testGenerateToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="16" assertions="0" time="0.000096">
-          <skipped/>
-        </testcase>
-        <testcase name="testValidateToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="29" assertions="0" time="0.000091">
-          <skipped/>
-        </testcase>
-        <testcase name="testInvalidToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="39" assertions="0" time="0.000086">
-          <skipped/>
-        </testcase>
-        <testcase name="testTokenStorage" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="49" assertions="0" time="0.000078">
-          <skipped/>
-        </testcase>
-        <testcase name="testTokenAfterValidation" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="66" assertions="0" time="0.000076">
-          <skipped/>
-        </testcase>
+      <testsuite name="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" tests="9" assertions="14" errors="0" warnings="0" failures="0" skipped="0" time="0.000938">
+        <testcase name="testGenerateToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="18" assertions="3" time="0.000125"/>
+        <testcase name="testValidateToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="26" assertions="1" time="0.000103"/>
+        <testcase name="testInvalidToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="33" assertions="1" time="0.000094"/>
+        <testcase name="testTokenStorage" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="39" assertions="3" time="0.000175"/>
+        <testcase name="testSaveOperation" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="53" assertions="1" time="0.000092"/>
+        <testcase name="testGetKeyOperation" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="59" assertions="1" time="0.000098"/>
+        <testcase name="testDestroyOperation" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="65" assertions="2" time="0.000085"/>
+        <testcase name="testGetKeyReturnsFalseForNonexistentKey" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="73" assertions="1" time="0.000086"/>
+        <testcase name="testSaveDoesNothingWhenSessionNotSet" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="78" assertions="1" time="0.000081"/>
       </testsuite>
-      <testsuite name="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" tests="14" assertions="14" errors="0" warnings="0" failures="0" skipped="0" time="0.025862">
-        <testcase name="testEmergencyLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="31" assertions="1" time="0.002647"/>
-        <testcase name="testCriticalLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="37" assertions="1" time="0.001788"/>
-        <testcase name="testErrorLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="43" assertions="1" time="0.001616"/>
-        <testcase name="testWarningLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="49" assertions="1" time="0.001539"/>
-        <testcase name="testInfoLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="55" assertions="1" time="0.001608"/>
-        <testcase name="testNoticeLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="61" assertions="1" time="0.001614"/>
-        <testcase name="testAlertLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="67" assertions="1" time="0.001603"/>
-        <testcase name="testDebugLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="73" assertions="1" time="0.002182"/>
-        <testcase name="testLogWithCustomLevel" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="79" assertions="1" time="0.001922"/>
-        <testcase name="testLogWithContext" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="85" assertions="1" time="0.001837"/>
-        <testcase name="testLogWithEmptyContext" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="91" assertions="1" time="0.002132"/>
-        <testcase name="testLogWithNullContext" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="97" assertions="1" time="0.002003"/>
-        <testcase name="testLogIncludesTimestamp" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="103" assertions="1" time="0.001741"/>
-        <testcase name="testLogContextWithNonStringValues" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="112" assertions="1" time="0.001630"/>
+      <testsuite name="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" tests="14" assertions="14" errors="0" warnings="0" failures="0" skipped="0" time="0.031439">
+        <testcase name="testEmergencyLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="31" assertions="1" time="0.002978"/>
+        <testcase name="testCriticalLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="37" assertions="1" time="0.003290"/>
+        <testcase name="testErrorLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="43" assertions="1" time="0.002010"/>
+        <testcase name="testWarningLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="49" assertions="1" time="0.002208"/>
+        <testcase name="testInfoLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="55" assertions="1" time="0.002560"/>
+        <testcase name="testNoticeLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="61" assertions="1" time="0.002402"/>
+        <testcase name="testAlertLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="67" assertions="1" time="0.001983"/>
+        <testcase name="testDebugLog" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="73" assertions="1" time="0.001859"/>
+        <testcase name="testLogWithCustomLevel" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="79" assertions="1" time="0.001848"/>
+        <testcase name="testLogWithContext" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="85" assertions="1" time="0.001950"/>
+        <testcase name="testLogWithEmptyContext" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="91" assertions="1" time="0.001954"/>
+        <testcase name="testLogWithNullContext" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="97" assertions="1" time="0.001895"/>
+        <testcase name="testLogIncludesTimestamp" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="103" assertions="1" time="0.002222"/>
+        <testcase name="testLogContextWithNonStringValues" class="LoggerTest" classname="LoggerTest" file="C:\geovanny\dev\prestomvc\tests\unit\LoggerTest.php" line="112" assertions="1" time="0.002278"/>
       </testsuite>
-      <testsuite name="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" tests="3" assertions="12" errors="0" warnings="0" failures="0" skipped="0" time="0.001626">
-        <testcase name="testRouterCanRegisterRoutes" class="RouterTest" classname="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" line="16" assertions="4" time="0.001425"/>
-        <testcase name="testRouterSupportsDifferentHttpMethods" class="RouterTest" classname="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" line="26" assertions="5" time="0.000111"/>
-        <testcase name="testRouterSupportsRouteParameters" class="RouterTest" classname="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" line="41" assertions="3" time="0.000090"/>
+      <testsuite name="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" tests="3" assertions="12" errors="0" warnings="0" failures="0" skipped="0" time="0.001919">
+        <testcase name="testRouterCanRegisterRoutes" class="RouterTest" classname="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" line="16" assertions="4" time="0.001661"/>
+        <testcase name="testRouterSupportsDifferentHttpMethods" class="RouterTest" classname="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" line="26" assertions="5" time="0.000141"/>
+        <testcase name="testRouterSupportsRouteParameters" class="RouterTest" classname="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" line="41" assertions="3" time="0.000118"/>
       </testsuite>
-      <testsuite name="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" tests="9" assertions="35" errors="0" warnings="0" failures="0" skipped="0" time="0.001696">
-        <testcase name="testValidUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="20" assertions="2" time="0.000397"/>
-        <testcase name="testInvalidUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="26" assertions="6" time="0.000110"/>
-        <testcase name="testPasswordValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="43" assertions="4" time="0.000092"/>
-        <testcase name="testEmailValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="54" assertions="4" time="0.000526"/>
-        <testcase name="testPasswordMatch" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="65" assertions="4" time="0.000106"/>
-        <testcase name="testPasswordNotUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="75" assertions="4" time="0.000095"/>
-        <testcase name="testKeyValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="85" assertions="4" time="0.000160"/>
-        <testcase name="testErrorCollection" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="97" assertions="3" time="0.000112"/>
-        <testcase name="testErrorManagement" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="108" assertions="4" time="0.000097"/>
+      <testsuite name="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" tests="9" assertions="35" errors="0" warnings="0" failures="0" skipped="0" time="0.001783">
+        <testcase name="testValidUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="20" assertions="2" time="0.000440"/>
+        <testcase name="testInvalidUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="26" assertions="6" time="0.000113"/>
+        <testcase name="testPasswordValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="43" assertions="4" time="0.000093"/>
+        <testcase name="testEmailValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="54" assertions="4" time="0.000556"/>
+        <testcase name="testPasswordMatch" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="65" assertions="4" time="0.000110"/>
+        <testcase name="testPasswordNotUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="75" assertions="4" time="0.000156"/>
+        <testcase name="testKeyValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="85" assertions="4" time="0.000118"/>
+        <testcase name="testErrorCollection" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="97" assertions="3" time="0.000104"/>
+        <testcase name="testErrorManagement" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="108" assertions="4" time="0.000092"/>
       </testsuite>
-      <testsuite name="ViewTest" file="C:\geovanny\dev\prestomvc\tests\unit\ViewTest.php" tests="3" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.002665">
-        <testcase name="testViewCanBeInstantiated" class="ViewTest" classname="ViewTest" file="C:\geovanny\dev\prestomvc\tests\unit\ViewTest.php" line="21" assertions="1" time="0.000145"/>
-        <testcase name="testUseTemplateReturnsSelf" class="ViewTest" classname="ViewTest" file="C:\geovanny\dev\prestomvc\tests\unit\ViewTest.php" line="26" assertions="2" time="0.000160"/>
-        <testcase name="testPartialPassesDataToView" class="ViewTest" classname="ViewTest" file="C:\geovanny\dev\prestomvc\tests\unit\ViewTest.php" line="33" assertions="1" time="0.002361"/>
+      <testsuite name="ViewTest" file="C:\geovanny\dev\prestomvc\tests\unit\ViewTest.php" tests="3" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.002478">
+        <testcase name="testViewCanBeInstantiated" class="ViewTest" classname="ViewTest" file="C:\geovanny\dev\prestomvc\tests\unit\ViewTest.php" line="21" assertions="1" time="0.000127"/>
+        <testcase name="testUseTemplateReturnsSelf" class="ViewTest" classname="ViewTest" file="C:\geovanny\dev\prestomvc\tests\unit\ViewTest.php" line="26" assertions="2" time="0.000110"/>
+        <testcase name="testPartialPassesDataToView" class="ViewTest" classname="ViewTest" file="C:\geovanny\dev\prestomvc\tests\unit\ViewTest.php" line="33" assertions="1" time="0.002241"/>
       </testsuite>
     </testsuite>
-    <testsuite name="integration" tests="6" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.002331">
-      <testsuite name="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" tests="6" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.002331">
-        <testcase name="testInsertAndSelect" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="75" assertions="4" time="0.000677">
+    <testsuite name="integration" tests="6" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.002474">
+      <testsuite name="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" tests="6" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.002474">
+        <testcase name="testInsertAndSelect" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="75" assertions="4" time="0.000730">
           <system-out>
 Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
 
 Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
 </system-out>
         </testcase>
-        <testcase name="testUpdate" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="92" assertions="2" time="0.000352">
+        <testcase name="testUpdate" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="92" assertions="2" time="0.000369">
           <system-out>
 Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
 
 Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
 </system-out>
         </testcase>
-        <testcase name="testDelete" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="112" assertions="2" time="0.000311">
+        <testcase name="testDelete" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="112" assertions="2" time="0.000323">
           <system-out>
 Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
 
 Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
 </system-out>
         </testcase>
-        <testcase name="testWhereConditions" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="132" assertions="3" time="0.000347">
+        <testcase name="testWhereConditions" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="132" assertions="3" time="0.000327">
           <system-out>
 Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
 
 Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
 </system-out>
         </testcase>
-        <testcase name="testOrderByAndLimit" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="149" assertions="4" time="0.000357">
+        <testcase name="testOrderByAndLimit" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="149" assertions="4" time="0.000393">
           <system-out>
 Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
 
 Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
 </system-out>
         </testcase>
-        <testcase name="testQueryErrors" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="174" assertions="1" time="0.000287">
+        <testcase name="testQueryErrors" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="174" assertions="1" time="0.000332">
           <system-out>
 Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
 

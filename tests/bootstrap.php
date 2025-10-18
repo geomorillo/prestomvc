@@ -29,7 +29,7 @@ require_once ROOT . 'system/config/constants.php';
 
 // Load additional constants that might be needed
 if (!defined('USE_SESSIONS')) {
-    define('USE_SESSIONS', false);
+    define('USE_SESSIONS', true); // Enable sessions for testing
 }
 if (!defined('MAX_USERNAME_LENGTH')) {
     define('MAX_USERNAME_LENGTH', 30);

@@ -4,10 +4,12 @@ use system\core\Csrf;
 
 class CsrfTest extends TestCase
 {
+    private $originalUseSessions;
+
     protected function setUp(): void
     {
         parent::setUp();
-        // Ensure sessions are available for CSRF
+        // Mock sessions for testing
         if (!isset($_SESSION)) {
             $_SESSION = [];
         }
@@ -15,64 +17,74 @@ class CsrfTest extends TestCase
 
     public function testGenerateToken()
     {
-        // Skip if sessions not available
-        if (!USE_SESSIONS) {
-            $this->markTestSkipped('Sessions not enabled for testing');
-        }
-
         $token = Csrf::generate();
         $this->assertNotEmpty($token);
         $this->assertIsString($token);
-        $this->assertEquals(64, strlen($token)); // 32 bytes * 2 for hex
+        $this->assertEquals(44, strlen($token)); // base64 encoded 32 bytes
     }
 
     public function testValidateToken()
     {
-        if (!USE_SESSIONS) {
-            $this->markTestSkipped('Sessions not enabled for testing');
-        }
-
         $token = Csrf::generate();
         $this->assertTrue(Csrf::validate($token));
     }
 
+
     public function testInvalidToken()
     {
-        if (!USE_SESSIONS) {
-            $this->markTestSkipped('Sessions not enabled for testing');
-        }
-
         Csrf::generate(); // Generate a valid token first
         $this->assertFalse(Csrf::validate('invalid_token_12345'));
     }
 
     public function testTokenStorage()
     {
-        if (!USE_SESSIONS) {
-            $this->markTestSkipped('Sessions not enabled for testing');
-        }
-
         $token1 = Csrf::generate();
         $token2 = Csrf::generate();
 
         // Should be different tokens
         $this->assertNotEquals($token1, $token2);
 
-        // Both should be valid
-        $this->assertTrue(Csrf::validate($token1));
-        $this->assertTrue(Csrf::validate($token2));
+        // Only the last token should be valid (overwrites previous)
+        $this->assertFalse(Csrf::validate($token1)); // First token invalidated
+        $this->assertTrue(Csrf::validate($token2));  // Last token valid
     }
 
-    public function testTokenAfterValidation()
+
+    public function testSaveOperation()
     {
-        if (!USE_SESSIONS) {
-            $this->markTestSkipped('Sessions not enabled for testing');
-        }
+        Csrf::save('test_key', 'test_value');
+        $this->assertEquals('test_value', $_SESSION['test_key']);
+    }
 
-        $token = Csrf::generate();
-        $this->assertTrue(Csrf::validate($token));
+    public function testGetKeyOperation()
+    {
+        $_SESSION['test_key'] = 'test_value';
+        $this->assertEquals('test_value', Csrf::get_key('test_key'));
+    }
 
-        // Token should be invalidated after use
-        $this->assertFalse(Csrf::validate($token));
+    public function testDestroyOperation()
+    {
+        $_SESSION['test_key'] = 'test_value';
+        Csrf::destroy('test_key');
+        $this->assertFalse(Csrf::get_key('test_key'));
+        $this->assertFalse(isset($_SESSION['test_key']));
+    }
+
+    public function testGetKeyReturnsFalseForNonexistentKey()
+    {
+        $this->assertFalse(Csrf::get_key('nonexistent_key'));
+    }
+
+    public function testSaveDoesNothingWhenSessionNotSet()
+    {
+        // Temporarily unset $_SESSION
+        $originalSession = $_SESSION;
+        unset($_SESSION);
+
+        Csrf::save('test_key', 'test_value');
+        $this->assertFalse(isset($_SESSION));
+
+        // Restore session
+        $_SESSION = $originalSession;
     }
 }

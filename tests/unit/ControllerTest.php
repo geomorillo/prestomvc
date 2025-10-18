@@ -64,11 +64,11 @@ class ControllerTest extends TestCase
 
     public function testCsrfTokenGeneration()
     {
-        if (!USE_SESSIONS) {
-            $this->markTestSkipped('Sessions are disabled for testing');
-        }
+        $reflection = new ReflectionClass($this->controller);
+        $method = $reflection->getMethod('getCsrfToken');
+        $method->setAccessible(true);
+        $token = $method->invoke($this->controller);
 
-        $token = $this->controller->getCsrfToken();
         $this->assertIsString($token);
         $this->assertNotEmpty($token);
     }

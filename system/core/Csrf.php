@@ -23,26 +23,22 @@ class Csrf
 
     public static function generate()
     {
-       $log =  new LogException();
         if (!USE_SESSIONS) {
-           $log->errorMessage("Sessions not enabled");
-            return FALSE;
+            throw new \Exception("Sessions not enabled. Cannot generate CSRF token.");
         }
         //generate csrf
         $token_id = base64_encode(Encrypter::get_random_bytes(32));
         //store in sessions
         static::save("token_id", $token_id);
-        
+
         //return generated csrf
         return $token_id;
     }
 
     public static function validate($token)
     {
-        $log =  new LogException();
         if (!USE_SESSIONS) {
-            $log->errorMessage("Sessions not enabled");
-            return FALSE;
+            throw new \Exception("Sessions not enabled. Cannot validate CSRF token.");
         }
         //validate csrf
         //get stored csrf

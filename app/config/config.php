@@ -7,7 +7,7 @@
  */
 define("DEFAULTCONTROLLER", 'Main');//Default controller to be executed check app/routes.php
 define("DEFAULTMETHOD", 'index');// Defaul method to be executed
-define("USE_SESSIONS", FALSE);//if you want to use sessions class must enable this
+define("USE_SESSIONS", TRUE);//if you want to use sessions class must enable this
 define("ENABLE_DEBUG",TRUE);//TRUE = DEVELOPMENT, FALSE = PRODUCCION
 define('ENCRYPT_KEY', "e224cda70cfb2e70586d8d1d28424b31");//CHANGE THIS WITH YOUR OWN KEY (SEE KEY HELPER)
 define('TEMPDATAENCRYPT',FALSE);//Encrypt TempData TRUE/FALSE(for speed)
