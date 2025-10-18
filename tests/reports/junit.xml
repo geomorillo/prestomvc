@@ -1,88 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="26" assertions="63" errors="0" warnings="0" failures="0" skipped="5" time="2.034374">
-    <testsuite name="unit" tests="20" assertions="47" errors="0" warnings="0" failures="0" skipped="5" time="2.030961">
-      <testsuite name="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" tests="6" assertions="12" errors="0" warnings="0" failures="0" skipped="0" time="2.027988">
-        <testcase name="testSetAndGet" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="15" assertions="1" time="0.003118"/>
-        <testcase name="testExpiration" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="24" assertions="2" time="2.011369"/>
-        <testcase name="testDelete" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="33" assertions="2" time="0.002564"/>
-        <testcase name="testClear" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="42" assertions="2" time="0.003651"/>
-        <testcase name="testHas" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="53" assertions="2" time="0.003611"/>
-        <testcase name="testComplexData" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="61" assertions="3" time="0.003675"/>
-      </testsuite>
-      <testsuite name="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" tests="5" assertions="0" errors="0" warnings="0" failures="0" skipped="5" time="0.000977">
-        <testcase name="testGenerateToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="16" assertions="0" time="0.000433">
-          <skipped/>
-        </testcase>
-        <testcase name="testValidateToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="29" assertions="0" time="0.000205">
-          <skipped/>
-        </testcase>
-        <testcase name="testInvalidToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="39" assertions="0" time="0.000124">
-          <skipped/>
-        </testcase>
-        <testcase name="testTokenStorage" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="49" assertions="0" time="0.000107">
-          <skipped/>
-        </testcase>
-        <testcase name="testTokenAfterValidation" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="66" assertions="0" time="0.000108">
-          <skipped/>
-        </testcase>
-      </testsuite>
-      <testsuite name="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" tests="9" assertions="35" errors="0" warnings="0" failures="0" skipped="0" time="0.001997">
-        <testcase name="testValidUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="20" assertions="2" time="0.000552"/>
-        <testcase name="testInvalidUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="26" assertions="6" time="0.000112"/>
-        <testcase name="testPasswordValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="43" assertions="4" time="0.000091"/>
-        <testcase name="testEmailValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="54" assertions="4" time="0.000641"/>
-        <testcase name="testPasswordMatch" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="65" assertions="4" time="0.000125"/>
-        <testcase name="testPasswordNotUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="75" assertions="4" time="0.000112"/>
-        <testcase name="testKeyValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="85" assertions="4" time="0.000119"/>
-        <testcase name="testErrorCollection" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="97" assertions="3" time="0.000127"/>
-        <testcase name="testErrorManagement" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="108" assertions="4" time="0.000117"/>
-      </testsuite>
-    </testsuite>
-    <testsuite name="integration" tests="6" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.003413">
-      <testsuite name="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" tests="6" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.003413">
-        <testcase name="testInsertAndSelect" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="75" assertions="4" time="0.000781">
-          <system-out>
-Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
-
-Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
-</system-out>
-        </testcase>
-        <testcase name="testUpdate" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="92" assertions="2" time="0.000558">
-          <system-out>
-Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
-
-Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
-</system-out>
-        </testcase>
-        <testcase name="testDelete" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="112" assertions="2" time="0.000510">
-          <system-out>
-Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
-
-Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
-</system-out>
-        </testcase>
-        <testcase name="testWhereConditions" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="132" assertions="3" time="0.000494">
-          <system-out>
-Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
-
-Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
-</system-out>
-        </testcase>
-        <testcase name="testOrderByAndLimit" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="149" assertions="4" time="0.000535">
-          <system-out>
-Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
-
-Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
-</system-out>
-        </testcase>
-        <testcase name="testQueryErrors" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="174" assertions="1" time="0.000535">
-          <system-out>
-Deprecated: Creation of dynamic property TestDatabase::$_error is deprecated in C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php on line 33
-
-Deprecated: Creation of dynamic property TestDatabase::$table is deprecated in C:\geovanny\dev\prestomvc\system\database\Database.php on line 523
-</system-out>
-        </testcase>
+  <testsuite name="" tests="3" assertions="12" errors="0" warnings="0" failures="0" skipped="0" time="0.002221">
+    <testsuite name="unit" tests="3" assertions="12" errors="0" warnings="0" failures="0" skipped="0" time="0.002221">
+      <testsuite name="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" tests="3" assertions="12" errors="0" warnings="0" failures="0" skipped="0" time="0.002221">
+        <testcase name="testRouterCanRegisterRoutes" class="RouterTest" classname="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" line="16" assertions="4" time="0.001903"/>
+        <testcase name="testRouterSupportsDifferentHttpMethods" class="RouterTest" classname="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" line="26" assertions="5" time="0.000182"/>
+        <testcase name="testRouterSupportsRouteParameters" class="RouterTest" classname="RouterTest" file="C:\geovanny\dev\prestomvc\tests\unit\RouterTest.php" line="41" assertions="3" time="0.000137"/>
       </testsuite>
     </testsuite>
   </testsuite>

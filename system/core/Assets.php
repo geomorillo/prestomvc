@@ -61,7 +61,7 @@ class Assets
 
     public static function getAll()
     {
-        return static::$assets;
+        return static::$assets ?? [];
     }
 
     private static function resolve($path)

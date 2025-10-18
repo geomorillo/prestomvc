@@ -47,25 +47,17 @@ class ControllerTest extends TestCase
         $this->assertInstanceOf('system\core\View', $this->controller->view);
     }
 
-    public function testControllerImplementsAbstractMethods()
+    public function testControllerMethodsReturnExpectedResults()
     {
-        $this->assertTrue(method_exists($this->controller, 'index'));
         $result = $this->controller->index('arg1', 'arg2');
         $this->assertEquals('index called with arg1, arg2', $result);
-    }
 
-    public function testControllerCanHaveAdditionalMethods()
-    {
-        $this->assertTrue(method_exists($this->controller, 'show'));
         $result = $this->controller->show(123);
         $this->assertEquals('showing item 123', $result);
     }
 
-    public function testControllerHasMiddlewareMethods()
+    public function testControllerMiddlewareMethodsWork()
     {
-        $this->assertTrue(method_exists($this->controller, 'before'));
-        $this->assertTrue(method_exists($this->controller, 'after'));
-
         $this->assertEquals('before middleware', $this->controller->before());
         $this->assertEquals('after middleware', $this->controller->after());
     }

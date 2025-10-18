@@ -56,6 +56,17 @@ if (!defined('CONFIG_PATH')) {
     define('CONFIG_PATH', ROOT . 'app' . DS . 'config' . DS);
 }
 
+// Define missing constants for testing
+if (!defined('TEMPLATE_PATH')) {
+    define('TEMPLATE_PATH', ROOT . 'app' . DS . 'templates' . DS);
+}
+if (!defined('LOG_PATH')) {
+    define('LOG_PATH', ROOT . 'log' . DS);
+}
+if (!defined('LOG_FILENAME')) {
+    define('LOG_FILENAME', 'debug.log');
+}
+
 // Load essential classes for testing
 spl_autoload_register(function($class) {
     $class = explode("\\", $class);
