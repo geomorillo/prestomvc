@@ -276,9 +276,17 @@ class Auth
      */
     private function newSession($username)
     {
-        // unique session hash
-        $hash = md5(microtime());
-        // Fetch User ID :		
+        // Use cryptographically secure session ID instead of md5(microtime())
+        if (USE_SESSIONS && session_status() === PHP_SESSION_ACTIVE) {
+            // Regenerate session ID to prevent session fixation attacks
+            session_regenerate_id(true);
+            $hash = session_id(); // This is cryptographically secure
+        } else {
+            // Fallback if sessions are disabled (not recommended)
+            $hash = bin2hex(random_bytes(16)); // 32 character secure hash
+        }
+
+        // Fetch User ID :
         $queryUid = $this->db->table(DB_PREFIX . "users")->where("username", $username)->select(["id"]);
         $uid = $queryUid[0]->id;
         // Delete all previous sessions :
