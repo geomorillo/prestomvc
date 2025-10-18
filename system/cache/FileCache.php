@@ -13,7 +13,7 @@ class FileCache implements CacheInterface
 
     public function __construct($cacheDir = null, $defaultTtl = 3600)
     {
-        $this->cacheDir = $cacheDir ?: ROOT . 'cache' . DS;
+        $this->cacheDir = $cacheDir ?: ROOT . CACHE_DEFAULT_DIR . DS;
         $this->defaultTtl = $defaultTtl;
 
         // Crear directorio si no existe

@@ -63,9 +63,9 @@ class SessionManager implements SessionHandlerInterface
     {
         $session_data = base64_encode($session_data);
         //i won't use replace for compatibility
-        date_default_timezone_set('America/Bogota');
+        date_default_timezone_set(SESSION_TIMEZONE);
         $now = date('Y-m-d H:i:s');
-        $expires = date('Y-m-d H:i:s', strtotime($now . ' + 1 hour'));
+        $expires = date('Y-m-d H:i:s', strtotime($now . ' + ' . SESSION_DURATION_HOURS . ' hour'));
         $resultId = $this->db->table("session")->find($session_id);
         if (!$resultId) {
             $session = array("id" => $session_id, "expires" => $expires, "session_data" => $session_data);

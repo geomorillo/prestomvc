@@ -88,7 +88,7 @@ class Database
                     $this->_pdo = new \PDO($dsn, $db_user, $db_password);
                     break;
             }
-            $this->_pdo->exec("set names " . 'utf8');
+            $this->_pdo->exec("set names " . DB_CHARSET);
             $this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (LogException $e) {
             $e->logError();
