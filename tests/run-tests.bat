@@ -2,6 +2,8 @@
 REM PrestoMVC Test Runner
 REM Run PHPUnit tests for the framework
 
+cd ..
+
 echo Running PrestoMVC Tests...
 echo.
 

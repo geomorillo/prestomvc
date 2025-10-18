@@ -32,13 +32,13 @@ class Database
      * @var $_count type int store row count for _results variable
      * @var $_error type bool if cant fetch sql statement = true otherwise = false
      */
-    private $_pdo,
+    protected $_pdo,
             $_results,
             $_count,
             $_typeQuery = '',
             $_isJoin = FALSE;
-    private $queries = [];
-    protected $table;
+    protected $queries = [];
+    protected $_table;
     protected $config;
 
     public function __construct()
