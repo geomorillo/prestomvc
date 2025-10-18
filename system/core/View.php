@@ -83,6 +83,36 @@ class View
         $this->namespace = $namespace;
     }
 
+    /**
+     * Render view with caching
+     * @param string $path
+     * @param array $data
+     * @param int $ttl Cache time in seconds
+     * @return string
+     */
+    public function renderCached($path, array $data = [], $ttl = 1800)
+    {
+        // Get cache instance from registry
+        $cache = \system\core\Register::get('cache');
+        if (!$cache) {
+            // Fallback to normal render if no cache available
+            return $this->render($path, $data);
+        }
 
+        $key = 'view_' . md5($path . serialize($data));
+
+        // Try to get from cache
+        if ($cached = $cache->get($key)) {
+            return $cached;
+        }
+
+        // Render normally
+        $output = $this->render($path, $data);
+
+        // Cache the result
+        $cache->set($key, $output, $ttl);
+
+        return $output;
+    }
 
 }

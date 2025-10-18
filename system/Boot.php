@@ -48,6 +48,10 @@ class Boot
         // Load dependency injection services
         include_once APP_PATH . 'config/services.php';
 
+        // Initialize cache system
+        $cache = \system\cache\CacheManager::createFromConfig();
+        \system\core\Register::set('cache', $cache);
+
         // Set up global exception handler
         set_exception_handler(['system\\exceptions\\ExceptionHandler', 'handle']);
 

@@ -14,3 +14,9 @@ define('TEMPDATAENCRYPT',FALSE);//Encrypt TempData TRUE/FALSE(for speed)
 define("DEFAULT_LANG", "en");//Defaul language spanish : es/en
 define("DB_PREFIX",""); //prefix for tables in database
 define("LOG_FILENAME","debug.log");//define the log's name
+
+// Cache Configuration
+define("CACHE_TYPE", "file"); // file, apcu, array
+define("CACHE_TTL", 3600); // default TTL in seconds (1 hour)
+define("ENABLE_VIEW_CACHE", true); // enable/disable view caching
+define("ENABLE_QUERY_CACHE", false); // enable/disable query caching (experimental)
