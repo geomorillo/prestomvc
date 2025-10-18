@@ -13,8 +13,9 @@ abstract class TestCase extends PHPUnitTestCase
             $_SESSION = [];
         }
 
-        // Reset registry
-        if (class_exists('\system\core\Register')) {
+        // Reset registry if available
+        if (class_exists('\system\core\Register') &&
+            method_exists('\system\core\Register', 'clear')) {
             \system\core\Register::clear();
         }
     }

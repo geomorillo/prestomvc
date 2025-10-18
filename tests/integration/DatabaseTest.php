@@ -10,28 +10,38 @@ class DatabaseTest extends TestCase
     {
         parent::setUp();
 
-        // Use test database configuration
-        $this->db = Database::connect();
-        $this->setupTestTable();
+        // Skip if SQLite not available
+        if (!extension_loaded('pdo_sqlite')) {
+            $this->markTestSkipped('SQLite PDO extension not available');
+        }
+
+        // Create a fresh in-memory database for each test
+        $this->pdo = new PDO('sqlite::memory:');
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Create test table
+        $this->pdo->exec('
+            CREATE TABLE test_users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                email TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ');
+
+        // Create a mock database instance
+        $this->db = new Database();
+        $reflection = new ReflectionClass($this->db);
+        $pdoProperty = $reflection->getProperty('_pdo');
+        $pdoProperty->setAccessible(true);
+        $pdoProperty->setValue($this->db, $this->pdo);
+
+        // Set table name
+        $tableProperty = $reflection->getProperty('_table');
+        $tableProperty->setAccessible(true);
+        $tableProperty->setValue($this->db, 'test_users');
     }
 
-    private function setupTestTable()
-    {
-        try {
-            // Create test table
-            $this->db->query('DROP TABLE IF EXISTS test_users');
-            $this->db->query('
-                CREATE TABLE test_users (
-                    id INTEGER PRIMARY KEY AUTO_INCREMENT,
-                    name VARCHAR(100),
-                    email VARCHAR(100),
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                )
-            ');
-        } catch (Exception $e) {
-            $this->markTestSkipped('Could not create test table: ' . $e->getMessage());
-        }
-    }
 
     public function testInsertAndSelect()
     {

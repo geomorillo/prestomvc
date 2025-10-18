@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="26" assertions="47" errors="0" warnings="0" failures="0" skipped="11" time="2.034353">
+    <testsuite name="unit" tests="20" assertions="47" errors="0" warnings="0" failures="0" skipped="5" time="2.033777">
+      <testsuite name="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" tests="6" assertions="12" errors="0" warnings="0" failures="0" skipped="0" time="2.031346">
+        <testcase name="testSetAndGet" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="15" assertions="1" time="0.003671"/>
+        <testcase name="testExpiration" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="24" assertions="2" time="2.012371"/>
+        <testcase name="testDelete" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="33" assertions="2" time="0.003095"/>
+        <testcase name="testClear" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="42" assertions="2" time="0.005721"/>
+        <testcase name="testHas" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="53" assertions="2" time="0.003325"/>
+        <testcase name="testComplexData" class="CacheTest" classname="CacheTest" file="C:\geovanny\dev\prestomvc\tests\unit\CacheTest.php" line="61" assertions="3" time="0.003164"/>
+      </testsuite>
+      <testsuite name="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" tests="5" assertions="0" errors="0" warnings="0" failures="0" skipped="5" time="0.000656">
+        <testcase name="testGenerateToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="16" assertions="0" time="0.000216">
+          <skipped/>
+        </testcase>
+        <testcase name="testValidateToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="29" assertions="0" time="0.000140">
+          <skipped/>
+        </testcase>
+        <testcase name="testInvalidToken" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="39" assertions="0" time="0.000105">
+          <skipped/>
+        </testcase>
+        <testcase name="testTokenStorage" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="49" assertions="0" time="0.000097">
+          <skipped/>
+        </testcase>
+        <testcase name="testTokenAfterValidation" class="CsrfTest" classname="CsrfTest" file="C:\geovanny\dev\prestomvc\tests\unit\CsrfTest.php" line="66" assertions="0" time="0.000098">
+          <skipped/>
+        </testcase>
+      </testsuite>
+      <testsuite name="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" tests="9" assertions="35" errors="0" warnings="0" failures="0" skipped="0" time="0.001775">
+        <testcase name="testValidUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="20" assertions="2" time="0.000554"/>
+        <testcase name="testInvalidUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="26" assertions="6" time="0.000115"/>
+        <testcase name="testPasswordValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="43" assertions="4" time="0.000091"/>
+        <testcase name="testEmailValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="54" assertions="4" time="0.000524"/>
+        <testcase name="testPasswordMatch" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="65" assertions="4" time="0.000112"/>
+        <testcase name="testPasswordNotUsername" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="75" assertions="4" time="0.000098"/>
+        <testcase name="testKeyValidation" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="85" assertions="4" time="0.000092"/>
+        <testcase name="testErrorCollection" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="97" assertions="3" time="0.000095"/>
+        <testcase name="testErrorManagement" class="ValidationTest" classname="ValidationTest" file="C:\geovanny\dev\prestomvc\tests\unit\ValidationTest.php" line="108" assertions="4" time="0.000095"/>
+      </testsuite>
+    </testsuite>
+    <testsuite name="integration" tests="6" assertions="0" errors="0" warnings="0" failures="0" skipped="6" time="0.000576">
+      <testsuite name="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" tests="6" assertions="0" errors="0" warnings="0" failures="0" skipped="6" time="0.000576">
+        <testcase name="testInsertAndSelect" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="46" assertions="0" time="0.000119">
+          <skipped/>
+        </testcase>
+        <testcase name="testUpdate" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="63" assertions="0" time="0.000096">
+          <skipped/>
+        </testcase>
+        <testcase name="testDelete" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="83" assertions="0" time="0.000100">
+          <skipped/>
+        </testcase>
+        <testcase name="testWhereConditions" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="103" assertions="0" time="0.000085">
+          <skipped/>
+        </testcase>
+        <testcase name="testOrderByAndLimit" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="120" assertions="0" time="0.000084">
+          <skipped/>
+        </testcase>
+        <testcase name="testQueryErrors" class="DatabaseTest" classname="DatabaseTest" file="C:\geovanny\dev\prestomvc\tests\integration\DatabaseTest.php" line="145" assertions="0" time="0.000092">
+          <skipped/>
+        </testcase>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

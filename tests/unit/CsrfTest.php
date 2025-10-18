@@ -15,6 +15,11 @@ class CsrfTest extends TestCase
 
     public function testGenerateToken()
     {
+        // Skip if sessions not available
+        if (!USE_SESSIONS) {
+            $this->markTestSkipped('Sessions not enabled for testing');
+        }
+
         $token = Csrf::generate();
         $this->assertNotEmpty($token);
         $this->assertIsString($token);
@@ -23,18 +28,30 @@ class CsrfTest extends TestCase
 
     public function testValidateToken()
     {
+        if (!USE_SESSIONS) {
+            $this->markTestSkipped('Sessions not enabled for testing');
+        }
+
         $token = Csrf::generate();
         $this->assertTrue(Csrf::validate($token));
     }
 
     public function testInvalidToken()
     {
+        if (!USE_SESSIONS) {
+            $this->markTestSkipped('Sessions not enabled for testing');
+        }
+
         Csrf::generate(); // Generate a valid token first
         $this->assertFalse(Csrf::validate('invalid_token_12345'));
     }
 
     public function testTokenStorage()
     {
+        if (!USE_SESSIONS) {
+            $this->markTestSkipped('Sessions not enabled for testing');
+        }
+
         $token1 = Csrf::generate();
         $token2 = Csrf::generate();
 
@@ -48,20 +65,14 @@ class CsrfTest extends TestCase
 
     public function testTokenAfterValidation()
     {
+        if (!USE_SESSIONS) {
+            $this->markTestSkipped('Sessions not enabled for testing');
+        }
+
         $token = Csrf::generate();
         $this->assertTrue(Csrf::validate($token));
 
         // Token should be invalidated after use
         $this->assertFalse(Csrf::validate($token));
-    }
-
-    public function testNoSessionAvailable()
-    {
-        // Temporarily disable sessions
-        $originalSessions = USE_SESSIONS;
-        if (defined('USE_SESSIONS')) {
-            // This would require changing the constant, but for test we can mock
-            $this->markTestSkipped('Cannot test without session support in current setup');
-        }
     }
 }

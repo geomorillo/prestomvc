@@ -45,9 +45,9 @@ class ValidationTest extends TestCase
         $this->assertTrue($this->validator->validatePassword('validpass123'));
         $this->assertFalse($this->validator->hasErrors());
 
-        // Too short
+        // Too short - should fail (MIN_PASSWORD_LENGTH = 5)
         $this->validator->clearErrors();
-        $this->assertFalse($this->validator->validatePassword('short'));
+        $this->assertFalse($this->validator->validatePassword('1234')); // 4 chars, too short
         $this->assertTrue($this->validator->hasErrors());
     }
 
@@ -97,11 +97,12 @@ class ValidationTest extends TestCase
     public function testErrorCollection()
     {
         $this->validator->validateUsername('');
-        $this->validator->validatePassword('short');
+        $this->validator->validatePassword('1234'); // Too short
 
         $errors = $this->validator->getErrors();
         $this->assertCount(2, $errors);
         $this->assertContains('Username is required', $errors);
+        $this->assertContains('Password is too short', $errors);
     }
 
     public function testErrorManagement()
