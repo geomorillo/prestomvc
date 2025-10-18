@@ -45,6 +45,8 @@ class Boot
         include_once CORE_PATH.'functions.php';
         define("WEBROOT", getWebroot());
         include_once APP_PATH . 'config/config.php';
+        // Load dependency injection services
+        include_once APP_PATH . 'config/services.php';
     }
 
     // Autoloading

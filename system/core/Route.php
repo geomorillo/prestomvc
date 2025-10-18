@@ -242,11 +242,129 @@ class Route
 
     private function executeDispatch($controller, $action, $params)
     {
+        // Use dependency injection container to resolve controller
+        $controllerInstance = $this->resolveController($controller);
+
         if (isset($params)) {
-            call_user_func_array(array(new $controller, $action), $params);
+            call_user_func_array(array($controllerInstance, $action), $params);
         } else {
-            call_user_func(array(new $controller, $action));
+            call_user_func(array($controllerInstance, $action));
         }
+    }
+
+    /**
+     * Resolve controller using dependency injection
+     * @param string $controller
+     * @return object
+     */
+    private function resolveController($controller)
+    {
+        // Check if controller has dependencies to inject
+        $reflection = new \ReflectionClass($controller);
+        $constructor = $reflection->getConstructor();
+
+        if (!$constructor) {
+            // No constructor, create instance normally
+            return new $controller;
+        }
+
+        $parameters = $constructor->getParameters();
+        $dependencies = [];
+
+        foreach ($parameters as $param) {
+            $type = $param->getType();
+            if ($type && !$type->isBuiltin()) {
+                // Resolve dependency by type
+                $dependencyClass = $type->getName();
+                $dependencies[] = $this->resolveDependency($dependencyClass);
+            } else {
+                // For built-in types, use default value or null
+                $dependencies[] = $param->isDefaultValueAvailable()
+                    ? $param->getDefaultValue()
+                    : null;
+            }
+        }
+
+        return $reflection->newInstanceArgs($dependencies);
+    }
+
+    /**
+     * Resolve a single dependency
+     * @param string $className
+     * @return object
+     */
+    private function resolveDependency($className)
+    {
+        // Singleton pattern for shared services
+        static $instances = [];
+
+        // Return existing instance if already created
+        if (isset($instances[$className])) {
+            return $instances[$className];
+        }
+
+        // Check if there's a custom resolver registered
+        if (isset(self::$serviceResolvers[$className])) {
+            $instances[$className] = call_user_func(self::$serviceResolvers[$className]);
+            return $instances[$className];
+        }
+
+        // Auto-resolve using reflection for most classes
+        if (class_exists($className)) {
+            $reflection = new \ReflectionClass($className);
+            $constructor = $reflection->getConstructor();
+
+            if (!$constructor || $constructor->getNumberOfParameters() === 0) {
+                // No constructor or no parameters - create normally
+                $instances[$className] = new $className;
+            } else {
+                // Constructor with parameters - resolve recursively
+                $params = $constructor->getParameters();
+                $args = [];
+
+                foreach ($params as $param) {
+                    $paramType = $param->getType();
+                    if ($paramType && !$paramType->isBuiltin()) {
+                        $args[] = $this->resolveDependency($paramType->getName());
+                    } else {
+                        $args[] = $param->isDefaultValueAvailable()
+                            ? $param->getDefaultValue()
+                            : null;
+                    }
+                }
+
+                $instances[$className] = $reflection->newInstanceArgs($args);
+            }
+        } else {
+            throw new \Exception("Cannot resolve dependency: {$className}");
+        }
+
+        return $instances[$className];
+    }
+
+    /**
+     * Static array to hold custom service resolvers
+     * Can be registered from outside the Route class
+     */
+    private static $serviceResolvers = [];
+
+    /**
+     * Register a custom service resolver
+     * @param string $className
+     * @param callable $resolver
+     */
+    public static function registerService($className, callable $resolver)
+    {
+        self::$serviceResolvers[$className] = $resolver;
+    }
+
+    /**
+     * Get all registered service resolvers
+     * @return array
+     */
+    public static function getRegisteredServices()
+    {
+        return self::$serviceResolvers;
     }
 
     /**

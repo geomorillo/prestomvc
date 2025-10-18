@@ -25,16 +25,18 @@ use system\core\Logger;
 use system\core\Email;
 class Main extends Controller
 {
-   private $auth;
-   private $response;
-   private $request;
+    private $auth;
+    private $response;
+    private $request;
 
-    public function __construct()
+    // Constructor with dependency injection
+    public function __construct(Auth $auth = null, Response $response = null, Request $request = null)
     {
         parent::__construct();
-      //  $this->auth = new Auth(); 
-        $this->response = new Response();
-       $this->request = new Request();
+        // Use dependency injection if provided, otherwise create instances
+        $this->auth = $auth ?: new Auth();
+        $this->response = $response ?: new Response();
+        $this->request = $request ?: new Request();
     }
 /*
     public function before()
