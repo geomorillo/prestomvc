@@ -30,7 +30,9 @@ jobs:
       run: mkdir -p tests/reports
 
     - name: Run PHPUnit tests
-      run: php phpunit.phar --configuration=tests/phpunit.xml --log-junit=tests/reports/junit.xml --testdox --verbose
+      run: |
+        cd tests
+        ../php phpunit.phar --configuration=phpunit.xml --log-junit=reports/junit.xml --testdox --verbose
 
     - name: Upload test results
       uses: dorny/test-reporter@v1
