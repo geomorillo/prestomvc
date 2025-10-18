@@ -47,6 +47,19 @@ class Boot
         include_once APP_PATH . 'config/config.php';
         // Load dependency injection services
         include_once APP_PATH . 'config/services.php';
+
+        // Set up global exception handler
+        set_exception_handler(['system\\exceptions\\ExceptionHandler', 'handle']);
+
+        // Handle fatal errors
+        register_shutdown_function(function() {
+            $error = error_get_last();
+            if ($error !== null && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+                \system\exceptions\ExceptionHandler::handle(new \ErrorException(
+                    $error['message'], 0, $error['type'], $error['file'], $error['line']
+                ));
+            }
+        });
     }
 
     // Autoloading

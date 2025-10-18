@@ -190,7 +190,7 @@ class Route
             }
         }//endforeach
         if (!$this->found) {
-            echo $this->view->useTemplate("error")->render("error/404");
+            throw new \system\exceptions\HttpException("Page not found", 404);
         }
     }
 
@@ -393,11 +393,7 @@ class Route
      */
     private function csrfError($message)
     {
-        if (ENABLE_DEBUG) {
-            error_log("CSRF Error: " . $message);
-        }
-        http_response_code(403);
-        die('Forbidden: ' . $message);
+        throw new \system\exceptions\SecurityException($message);
     }
 
 }
