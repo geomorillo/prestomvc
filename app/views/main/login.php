@@ -3,12 +3,13 @@
     <div class="row">
         <div class="col-md-offset-5 col-md-3">
             <form action="authenticate" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token ?? ''; ?>" />
                 <div class="form-login">
                     <h4>Welcome back.</h4>
 
                     <input type="text" id="username" name="username" class="form-control input-sm chat-input" placeholder="username" />
                     </br>
-                    <input type="text" id="password" name="password" class="form-control input-sm chat-input" placeholder="password" />
+                    <input type="password" id="password" name="password" class="form-control input-sm chat-input" placeholder="password" />
                     </br>
                     <div class="wrapper">
                         <span class="group-btn">     

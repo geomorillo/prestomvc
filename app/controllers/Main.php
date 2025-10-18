@@ -63,7 +63,8 @@ class Main extends Controller
     {
         $asset = ["login" => "css/login.css"];// login css
         Assets::add($asset);//add css to assets
-        echo $this->view->useTemplate("login")->render("main/login");
+        $data = $this->withCsrfToken(); // Add CSRF token to view data
+        echo $this->view->useTemplate("login")->render("main/login", $data);
     }
 
     public function authenticate()

@@ -118,11 +118,16 @@ class Route
 
     /**
      * Dispatch the controller, method and params
-     * 
+     *
      * @param Request $request
      */
     public function dispatch()
     {
+        // CSRF Protection for state-changing methods
+        if (in_array($this->request->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'])) {
+            $this->validateCsrfToken();
+        }
+
         $currentMethod = $this->request->getMethod();
         $currentUrl = $this->request->getUrl();
         foreach ($this->routes as $route) {
@@ -242,6 +247,39 @@ class Route
         } else {
             call_user_func(array(new $controller, $action));
         }
+    }
+
+    /**
+     * Validate CSRF token for state-changing requests
+     */
+    private function validateCsrfToken()
+    {
+        if (!USE_SESSIONS) {
+            return; // Skip if sessions are disabled
+        }
+
+        $token = $_POST['csrf_token'] ?? $_REQUEST['csrf_token'] ?? null;
+
+        if (!$token) {
+            $this->csrfError('CSRF token missing');
+        }
+
+        $csrf = new \system\core\Csrf();
+        if (!$csrf->validate($token)) {
+            $this->csrfError('CSRF token invalid');
+        }
+    }
+
+    /**
+     * Handle CSRF validation errors
+     */
+    private function csrfError($message)
+    {
+        if (ENABLE_DEBUG) {
+            error_log("CSRF Error: " . $message);
+        }
+        http_response_code(403);
+        die('Forbidden: ' . $message);
     }
 
 }

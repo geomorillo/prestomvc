@@ -25,6 +25,30 @@ abstract class Controller
         $this->view->setCaller($this->get_namespace($this));//Allows to save the namespace
     }
 
+    /**
+     * Generate and return CSRF token for forms
+     * @return string
+     */
+    protected function getCsrfToken()
+    {
+        if (!USE_SESSIONS) {
+            return '';
+        }
+        $csrf = new Csrf();
+        return $csrf->generate();
+    }
+
+    /**
+     * Add CSRF token to view data
+     * @param array $data
+     * @return array
+     */
+    protected function withCsrfToken(array $data = [])
+    {
+        $data['csrf_token'] = $this->getCsrfToken();
+        return $data;
+    }
+
     private function get_namespace($instance): string
     {
         $namespace = get_class($instance);

@@ -62,6 +62,9 @@ class Boot
 
     private static function dispatcher()
     {
+        // Set security headers
+        self::setSecurityHeaders();
+
         Register::lib(); //register an included lib
         if (USE_SESSIONS) {
             $ses_handler = new SessionManager();
@@ -77,5 +80,33 @@ class Boot
         include "app" . DS . "routes.php";
         Register::modules($router);
         $router->dispatch();
+    }
+
+    /**
+     * Set basic security headers to protect against common attacks
+     */
+    private static function setSecurityHeaders()
+    {
+        // Prevent clickjacking attacks
+        header('X-Frame-Options: SAMEORIGIN');
+
+        // Prevent MIME type sniffing
+        header('X-Content-Type-Options: nosniff');
+
+        // Enable XSS protection
+        header('X-XSS-Protection: 1; mode=block');
+
+        // Prevent referrer leakage for HTTPS sites
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+            header('Referrer-Policy: strict-origin-when-cross-origin');
+        }
+
+        // Content Security Policy (basic)
+        header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'");
+
+        // HSTS for HTTPS sites
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+            header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+        }
     }
 }
