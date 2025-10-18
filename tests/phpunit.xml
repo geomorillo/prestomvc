@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         bootstrap="bootstrap.php"
+         colors="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="unit">
+            <directory>unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>integration</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">../system</directory>
+        </include>
+        <exclude>
+            <directory>../system/test</directory>
+        </exclude>
+        <report>
+            <html outputDirectory="reports/coverage"/>
+            <text outputFile="reports/coverage.txt"/>
+        </report>
+    </coverage>
+    <logging>
+        <junit outputFile="reports/junit.xml"/>
+    </logging>
+</phpunit>
