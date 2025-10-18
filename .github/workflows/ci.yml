@@ -32,7 +32,7 @@ jobs:
     - name: Run PHPUnit tests
       run: |
         cd tests
-        ../php phpunit.phar --configuration=phpunit.xml --log-junit=reports/junit.xml --testdox --verbose
+        php ../phpunit.phar --configuration=phpunit.xml --log-junit=reports/junit.xml --testdox --verbose
 
     - name: Upload test results
       uses: dorny/test-reporter@v1
