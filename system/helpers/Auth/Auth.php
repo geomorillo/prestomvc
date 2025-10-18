@@ -12,6 +12,7 @@ use system\database\Database,
     system\http\Cookie,
     system\core\Email;
 use system\helpers\Key;
+use system\helpers\ValidationHelper;
 
 class Auth
 {
@@ -20,6 +21,7 @@ class Auth
     public $errormsg;
     public $successmsg;
     public $lang;
+    protected $validator;
 
     public function __construct()
     {
@@ -28,6 +30,10 @@ class Auth
         $this->db = Database::connect();
         $this->expireAttempt(); //expire attempts
         $this->errormsg = [];
+
+        // Initialize validation helper
+        $this->validator = new ValidationHelper();
+        $this->validator->setLanguage($this->lang);
     }
 
     /**
@@ -46,24 +52,17 @@ class Auth
                 $this->errormsg[] = sprintf($this->lang['login_wait'], WAIT_TIME);
                 return false;
             } else {
-                // Input verification :
-                if (strlen($username) == 0) {
-                    $this->errormsg[] = $this->lang['login_username_empty'];
+                // Input verification using ValidationHelper
+                $this->validator->clearErrors();
+
+                if (!$this->validator->validateUsername($username, 'login') ||
+                    !$this->validator->validatePassword($password, 'login')) {
+                    $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
                     return false;
-                } elseif (strlen($username) > MAX_USERNAME_LENGTH) {
-                    $this->errormsg[] = $this->lang['login_username_long'];
-                    return false;
-                } elseif (strlen($username) < MIN_USERNAME_LENGTH) {
-                    $this->errormsg[] = $this->lang['login_username_short'];
-                    return false;
-                } elseif (strlen($password) == 0) {
-                    $this->errormsg[] = $this->lang['login_password_empty'];
-                    return false;
-                } elseif (strlen($password) > MAX_PASSWORD_LENGTH) {
-                    $this->errormsg[] = $this->lang['login_password_long'];
-                    return false;
-                } elseif (strlen($password) < MIN_PASSWORD_LENGTH) {
-                    $this->errormsg[] = $this->lang['login_password_short'];
+                }
+
+                if ($this->validator->hasErrors()) {
+                    $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
                     return false;
                 } else {
                     // Input is valid
@@ -335,35 +334,23 @@ class Auth
     public function directRegister($username, $password, $verifypassword, $email)
     {
         if (!Cookie::get('auth_session')) {
-            // Input Verification :
-            if (strlen($username) == 0) {
-                $this->errormsg[] = $this->lang['register_username_empty'];
-            } elseif (strlen($username) > MAX_USERNAME_LENGTH) {
-                $this->errormsg[] = $this->lang['register_username_long'];
-            } elseif (strlen($username) < MIN_USERNAME_LENGTH) {
-                $this->errormsg[] = $this->lang['register_username_short'];
+            // Input Verification using ValidationHelper
+            $this->validator->clearErrors();
+
+            $validations = [
+                $this->validator->validateUsername($username),
+                $this->validator->validatePassword($password),
+                $this->validator->validateEmail($email),
+                $this->validator->validatePasswordMatch($password, $verifypassword),
+                $this->validator->validatePasswordNotUsername($password, $username)
+            ];
+
+            if (in_array(false, $validations) || $this->validator->hasErrors()) {
+                $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
+                return false;
             }
-            if (strlen($password) == 0) {
-                $this->errormsg[] = $this->lang['register_password_empty'];
-            } elseif (strlen($password) > MAX_PASSWORD_LENGTH) {
-                $this->errormsg[] = $this->lang['register_password_long'];
-            } elseif (strlen($password) < MIN_PASSWORD_LENGTH) {
-                $this->errormsg[] = $this->lang['register_password_short'];
-            } elseif ($password !== $verifypassword) {
-                $this->errormsg[] = $this->lang['register_password_nomatch'];
-            } elseif (strstr($password, $username)) {
-                $this->errormsg[] = $this->lang['register_password_username'];
-            }
-            if (strlen($email) == 0) {
-                $this->errormsg[] = $this->lang['register_email_empty'];
-            } elseif (strlen($email) > MAX_EMAIL_LENGTH) {
-                $this->errormsg[] = $this->lang['register_email_long'];
-            } elseif (strlen($email) < MIN_EMAIL_LENGTH) {
-                $this->errormsg[] = $this->lang['register_email_short'];
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $this->errormsg[] = $this->lang['register_email_invalid'];
-            }
-            if ( count($this->errormsg) == 0) {
+
+            if ($this->validator->getErrorCount() == 0) {
                 // Input is valid 
                 $query = $this->db->table(DB_PREFIX . "users")
                         ->where("username", $username)
@@ -418,35 +405,23 @@ class Auth
     public function register($username, $password, $verifypassword, $email)
     {
         if (!Cookie::get('auth_session')) {
-            // Input Verification :
-            if (strlen($username) == 0) {
-                $this->errormsg[] = $this->lang['register_username_empty'];
-            } elseif (strlen($username) > MAX_USERNAME_LENGTH) {
-                $this->errormsg[] = $this->lang['register_username_long'];
-            } elseif (strlen($username) < MIN_USERNAME_LENGTH) {
-                $this->errormsg[] = $this->lang['register_username_short'];
+            // Input Verification using ValidationHelper
+            $this->validator->clearErrors();
+
+            $validations = [
+                $this->validator->validateUsername($username),
+                $this->validator->validatePassword($password),
+                $this->validator->validateEmail($email),
+                $this->validator->validatePasswordMatch($password, $verifypassword),
+                $this->validator->validatePasswordNotUsername($password, $username)
+            ];
+
+            if (in_array(false, $validations) || $this->validator->hasErrors()) {
+                $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
+                return false;
             }
-            if (strlen($password) == 0) {
-                $this->errormsg[] = $this->lang['register_password_empty'];
-            } elseif (strlen($password) > MAX_PASSWORD_LENGTH) {
-                $this->errormsg[] = $this->lang['register_password_long'];
-            } elseif (strlen($password) < MIN_PASSWORD_LENGTH) {
-                $this->errormsg[] = $this->lang['register_password_short'];
-            } elseif ($password !== $verifypassword) {
-                $this->errormsg[] = $this->lang['register_password_nomatch'];
-            } elseif (strstr($password, $username)) {
-                $this->errormsg[] = $this->lang['register_password_username'];
-            }
-            if (strlen($email) == 0) {
-                $this->errormsg[] = $this->lang['register_email_empty'];
-            } elseif (strlen($email) > MAX_EMAIL_LENGTH) {
-                $this->errormsg[] = $this->lang['register_email_long'];
-            } elseif (strlen($email) < MIN_EMAIL_LENGTH) {
-                $this->errormsg[] = $this->lang['register_email_short'];
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $this->errormsg[] = $this->lang['register_email_invalid'];
-            }
-            if ($this->errormsg && count($this->errormsg) == 0) {
+
+            if ($this->validator->getErrorCount() == 0) {
                 // Input is valid
                 $query = $this->db->table(DB_PREFIX . "users")
                         ->where("username", $username)
@@ -633,32 +608,23 @@ class Auth
      */
     function changePass($username, $currpass, $newpass, $verifynewpass)
     {
-        if (strlen($username) == 0) {
-            $this->errormsg[] = $this->lang['changepass_username_empty'];
-        } elseif (strlen($username) > MAX_USERNAME_LENGTH) {
-            $this->errormsg[] = $this->lang['changepass_username_long'];
-        } elseif (strlen($username) < MIN_USERNAME_LENGTH) {
-            $this->errormsg[] = $this->lang['changepass_username_short'];
+        // Input Verification using ValidationHelper
+        $this->validator->clearErrors();
+
+        $validations = [
+            $this->validator->validateUsername($username, 'changepass'),
+            $this->validator->validatePassword($currpass, 'changepass_currpass'),
+            $this->validator->validatePassword($newpass, 'changepass_newpass'),
+            $this->validator->validatePasswordMatch($newpass, $verifynewpass),
+            $this->validator->validatePasswordNotUsername($newpass, $username)
+        ];
+
+        if (in_array(false, $validations) || $this->validator->hasErrors()) {
+            $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
+            return false;
         }
-        if (strlen($currpass) == 0) {
-            $this->errormsg[] = $this->lang['changepass_currpass_empty'];
-        } elseif (strlen($currpass) < MIN_PASSWORD_LENGTH) {
-            $this->errormsg[] = $this->lang['changepass_currpass_short'];
-        } elseif (strlen($currpass) > MAX_PASSWORD_LENGTH) {
-            $this->errormsg[] = $this->lang['changepass_currpass_long'];
-        }
-        if (strlen($newpass) == 0) {
-            $this->errormsg[] = $this->lang['changepass_newpass_empty'];
-        } elseif (strlen($newpass) < MIN_PASSWORD_LENGTH) {
-            $this->errormsg[] = $this->lang['changepass_newpass_short'];
-        } elseif (strlen($newpass) > MAX_PASSWORD_LENGTH) {
-            $this->errormsg[] = $this->lang['changepass_newpass_long'];
-        } elseif (strstr($newpass, $username)) {
-            $this->errormsg[] = $this->lang['changepass_password_username'];
-        } elseif ($newpass !== $verifynewpass) {
-            $this->errormsg[] = $this->lang['changepass_password_nomatch'];
-        }
-        if ($this->errormsg && count($this->errormsg) == 0) {
+
+        if ($this->validator->getErrorCount() == 0) {
             $newpass = $this->hashPass($newpass);
             $query = $this->db->table(DB_PREFIX . "users")
                     ->where("username", $username)
@@ -698,23 +664,20 @@ class Auth
      */
     function changeEmail($username, $email)
     {
-        if (strlen($username) == 0) {
-            $this->errormsg[] = $this->lang['changeemail_username_empty'];
-        } elseif (strlen($username) > MAX_USERNAME_LENGTH) {
-            $this->errormsg[] = $this->lang['changeemail_username_long'];
-        } elseif (strlen($username) < MIN_USERNAME_LENGTH) {
-            $this->errormsg[] = $this->lang['changeemail_username_short'];
+        // Input Verification using ValidationHelper
+        $this->validator->clearErrors();
+
+        $validations = [
+            $this->validator->validateUsername($username, 'changeemail'),
+            $this->validator->validateEmail($email, 'changeemail')
+        ];
+
+        if (in_array(false, $validations) || $this->validator->hasErrors()) {
+            $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
+            return false;
         }
-        if (strlen($email) == 0) {
-            $this->errormsg[] = $this->lang['changeemail_email_empty'];
-        } elseif (strlen($email) > MAX_EMAIL_LENGTH) {
-            $this->errormsg[] = $this->lang['changeemail_email_long'];
-        } elseif (strlen($email) < MIN_EMAIL_LENGTH) {
-            $this->errormsg[] = $this->lang['changeemail_email_short'];
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->errormsg[] = $this->lang['changeemail_email_invalid'];
-        }
-        if ($this->errormsg && count($this->errormsg) == 0) {
+
+        if ($this->validator->getErrorCount() == 0) {
             $query = $this->db->table(DB_PREFIX . "users")
                     ->where("username", $username)
                     ->select(["email"]);
@@ -762,14 +725,11 @@ class Auth
             return false;
         } else {
             if ($username == '0' && $key == '0') {
-                if (strlen($email) == 0) {
-                    $this->errormsg[] = $this->lang['resetpass_email_empty'];
-                } elseif (strlen($email) > MAX_EMAIL_LENGTH) {
-                    $this->errormsg[] = $this->lang['resetpass_email_long'];
-                } elseif (strlen($email) < MIN_EMAIL_LENGTH) {
-                    $this->errormsg[] = $this->lang['resetpass_email_short'];
-                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $this->errormsg[] = $this->lang['resetpass_email_invalid'];
+                // Validate email using ValidationHelper
+                $this->validator->clearErrors();
+                if (!$this->validator->validateEmail($email, 'resetpass')) {
+                    $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
+                    return false;
                 }
                 $query = $this->db->table(DB_PREFIX . "users")
                         ->where("email", $email)
@@ -806,23 +766,18 @@ class Auth
             } else {
                 // if username, key  and newpass are provided
                 // Reset Password
-                if (strlen($key) == 0) {
-                    $this->errormsg[] = $this->lang['resetpass_key_empty'];
-                } elseif (strlen($key) < RANDOM_KEY_LENGTH) {
-                    $this->errormsg[] = $this->lang['resetpass_key_short'];
-                } elseif (strlen($key) > RANDOM_KEY_LENGTH) {
-                    $this->errormsg[] = $this->lang['resetpass_key_long'];
-                }
-                if (strlen($newpass) == 0) {
-                    $this->errormsg[] = $this->lang['resetpass_newpass_empty'];
-                } elseif (strlen($newpass) > MAX_PASSWORD_LENGTH) {
-                    $this->errormsg[] = $this->lang['resetpass_newpass_long'];
-                } elseif (strlen($newpass) < MIN_PASSWORD_LENGTH) {
-                    $this->errormsg[] = $this->lang['resetpass_newpass_short'];
-                } elseif (strstr($newpass, $username)) {
-                    $this->errormsg[] = $this->lang['resetpass_newpass_username'];
-                } elseif ($newpass !== $verifynewpass) {
-                    $this->errormsg[] = $this->lang['resetpass_newpass_nomatch'];
+                $this->validator->clearErrors();
+
+                $validations = [
+                    $this->validator->validateKey($key, 'resetpass'),
+                    $this->validator->validatePassword($newpass, 'resetpass_newpass'),
+                    $this->validator->validatePasswordMatch($newpass, $verifynewpass),
+                    $this->validator->validatePasswordNotUsername($newpass, $username)
+                ];
+
+                if (in_array(false, $validations) || $this->validator->hasErrors()) {
+                    $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
+                    return false;
                 }
                 if (count($this->errormsg) == 0) {
                     $query = $this->db->table(DB_PREFIX . "users")
@@ -931,21 +886,20 @@ class Auth
      */
     function deleteAccount($username, $password)
     {
-        if (strlen($username) == 0) {
-            $this->errormsg[] = $this->lang['deleteaccount_username_empty'];
-        } elseif (strlen($username) > MAX_USERNAME_LENGTH) {
-            $this->errormsg[] = $this->lang['deleteaccount_username_long'];
-        } elseif (strlen($username) < MIN_USERNAME_LENGTH) {
-            $this->errormsg[] = $this->lang['deleteaccount_username_short'];
+        // Input Verification using ValidationHelper
+        $this->validator->clearErrors();
+
+        $validations = [
+            $this->validator->validateUsername($username, 'deleteaccount'),
+            $this->validator->validatePassword($password, 'deleteaccount')
+        ];
+
+        if (in_array(false, $validations) || $this->validator->hasErrors()) {
+            $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
+            return false;
         }
-        if (strlen($password) == 0) {
-            $this->errormsg[] = $this->lang['deleteaccount_password_empty'];
-        } elseif (strlen($password) > MAX_PASSWORD_LENGTH) {
-            $this->errormsg[] = $this->lang['deleteaccount_password_long'];
-        } elseif (strlen($password) < MIN_PASSWORD_LENGTH) {
-            $this->errormsg[] = $this->lang['deleteaccount_password_short'];
-        }
-        if ($this->errormsg && count($this->errormsg) == 0) {
+
+        if ($this->validator->getErrorCount() == 0) {
             $query = $this->db->table(DB_PREFIX . "users")
                     ->where("username", $username)
                     ->select(["password"]);
