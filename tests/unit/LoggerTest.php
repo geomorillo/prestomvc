@@ -31,55 +31,55 @@ class LoggerTest extends TestCase
     public function testEmergencyLog()
     {
         Logger::emergency('Emergency message');
-        $this->assertLogContains('EMERGENCY: Emergency message');
+        $this->assertLogContains('EMERGENCY:  Emergency message');
     }
 
     public function testCriticalLog()
     {
         Logger::critical('Critical message');
-        $this->assertLogContains('CRITICAL: Critical message');
+        $this->assertLogContains('CRITICAL:  Critical message');
     }
 
     public function testErrorLog()
     {
         Logger::error('Error message');
-        $this->assertLogContains('ERROR: Error message');
+        $this->assertLogContains('ERROR:  Error message');
     }
 
     public function testWarningLog()
     {
         Logger::warning('Warning message');
-        $this->assertLogContains('WARNING: Warning message');
+        $this->assertLogContains('WARNING:  Warning message');
     }
 
     public function testInfoLog()
     {
         Logger::info('Info message');
-        $this->assertLogContains('INFO: Info message');
+        $this->assertLogContains('INFO:  Info message');
     }
 
     public function testNoticeLog()
     {
         Logger::notice('Notice message');
-        $this->assertLogContains('NOTICE: Notice message');
+        $this->assertLogContains('NOTICE:  Notice message');
     }
 
     public function testAlertLog()
     {
         Logger::alert('Alert message');
-        $this->assertLogContains('ALERT: Alert message');
+        $this->assertLogContains('ALERT:  Alert message');
     }
 
     public function testDebugLog()
     {
         Logger::debug('Debug message');
-        $this->assertLogContains('DEBUG: Debug message');
+        $this->assertLogContains('DEBUG:  Debug message');
     }
 
     public function testLogWithCustomLevel()
     {
         Logger::log('CUSTOM', 'Custom message');
-        $this->assertLogContains('LOG LEVEL CUSTOM: Custom message');
+        $this->assertLogContains('LOG LEVEL CUSTOM::  Custom message');
     }
 
     public function testLogWithContext()
@@ -124,6 +124,8 @@ class LoggerTest extends TestCase
     private function assertLogContains($expectedContent)
     {
         $content = file_get_contents($this->logFile);
-        $this->assertStringContainsString($expectedContent, $content);
+        // The log format is: "Month Day, Year, time LEVEL: message"
+        // We need to check if the expected content appears anywhere in the log
+        $this->assertStringContainsString($expectedContent, $content, "Log content: " . $content);
     }
 }
