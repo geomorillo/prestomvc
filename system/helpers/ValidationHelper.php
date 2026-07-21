@@ -54,22 +54,23 @@ class ValidationHelper
      * Validate password field
      * @param string $password
      * @param string $prefix Language prefix
+     * @param string $field Field name for language key (default: 'password')
      * @return bool
      */
-    public function validatePassword($password, $prefix = 'register')
+    public function validatePassword($password, $prefix = 'register', $field = 'password')
     {
         if (strlen($password) == 0) {
-            $this->errors[] = $this->lang[$prefix . '_password_empty'] ?? 'Password is required';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_empty'] ?? 'Password is required';
             return false;
         }
 
         if (strlen($password) > MAX_PASSWORD_LENGTH) {
-            $this->errors[] = $this->lang[$prefix . '_password_long'] ?? 'Password is too long';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_long'] ?? 'Password is too long';
             return false;
         }
 
         if (strlen($password) < MIN_PASSWORD_LENGTH) {
-            $this->errors[] = $this->lang[$prefix . '_password_short'] ?? 'Password is too short';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_short'] ?? 'Password is too short';
             return false;
         }
 
@@ -80,27 +81,28 @@ class ValidationHelper
      * Validate email field
      * @param string $email
      * @param string $prefix Language prefix
+     * @param string $field Field name for language key (default: 'email')
      * @return bool
      */
-    public function validateEmail($email, $prefix = 'register')
+    public function validateEmail($email, $prefix = 'register', $field = 'email')
     {
         if (strlen($email) == 0) {
-            $this->errors[] = $this->lang[$prefix . '_email_empty'] ?? 'Email is required';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_empty'] ?? 'Email is required';
             return false;
         }
 
         if (strlen($email) > MAX_EMAIL_LENGTH) {
-            $this->errors[] = $this->lang[$prefix . '_email_long'] ?? 'Email is too long';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_long'] ?? 'Email is too long';
             return false;
         }
 
         if (strlen($email) < MIN_EMAIL_LENGTH) {
-            $this->errors[] = $this->lang[$prefix . '_email_short'] ?? 'Email is too short';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_short'] ?? 'Email is too short';
             return false;
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->errors[] = $this->lang[$prefix . '_email_invalid'] ?? 'Email is invalid';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_invalid'] ?? 'Email is invalid';
             return false;
         }
 
@@ -142,22 +144,23 @@ class ValidationHelper
      * @param string $key
      * @param string $prefix Language prefix
      * @param int $expectedLength Expected key length
+     * @param string $field Field name for language key (default: 'key')
      * @return bool
      */
-    public function validateKey($key, $prefix = 'resetpass', $expectedLength = RANDOM_KEY_LENGTH)
+    public function validateKey($key, $prefix = 'resetpass', $expectedLength = RANDOM_KEY_LENGTH, $field = 'key')
     {
         if (strlen($key) == 0) {
-            $this->errors[] = $this->lang[$prefix . '_key_empty'] ?? 'Key is required';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_empty'] ?? 'Key is required';
             return false;
         }
 
         if (strlen($key) < $expectedLength) {
-            $this->errors[] = $this->lang[$prefix . '_key_short'] ?? 'Key is too short';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_short'] ?? 'Key is too short';
             return false;
         }
 
         if (strlen($key) > $expectedLength) {
-            $this->errors[] = $this->lang[$prefix . '_key_long'] ?? 'Key is too long';
+            $this->errors[] = $this->lang[$prefix . '_' . $field . '_long'] ?? 'Key is too long';
             return false;
         }
 

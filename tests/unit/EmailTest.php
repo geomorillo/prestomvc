@@ -53,7 +53,7 @@ class EmailTest extends TestCase
 
         $this->assertInstanceOf('system\core\Email', $result);
         $toAddresses = $this->email->getTo();
-        $this->assertContains('test@example.com', $toAddresses[0]);
+        $this->assertStringContainsString('test@example.com', $toAddresses[0]);
     }
 
     public function testSetSubject()
@@ -61,8 +61,16 @@ class EmailTest extends TestCase
         $result = $this->email->subject('Test Subject');
 
         $this->assertInstanceOf('system\core\Email', $result);
-        // Subject gets UTF-8 encoded, so we check it contains the original text
-        $this->assertContains('Test Subject', $this->email->getSubject());
+        // Subject gets UTF-8 encoded in chunks separated by spaces
+        $encoded = $this->email->getSubject();
+        $this->assertStringContainsString('UTF-8?B?', $encoded);
+        // Decode all base64 chunks to verify original content
+        preg_match_all('/=\?UTF-8\?B\?([^?]+)\?=/', $encoded, $matches);
+        $decodedSubject = '';
+        foreach ($matches[1] as $chunk) {
+            $decodedSubject .= base64_decode($chunk);
+        }
+        $this->assertEquals('Test Subject', $decodedSubject);
     }
 
     public function testSetMessage()
@@ -76,11 +84,12 @@ class EmailTest extends TestCase
 
     public function testMessageWithDots()
     {
-        $message = "Line with dot.\nAnother line.";
+        // A line starting with a dot should be escaped (RFC 2821 dot-stuffing)
+        $message = "First line.\n. dot line\nLast line.";
         $this->email->message($message);
 
-        // Should escape dots at start of line
-        $this->assertContains('..', $this->email->getMessage());
+        // Should escape dot at start of line: \n. → \n..
+        $this->assertStringContainsString("\n..", $this->email->getMessage());
     }
 
     public function testSetFrom()
@@ -89,7 +98,7 @@ class EmailTest extends TestCase
 
         $this->assertInstanceOf('system\core\Email', $result);
         $headers = $this->email->getHeaders();
-        $this->assertContains('sender@example.com', $headers[0]);
+        $this->assertStringContainsString('sender@example.com', $headers[0]);
     }
 
     public function testReplyTo()
@@ -98,7 +107,7 @@ class EmailTest extends TestCase
 
         $this->assertInstanceOf('system\core\Email', $result);
         $headers = $this->email->getHeaders();
-        $this->assertContains('reply@example.com', $headers[0]);
+        $this->assertStringContainsString('reply@example.com', $headers[0]);
     }
 
     public function testCc()
@@ -107,7 +116,7 @@ class EmailTest extends TestCase
 
         $this->assertInstanceOf('system\core\Email', $result);
         $headers = $this->email->getHeaders();
-        $this->assertContains('cc@example.com', $headers[0]);
+        $this->assertStringContainsString('cc@example.com', $headers[0]);
     }
 
     public function testBcc()
@@ -116,7 +125,7 @@ class EmailTest extends TestCase
 
         $this->assertInstanceOf('system\core\Email', $result);
         $headers = $this->email->getHeaders();
-        $this->assertContains('bcc@example.com', $headers[0]);
+        $this->assertStringContainsString('bcc@example.com', $headers[0]);
     }
 
     public function testAddGenericHeader()
@@ -125,7 +134,7 @@ class EmailTest extends TestCase
 
         $this->assertInstanceOf('system\core\Email', $result);
         $headers = $this->email->getHeaders();
-        $this->assertContains('X-Custom: Custom Value', $headers);
+        $this->assertStringContainsString('X-Custom: Custom Value', implode(PHP_EOL, $headers));
     }
 
     public function testSetParameters()
@@ -183,8 +192,11 @@ class EmailTest extends TestCase
     public function testFormatHeaderWithName()
     {
         $result = $this->email->formatHeader('test@example.com', 'Test User');
-        $this->assertContains('test@example.com', $result);
-        $this->assertContains('Test User', $result);
+        $this->assertStringContainsString('test@example.com', $result);
+        $this->assertStringContainsString('UTF-8?B?', $result);
+        // Name with spaces gets each word encoded separately
+        $this->assertStringContainsString('=?UTF-8?B?VGVzdA==?=', $result); // 'Test'
+        $this->assertStringContainsString('=?UTF-8?B?VXNlcg==?=', $result); // 'User'
     }
 
     public function testFormatHeaderWithoutName()
@@ -204,8 +216,8 @@ class EmailTest extends TestCase
     {
         $name = "Test\r\n\t\"<>,Name";
         $result = $this->email->filterName($name);
-        $this->assertContains("Test", $result);
-        $this->assertContains("Name", $result);
+        $this->assertStringContainsString("Test", $result);
+        $this->assertStringContainsString("Name", $result);
     }
 
     public function testFilterOther()
@@ -227,14 +239,14 @@ class EmailTest extends TestCase
     {
         $this->email->from('sender@example.com', 'Sender');
         $result = $this->email->getHeadersForSend();
-        $this->assertContains('From:', $result);
+        $this->assertStringContainsString('From:', $result);
     }
 
     public function testGetToForSend()
     {
         $this->email->to('recipient@example.com', 'Recipient');
         $result = $this->email->getToForSend();
-        $this->assertContains('recipient@example.com', $result);
+        $this->assertStringContainsString('recipient@example.com', $result);
     }
 
     public function testSendThrowsExceptionWhenNoToAddress()

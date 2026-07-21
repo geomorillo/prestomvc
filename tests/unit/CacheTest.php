@@ -23,10 +23,21 @@ class CacheTest extends TestCase
 
     public function testExpiration()
     {
-        $this->cache->set('expire_key', 'test_value', 1);
+        $this->cache->set('expire_key', 'test_value', 3600);
         $this->assertEquals('test_value', $this->cache->get('expire_key'));
 
-        sleep(2); // Wait for expiration
+        // Force expiration by modifying the stored expires time via reflection
+        $reflection = new ReflectionClass($this->cache);
+        $method = $reflection->getMethod('getFilePath');
+        $method->setAccessible(true);
+        $file = $method->invoke($this->cache, 'expire_key');
+
+        if (file_exists($file)) {
+            $data = unserialize(file_get_contents($file));
+            $data['expires'] = time() - 1; // Set to past
+            file_put_contents($file, serialize($data));
+        }
+
         $this->assertFalse($this->cache->get('expire_key'));
     }
 

@@ -8,3 +8,8 @@ nbproject/project.xml
 nbproject/project.properties
 .vscode/launch.json
 /.vscode/
+
+# PHP / PHPUnit
+*.cache
+.phpunit.result.cache
+phpunit.phar

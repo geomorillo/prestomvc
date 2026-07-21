@@ -9,7 +9,7 @@ class CacheManager
 {
     /**
      * Crear instancia de cache según tipo
-     * @param string $type Tipo de cache (file, apcu, etc.)
+     * @param string $type Tipo de cache (file, array)
      * @param array $config Configuración específica
      * @return CacheInterface
      */
@@ -20,12 +20,6 @@ class CacheManager
                 $cacheDir = $config['dir'] ?? null;
                 $ttl = $config['ttl'] ?? 3600;
                 return new FileCache($cacheDir, $ttl);
-
-            case 'apcu':
-                if (!extension_loaded('apcu')) {
-                    throw new \Exception('APCu extension is not loaded');
-                }
-                return new ApcuCache();
 
             case 'array':
                 return new ArrayCache();

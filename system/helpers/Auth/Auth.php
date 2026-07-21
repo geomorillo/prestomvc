@@ -350,7 +350,6 @@ class Auth
                 return false;
             }
 
-            if ($this->validator->getErrorCount() == 0) {
                 // Input is valid 
                 $query = $this->db->table(DB_PREFIX . "users")
                         ->where("username", $username)
@@ -384,9 +383,7 @@ class Auth
                         return true;
                     }
                 }
-            } else {
-                return false; //algun error
-            }
+            
         } else {
             // User is logged in
             $this->errormsg[] = $this->lang['register_email_loggedin'];
@@ -421,7 +418,6 @@ class Auth
                 return false;
             }
 
-            if ($this->validator->getErrorCount() == 0) {
                 // Input is valid
                 $query = $this->db->table(DB_PREFIX . "users")
                         ->where("username", $username)
@@ -464,10 +460,7 @@ class Auth
                         return true;
                     }
                 }
-            } else {
-                //some error 
-                return false;
-            }
+            
         } else {
             // User is logged in
             $this->errormsg[] = $this->lang['register_email_loggedin'];
@@ -613,8 +606,8 @@ class Auth
 
         $validations = [
             $this->validator->validateUsername($username, 'changepass'),
-            $this->validator->validatePassword($currpass, 'changepass_currpass'),
-            $this->validator->validatePassword($newpass, 'changepass_newpass'),
+            $this->validator->validatePassword($currpass, 'changepass', 'currpass'),
+            $this->validator->validatePassword($newpass, 'changepass', 'newpass'),
             $this->validator->validatePasswordMatch($newpass, $verifynewpass),
             $this->validator->validatePasswordNotUsername($newpass, $username)
         ];
@@ -624,7 +617,6 @@ class Auth
             return false;
         }
 
-        if ($this->validator->getErrorCount() == 0) {
             $newpass = $this->hashPass($newpass);
             $query = $this->db->table(DB_PREFIX . "users")
                     ->where("username", $username)
@@ -651,9 +643,7 @@ class Auth
                     return false;
                 }
             }
-        } else {
-            return false;
-        }
+        
     }
 
     /**
@@ -677,7 +667,6 @@ class Auth
             return false;
         }
 
-        if ($this->validator->getErrorCount() == 0) {
             $query = $this->db->table(DB_PREFIX . "users")
                     ->where("username", $username)
                     ->select(["email"]);
@@ -701,9 +690,7 @@ class Auth
                     return true;
                 }
             }
-        } else {
-            return false;
-        }
+        
     }
 
     /**
@@ -770,7 +757,7 @@ class Auth
 
                 $validations = [
                     $this->validator->validateKey($key, 'resetpass'),
-                    $this->validator->validatePassword($newpass, 'resetpass_newpass'),
+                    $this->validator->validatePassword($newpass, 'resetpass', 'newpass'),
                     $this->validator->validatePasswordMatch($newpass, $verifynewpass),
                     $this->validator->validatePasswordNotUsername($newpass, $username)
                 ];
@@ -779,7 +766,7 @@ class Auth
                     $this->errormsg = array_merge($this->errormsg, $this->validator->getErrors());
                     return false;
                 }
-                if (count($this->errormsg) == 0) {
+
                     $query = $this->db->table(DB_PREFIX . "users")
                             ->where("username", $username)
                             ->select(["resetkey"]);
@@ -814,9 +801,7 @@ class Auth
                             return false;
                         }
                     }
-                } else {
-                    return false;
-                }
+                
             }
         }
     }
@@ -899,7 +884,6 @@ class Auth
             return false;
         }
 
-        if ($this->validator->getErrorCount() == 0) {
             $query = $this->db->table(DB_PREFIX . "users")
                     ->where("username", $username)
                     ->select(["password"]);
@@ -927,9 +911,6 @@ class Auth
                     return false;
                 }
             }
-        } else {
-            return false;
-        }
     }
 
 }

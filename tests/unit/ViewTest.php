@@ -32,7 +32,7 @@ class ViewTest extends TestCase
 
     public function testPartialPassesDataToView()
     {
-        // Create a test view file in the correct namespace path
+        // Create a test view file (View::partial looks in ROOT . namespace . DS . path)
         $testViewPath = ROOT . 'app' . DS . 'test_data.php';
         $testContent = '<?php echo $message . " " . $number; ?>';
         file_put_contents($testViewPath, $testContent);
